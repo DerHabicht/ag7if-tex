@@ -1,0 +1,237 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{usafpub}
+
+\DeclareOption{cap}{%
+    \newcommand{\CAP}{}
+}
+\ProcessOptions\relax
+
+\RequirePackage{fancyhdr}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{graphicx}
+\RequirePackage{mathptmx}
+\RequirePackage[absolute]{textpos}
+\RequirePackage[dvipsnames]{xcolor}
+\ifdefined\FOUO
+    \RequirePackage[%
+        top=0.5in, 
+        bottom=1.0in, 
+        left=1in, 
+        right=1in, 
+        includehead,
+        voffset=-0.25in,
+        footskip=1.0in
+    ]{geometry}
+\else
+    \RequirePackage[%
+        top=0.5in, 
+        bottom=1.0in, 
+        left=1in, 
+        right=1in, 
+        includehead,
+        footskip=0in
+    ]{geometry}
+\fi
+
+
+% Page Formatting
+\setlength{\parskip}{10pt}
+\setlength{\parindent}{0pt}
+
+\renewcommand{\headrulewidth}{0pt}
+
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\ifdefined\FOUO
+    \fancyhead[C]{\FouoMark}
+    \fancyfoot[C]{\FouoMark}
+\fi
+
+\pagestyle{fancy}
+
+% Letterhead
+\newcommand{\LetterHeadSeal}{%
+    \ifdefined\@seal
+        \ifdefined\FOUO
+            \fancyhead[L]{%
+                \begin{textblock*}{1in}(.5in,.75in)
+                    \includegraphics[width=1in]{\@seal}
+                \end{textblock*}
+            }
+        \else
+            \fancyhead[L]{%
+                \begin{textblock*}{1in}(.5in,.5in)
+                    \includegraphics[width=1in]{\@seal}
+                \end{textblock*}
+            }
+        \fi
+    \fi
+}
+
+\newcommand{\LetterHeadPatch}{%
+    \ifdefined\@unitPatch
+        \ifdefined\FOUO
+            \fancyhead[R]{%
+                \begin{textblock*}{1in}(7in,.75in)
+                    \includegraphics[height=1in]{\@unitPatch}
+                \end{textblock*}
+            }
+        \else
+            \fancyhead[R]{%
+                \begin{textblock*}{1in}(7in,.5in)
+                    \includegraphics[height=1in]{\@unitPatch}
+                \end{textblock*}
+            }
+        \fi
+    \fi
+}
+
+\newcommand{\UsafLetterHeadFont}[1]{
+	\textcolor{Blue}{\textsf{\textbf{#1}}}\rm
+}
+
+\newcommand{\PlainLetterHead}{
+    \ifdefined\FOUO
+        \FouoMark\\
+        \vspace{1ex}
+        \UsafLetterHeadFont{%
+            \MakeUppercase{\@unit}\\
+            \@address
+        }
+    \else
+        \UsafLetterHeadFont{%
+            \MakeUppercase{\@unit}\\
+            \@address
+        }
+    \fi
+}
+
+\newcommand{\CapLetterHead}{
+    \ifdefined\FOUO
+        \FouoMark\\
+        \vspace{1ex}
+        \UsafLetterHeadFont{%
+            HEADQUARTERS \MakeUppercase{\@unit}\\
+            CIVIL AIR PATROL\\
+            UNITED STATES AIR FORCE AUXILIARY\\
+            \@address
+        }
+    \else
+        \UsafLetterHeadFont{%
+            HEADQUARTERS \MakeUppercase{\@unit}\\
+            CIVIL AIR PATROL\\
+            UNITED STATES AIR FORCE AUXILIARY\\
+            \@address
+        }
+    \fi
+}
+
+\fancypagestyle{letterhead}{%
+    \fancyhf{}
+    \ifdefined\CAP
+        \def\@seal{CAP_Seal.jpg}       
+        \fancyhead[C]{\CapLetterHead}
+        \LetterHeadSeal{}
+        \LetterHeadPatch{}
+    \else
+        \fancyhead[C]{\PlainLetterHead}
+        \LetterHeadSeal{}
+    \fi
+}
+
+% Signature Blocks
+\newlength{\sigoffset}
+\setlength{\sigoffset}{3.75in}
+
+% Postscript
+\newcounter{usaflist}
+\renewcommand{\theusaflist}{\alph{usaflist}.}
+\newenvironment{UsafList}{
+    \setlength{\parindent}{2em}
+    \setcounter{usaflist}{0}
+    \renewcommand{\item}{
+        \par
+        \refstepcounter{usaflist}
+        \makebox[2ex][l]{\theusaflist}
+    }
+}{
+    \bigskip
+    \noindent
+    \ignorespacesafterend
+}
+
+\newenvironment{UsafMemo}{%
+	\begin{textblock*}{6.75in}(.75in,1.75in)
+}{%
+	\end{textblock*}
+}
+
+% End-package commands
+%% Letterhead
+\newcommand{\seal}[1]{%
+    \def\@seal{#1}
+}
+
+\newcommand{\unitPatch}[1]{%
+    \def\@unitPatch{#1}
+}
+
+\newcommand{\unit}[1]{%
+    \def\@unit{#1}
+}
+
+\newcommand{\address}[1]{%
+    \def\@address{#1}
+}
+
+%% Signature block
+\newcommand{\sigblock}[2]{%
+    \hspace*{\sigoffset}\MakeUppercase{#1}\\
+    \hspace*{\sigoffset}#2
+}
+
+\newcommand{\signature}[2]{%
+    \vspace{4em}
+    \sigblock{#1}{#2}
+}
+
+\newcommand{\sigcont}{%
+    \hspace*{\sigoffset}\hspace{2ex}
+}
+
+\newcommand{\digisign}[3]{%
+    \vspace{2em}
+    \hspace{\sigoffset}\includegraphics[scale=0.2]{#3}\\
+    \sigblock{#1}{#2}
+}
+
+%% Postscript
+\newcommand{\attachment}[1]{%
+    \def\ATTACHMENT
+    \vspace{2em}
+    \noindent
+    Attachment: \\
+    #1
+}
+
+\newcommand{\attachments}[1]{%
+    \def\ATTACHMENT
+    \vspace{2em}
+    \noindent
+    Attachments:
+    \begin{enumerate}
+    #1
+    \end{enumerate}
+}
+
+\newcommand{\cc}[1]{%
+    \ifdefined\ATTACHMENT
+        \vspace{2em}
+    \else
+        \vspace{1em}
+    \fi
+
+    \noindent
+    cc:\\
+    #1
+}

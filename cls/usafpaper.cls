@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{afpaper}
+\ProvidesClass{usafpaper}
 
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
@@ -25,18 +25,14 @@
 \RequirePackage{fancyhdr}
 \RequirePackage[margin=1in]{geometry}
 \RequirePackage{titlesec}
+\RequirePackage{usafpub}
 \ifdefined\DRAFT
     \RequirePackage{draftwatermark}
 \fi
 
 % Formatting
-\setlength{\parskip}{10pt}
-\setlength{\parindent}{0pt}
-
 \titleformat{\section}{\normalfont\MakeUppercase}{\thesection}{0pt}{}
 \titlespacing{\section}{0pt}{0pt}{0pt}
-
-\renewcommand{\headrulewidth}{0pt}
 
 \fancypagestyle{firstpage}{%
     \fancyhf{}
