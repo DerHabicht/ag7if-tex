@@ -5,6 +5,26 @@
     \newcommand{\DRAFT}{}
 }
 
+\DeclareOption{letter}{%
+    \newcommand{\LetterPageSize}{}
+}
+
+\DeclareOption{quarto}{%
+    \newcommand{\QuartoPageSize}{}
+}
+
+\DeclareOption{index58}{%
+    \newcommand{\FiveByEightPageSize}{}
+}
+
+\DeclareOption{index46}{%
+    \newcommand{\FourBySixPageSize}{}
+}
+
+\DeclareOption{index35}{%
+    \newcommand{\ThreeByFivePageSize}{}
+}
+
 \DeclareOption{very-sensitive}{%
     \newcommand{\VerySensitiveDoc}{}
 }
@@ -25,7 +45,21 @@
 \LoadClass{book}
 
 \RequirePackage[tocentry]{vhistory}
-\RequirePackage[margin=1in]{geometry}
+
+\ifdefined\LetterPageSize
+    \RequirePackage[paperheight=11in,paperwidth=8.5in,margin=1in]{geometry}
+\else\ifdefined\QuartoPageSize
+    \RequirePackage[paperheight=8.5in,paperwidth=5.5in,margin=0.5in]{geometry}
+\else\ifdefined\FiveByEightPageSize
+    \RequirePackage[paperheight=8in,paperwidth=5in,margin=0.5in]{geometry}
+\else\ifdefined\FourBySixPageSize
+    \RequirePackage[paperheight=6in,paperwidth=4in,margin=0.25in]{geometry}
+\else\ifdefined\ThreeByFivePageSize
+    \RequirePackage[paperheight=5in,paperwidth=3in,margin=0.1in]{geometry}
+\else
+    \RequirePackage[margin=1in]{geometry}
+\fi\fi\fi\fi\fi
+
 \ifdefined\VerySensitiveDoc
     \RequirePackage[very-sensitive]{infosec}
 \else\ifdefined\SensitiveDoc
@@ -35,13 +69,15 @@
 \else\ifdefined\NotSensitiveDoc
     \RequirePackage[not-sensitive]{infosec}
 \fi\fi\fi\fi
+
 \RequirePackage{ag7ifpub}
 \RequirePackage{booktabs}
+\RequirePackage{chngcntr}
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
 \usepackage{longtable}
 \ifdefined\DRAFT
-    \RequirePackage{draftwatermark}
+    \RequirePackage[scale=8]{draftwatermark}
 
     \renewcommand{\therevision}{%
         DRAFT
@@ -52,6 +88,7 @@
 \setcounter{secnumdepth}{4}
 \counterwithout{paragraph}{subsubsection}
 \titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\counterwithin{paragraph}{section}
 
 \providecommand{\tightlist}{%
     \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}

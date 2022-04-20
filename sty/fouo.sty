@@ -2,9 +2,14 @@
 \ProvidesPackage{fouo}
 
 \RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{pdfpages}
 
 \ProcessOptions\relax
 
 \newcommand{\FouoMark}{%
     \textcolor{Green}{UNCLASSIFIED//FOUO}
+}
+
+\newcommand{\FouoCoverPage}{%
+    \includepdf[offset=0 -0.25in]{fouo-cover.pdf}
 }

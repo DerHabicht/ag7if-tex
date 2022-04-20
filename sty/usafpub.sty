@@ -6,11 +6,13 @@
 }
 \ProcessOptions\relax
 
+\RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
 \RequirePackage[T1]{fontenc}
 \RequirePackage{graphicx}
 \RequirePackage{mathptmx}
 \RequirePackage[absolute]{textpos}
+\RequirePackage{titlesec}
 \RequirePackage[dvipsnames]{xcolor}
 \ifdefined\FOUO
     \RequirePackage[%
@@ -143,17 +145,81 @@
 \newlength{\sigoffset}
 \setlength{\sigoffset}{3.75in}
 
-% Postscript
-\newcounter{usaflist}
-\renewcommand{\theusaflist}{\alph{usaflist}.}
+% Paragraph numbering
+\setcounter{secnumdepth}{5}
+\renewcommand{\theparagraph}{\makebox[3ex][l]{\arabic{paragraph}.}}
+\titleformat{\paragraph}[runin]{}{\theparagraph}{0pt}{\underline}
+
+% List numbering
+\newcounter{usaflisti}
+\renewcommand{\theusaflisti}{\alph{usaflisti}.}
+\newcounter{usaflistii}
+\renewcommand{\theusaflistii}{(\arabic{usaflistii})}
+\newcounter{usaflistiii}
+\renewcommand{\theusaflistiii}{(\alph{usaflistiii})}
+\newcounter{usaflistiv}
+\renewcommand{\theusaflistiv}{\underline{\arabic{usaflistiv}}}
+\newcounter{usaflistv}
+\renewcommand{\theusaflistv}{\underline{\alph{usaflistv}}}
+\newcounter{usaflistvi}
+\renewcommand{\theusaflistvi}{[\arabic{usaflistvi}]}
+
 \newenvironment{UsafList}{
-    \setlength{\parindent}{2em}
-    \setcounter{usaflist}{0}
-    \renewcommand{\item}{
-        \par
-        \refstepcounter{usaflist}
-        \makebox[2ex][l]{\theusaflist}
-    }
+    \ifdefined\@usaflistv
+        \def\@usaflistvi{}
+        \setlength{\parindent}{12em}
+        \setcounter{usaflistvi}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistvi}
+            \makebox[3ex][l]{\theusaflistvi}
+        }
+    \else\ifdefined\@usaflistiv
+        \def\@usaflistv{}
+        \setlength{\parindent}{10em}
+        \setcounter{usaflistv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistv}
+            \makebox[3ex][l]{\theusaflistv}
+        }
+    \else\ifdefined\@usaflistiii
+        \def\@usaflistiv{}
+        \setlength{\parindent}{8em}
+        \setcounter{usaflistiv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiv}
+            \makebox[3ex][l]{\theusaflistiv}
+        }
+    \else\ifdefined\@usaflistii
+        \def\@usaflistiii{}
+        \setlength{\parindent}{6em}
+        \setcounter{usaflistiii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiii}
+            \makebox[3ex][l]{\theusaflistiii}
+        }
+    \else\ifdefined\@usaflisti
+        \def\@usaflistii{}
+        \setlength{\parindent}{4em}
+        \setcounter{usaflistii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistii}
+            \makebox[3ex][l]{\theusaflistii}
+        }
+    \else
+        \def\@usaflisti{}
+        \setlength{\parindent}{2em}
+        \setcounter{usaflisti}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflisti}
+            \makebox[3ex][l]{\theusaflisti}
+        }
+    \fi\fi\fi\fi\fi
 }{
     \bigskip
     \noindent
