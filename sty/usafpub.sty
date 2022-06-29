@@ -14,7 +14,7 @@
 \RequirePackage[absolute]{textpos}
 \RequirePackage{titlesec}
 \RequirePackage[dvipsnames]{xcolor}
-\ifdefined\FOUO
+\ifdefined\@securityMark
     \RequirePackage[%
         top=0.5in, 
         bottom=1.0in, 
@@ -37,33 +37,46 @@
 
 
 % Page Formatting
+\raggedbottom
+
 \setlength{\parskip}{10pt}
 \setlength{\parindent}{0pt}
 
 \renewcommand{\headrulewidth}{0pt}
 
-\fancyhf{}
-\fancyhead[R]{\thepage}
-\ifdefined\FOUO
-    \fancyhead[C]{\FouoMark}
-    \fancyfoot[C]{\FouoMark}
-\fi
+\fancypagestyle{usaf}{%
+    \setlength{\headheight}{15pt}
+    \fancyhf{}
+    \fancyhead[R]{\thepage}
+    \ifdefined\@securityMark
+        \fancyhead[C]{\@securityMark}
+        \fancyfoot[C]{\@securityMark}
+    \fi
+}
 
-\pagestyle{fancy}
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \ifdefined\@securityMark
+        \fancyhead[C]{\@securityMark}
+        \fancyfoot[C]{\@securityMark}
+    \fi
+}
+
+\pagestyle{usaf}
 
 % Letterhead
 \newcommand{\LetterHeadSeal}{%
     \ifdefined\@seal
-        \ifdefined\FOUO
+        \ifdefined\@securityMark
             \fancyhead[L]{%
                 \begin{textblock*}{1in}(.5in,.75in)
-                    \includegraphics[width=1in]{\@seal}
+                    \includegraphics[height=1in]{\@seal}
                 \end{textblock*}
             }
         \else
             \fancyhead[L]{%
                 \begin{textblock*}{1in}(.5in,.5in)
-                    \includegraphics[width=1in]{\@seal}
+                    \includegraphics[height=1in]{\@seal}
                 \end{textblock*}
             }
         \fi
@@ -72,7 +85,7 @@
 
 \newcommand{\LetterHeadPatch}{%
     \ifdefined\@unitPatch
-        \ifdefined\FOUO
+        \ifdefined\@securityMark
             \fancyhead[R]{%
                 \begin{textblock*}{1in}(7in,.75in)
                     \includegraphics[height=1in]{\@unitPatch}
@@ -93,8 +106,8 @@
 }
 
 \newcommand{\PlainLetterHead}{
-    \ifdefined\FOUO
-        \FouoMark\\
+    \ifdefined\@securityMark
+        \@securityMark\\
         \vspace{1ex}
         \UsafLetterHeadFont{%
             \MakeUppercase{\@unit}\\
@@ -109,8 +122,8 @@
 }
 
 \newcommand{\CapLetterHead}{
-    \ifdefined\FOUO
-        \FouoMark\\
+    \ifdefined\@securityMark
+        \@securityMark\\
         \vspace{1ex}
         \UsafLetterHeadFont{%
             HEADQUARTERS \MakeUppercase{\@unit}\\
@@ -129,6 +142,7 @@
 }
 
 \fancypagestyle{letterhead}{%
+    \setlength{\headheight}{62pt}
     \fancyhf{}
     \ifdefined\CAP
         \def\@seal{CAP_Seal.jpg}       
@@ -138,6 +152,9 @@
     \else
         \fancyhead[C]{\PlainLetterHead}
         \LetterHeadSeal{}
+    \fi
+    \ifdefined\@securityMark
+        \fancyfoot[C]{\@securityMark}
     \fi
 }
 
@@ -164,7 +181,7 @@
 \newcounter{usaflistvi}
 \renewcommand{\theusaflistvi}{[\arabic{usaflistvi}]}
 
-\newenvironment{UsafList}{
+\renewenvironment{enumerate}{
     \ifdefined\@usaflistv
         \def\@usaflistvi{}
         \setlength{\parindent}{12em}
@@ -221,7 +238,6 @@
         }
     \fi\fi\fi\fi\fi
 }{
-    \bigskip
     \noindent
     \ignorespacesafterend
 }
@@ -234,6 +250,10 @@
 
 % End-package commands
 %% Letterhead
+\newcommand{\securityMark}[1]{%
+    \def\@securityMark{#1}
+}
+
 \newcommand{\seal}[1]{%
     \def\@seal{#1}
 }
@@ -300,4 +320,13 @@
     \noindent
     cc:\\
     #1
+}
+
+%% Other Commands
+\newcommand{\ptitle}[1]{%
+    \paragraph{#1}\hfill
+}
+
+\newcommand{\titem}[1]{%
+    \item \underline{#1}
 }

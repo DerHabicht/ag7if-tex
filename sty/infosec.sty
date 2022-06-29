@@ -229,7 +229,7 @@
 \newcommand{\InfosecCover}{%
     \thispagestyle{tlp}
     \topskip0pt
-    \newgeometry{left=2in,right=2in}
+    \newgeometry{left=2in,right=2in,voffset=0in}
     
     \InfosecCoverBorder{}
 
@@ -254,7 +254,7 @@
 }
 
 % PORTION MARKINGS
-\DeclareRobustCommand{\RedRedact}[1]{%
+\DeclareRobustCommand{\VsRedact}[1]{%
     \ifdefined\LvlVerySensitive
         #1
     \else
@@ -262,14 +262,14 @@
     \fi
 }
 
-\DeclareRobustCommand{\RedPortion}[1]{%
-    \RedRedact{\textcolor{TRed}{(R)}~#1}
+\DeclareRobustCommand{\VsPortion}[1]{%
+    \VsRedact{\textcolor{TRed}{(VS)}~#1}
 }
 
-\newcommand{\EndRedPortion}{\textcolor{TRed}{* * *}}
+\newcommand{\EndVsPortion}{\textcolor{TRed}{* * *}}
 
-\WithSuffix\DeclareRobustCommand\RedPortion*[1]{%
-    \RedRedact{%
+\WithSuffix\DeclareRobustCommand\VsPortion*[1]{%
+    \VsRedact{%
         \begin{center}
             \emph{NOTE: The following is \VerySensitive.}
         \end{center}
@@ -277,25 +277,29 @@
         #1
         \vspace{2ex}
         \begin{center}
-            \EndRedPortion
+            \EndVsPortion
         \end{center}
     }
 }
 
-\DeclareRobustCommand{\AmberRedact}[1]{%
+\newcommand{\VsParagraph}[1]{%
+    \paragraph{} \VsPortion{#1}
+}
+
+\DeclareRobustCommand{\SRedact}[1]{%
     \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
     {#1}
     {[REDACTED]}
 }
 
-\DeclareRobustCommand{\AmberPortion}[1]{%
-    \AmberRedact{\textcolor{TAmber}{(A)}~#1}
+\DeclareRobustCommand{\SPortion}[1]{%
+    \SRedact{\textcolor{TAmber}{(S)}~#1}
 }
 
-\newcommand{\EndAmberPortion}{\textcolor{TAmber}{* * *}}
+\newcommand{\EndSPortion}{\textcolor{TAmber}{* * *}}
 
-\WithSuffix\DeclareRobustCommand\AmberPortion*[1]{%
-    \AmberRedact{%
+\WithSuffix\DeclareRobustCommand\SPortion*[1]{%
+    \SRedact{%
         \begin{center}
             \emph{NOTE: The following is \Sensitive.}
         \end{center}
@@ -303,25 +307,29 @@
         #1
         \vspace{2ex}
         \begin{center}
-            \EndAmberPortion
+            \EndSPortion
         \end{center}
     }
 }
 
-\DeclareRobustCommand{\GreenRedact}[1]{%
+\newcommand{\SParagraph}[1]{%
+    \paragraph{} \SPortion{#1}
+}
+
+\DeclareRobustCommand{\SsRedact}[1]{%
     \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
     {#1}
     {[REDACTED]}
 }
 
-\DeclareRobustCommand{\GreenPortion}[1]{%
-    \GreenRedact{\textcolor{TGreen}{(G)}~#1}
+\DeclareRobustCommand{\SsPortion}[1]{%
+    \SsRedact{\textcolor{TGreen}{(SS)}~#1}
 }
 
-\newcommand{\EndGreenPortion}{\textcolor{TGreen}{* * *}}
+\newcommand{\EndSsPortion}{\textcolor{TGreen}{* * *}}
 
-\WithSuffix\DeclareRobustCommand\GreenPortion*[1]{%
-    \GreenRedact{%
+\WithSuffix\DeclareRobustCommand\SsPortion*[1]{%
+    \SsRedact{%
         \begin{center}
             \emph{NOTE: The following is \SomewhatSensitive}
         \end{center}
@@ -329,28 +337,36 @@
         #1
         \vspace{2ex}
         \begin{center}
-            \EndGreenPortion
+            \EndSsPortion
         \end{center}
     }
 }
 
-\DeclareRobustCommand{\WhitePortion}[1]{%
-    (W)~#1
+\newcommand{\SsParagraph}[1]{%
+    \paragraph{} \SsPortion{#1}
 }
 
-\newcommand{\EndWhitePortion}{* * *}
+\DeclareRobustCommand{\NsPortion}[1]{%
+    (NS)~#1
+}
 
-\WithSuffix\DeclareRobustCommand\WhitePortion*[1]{%
+\newcommand{\EndNsPortion}{* * *}
+
+\WithSuffix\DeclareRobustCommand\NsPortion*[1]{%
     \begin{center}
-        \emph{NOTE: The following is \TLPWhite}
+        \emph{NOTE: The following is \NotSensitive}
     \end{center}
     \vspace{2ex}
     #1
     \vspace{2ex}
     \noindent
     \begin{center}
-        \EndTLPWhite
+        \EndNsPortion
     \end{center}
+}
+
+\newcommand{\NsParagraph}[1]{%
+    \paragraph{} \NsPortion{#1}
 }
 
 \endinput
