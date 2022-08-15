@@ -8,33 +8,17 @@
 
 \RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
 \RequirePackage[T1]{fontenc}
 \RequirePackage{graphicx}
 \RequirePackage{mathptmx}
 \RequirePackage[absolute]{textpos}
 \RequirePackage{titlesec}
 \RequirePackage[dvipsnames]{xcolor}
-\ifdefined\@securityMark
-    \RequirePackage[%
-        top=0.5in, 
-        bottom=1.0in, 
-        left=1in, 
-        right=1in, 
-        includehead,
-        voffset=-0.25in,
-        footskip=1.0in
-    ]{geometry}
-\else
-    \RequirePackage[%
-        top=0.5in, 
-        bottom=1.0in, 
-        left=1in, 
-        right=1in, 
-        includehead,
-        footskip=0in
-    ]{geometry}
-\fi
-
 
 % Page Formatting
 \raggedbottom
@@ -45,7 +29,6 @@
 \renewcommand{\headrulewidth}{0pt}
 
 \fancypagestyle{usaf}{%
-    \setlength{\headheight}{15pt}
     \fancyhf{}
     \fancyhead[R]{\thepage}
     \ifdefined\@securityMark
@@ -67,37 +50,17 @@
 % Letterhead
 \newcommand{\LetterHeadSeal}{%
     \ifdefined\@seal
-        \ifdefined\@securityMark
-            \fancyhead[L]{%
-                \begin{textblock*}{1in}(.5in,.75in)
-                    \includegraphics[height=1in]{\@seal}
-                \end{textblock*}
-            }
-        \else
-            \fancyhead[L]{%
-                \begin{textblock*}{1in}(.5in,.5in)
-                    \includegraphics[height=1in]{\@seal}
-                \end{textblock*}
-            }
-        \fi
+        \begin{textblock*}{1in}(.5in,.5in)
+            \includegraphics[height=1in]{\@seal}
+        \end{textblock*}
     \fi
 }
 
 \newcommand{\LetterHeadPatch}{%
     \ifdefined\@unitPatch
-        \ifdefined\@securityMark
-            \fancyhead[R]{%
-                \begin{textblock*}{1in}(7in,.75in)
-                    \includegraphics[height=1in]{\@unitPatch}
-                \end{textblock*}
-            }
-        \else
-            \fancyhead[R]{%
-                \begin{textblock*}{1in}(7in,.5in)
-                    \includegraphics[height=1in]{\@unitPatch}
-                \end{textblock*}
-            }
-        \fi
+        \begin{textblock*}{1in}(7in,.5in)
+            \includegraphics[height=1in]{\@unitPatch}
+        \end{textblock*}
     \fi
 }
 
@@ -142,7 +105,6 @@
 }
 
 \fancypagestyle{letterhead}{%
-    \setlength{\headheight}{62pt}
     \fancyhf{}
     \ifdefined\CAP
         \def\@seal{CAP_Seal.jpg}       
@@ -168,6 +130,7 @@
 \titleformat{\paragraph}[runin]{}{\theparagraph}{0pt}{\underline}
 
 % List numbering
+%% Enumerated lists
 \newcounter{usaflisti}
 \renewcommand{\theusaflisti}{\alph{usaflisti}.}
 \newcounter{usaflistii}
@@ -329,4 +292,36 @@
 
 \newcommand{\titem}[1]{%
     \item \underline{#1}
+}
+
+\newcommand{\tVsItem}[2]{%
+    \item \VsPortion{\underline{#1} #2}
+}
+
+\newcommand{\tSItem}[2]{%
+    \item \SPortion{\underline{#1} #2}
+}
+
+\newcommand{\tSsItem}[2]{%
+    \item \SsPortion{\underline{#1} #2}
+}
+
+\newcommand{\tNsItem}[2]{%
+    \item \NsPortion{\underline{#1} #2}
+}
+
+\newcommand{\VsItem}[1]{%
+    \item \VsPortion{#1}
+}
+
+\newcommand{\SItem}[1]{%
+    \item \SPortion{#1}
+}
+
+\newcommand{\SsItem}[1]{%
+    \item \SsPortion{#1}
+}
+
+\newcommand{\NsItem}[1]{%
+    \item \NsPortion{#1}
 }

@@ -7,6 +7,9 @@
 \DeclareOption{summary}{%
     \newcommand{\SUMMARY}{}
 }
+\DeclareOption{camplan}{%
+    \newcommand{\CAMPLAN}{}
+}
 \DeclareOption{conplan}{%
     \newcommand{\CONPLAN}{}
 }
@@ -46,32 +49,17 @@
 \RequirePackage{booktabs}
 \RequirePackage{emptypage}
 \RequirePackage{enumerate}
+\RequirePackage{tabularx}
 \RequirePackage{titlecaps}
 \RequirePackage{tocloft}
-\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage[dvipsnames,table]{xcolor}
 
 \ifdefined\FOUO
-    \RequirePackage[%
-        top=0.5in, 
-        bottom=1.0in, 
-        left=1in, 
-        right=1in, 
-        includehead,
-        voffset=-0.25in,
-        footskip=1.0in
-    ]{geometry}
     \RequirePackage{fouo}
     \def\@securityMark{\FouoMark}
 \else\ifdefined\OplanInfosecLvlSet
-    \RequirePackage[%
-        top=0.5in, 
-        bottom=1.0in, 
-        left=1in, 
-        right=1in, 
-        includehead,
-        voffset=-0.25in,
-        footskip=1.0in
-    ]{geometry}
+    \def\@securityMark{PLACEHOLDER}
+    \RequirePackage{usafpub}
     \ifdefined\OplanLvlVerySensitive
         \RequirePackage[very-sensitive]{infosec}
     \else\ifdefined\OplanLvlSensitive
@@ -82,12 +70,15 @@
         \RequirePackage[not-sensitive]{infosec}
     \fi\fi\fi\fi
     \def\@securityMark{\InfosecLevel}
+\else
+    \RequirePackage{usafpub}
 \fi\fi
-\RequirePackage{usafpub}
 
 \ifdefined\DRAFT
     \RequirePackage{draftwatermark}
 \fi
+
+\pagestyle{usaf}
 
 % Header
 % Paragraphs
@@ -153,28 +144,28 @@
     \def\@commanderContact{#3}%
 }
 
-\newcommand{\staffCoord}[3]{%
+\newcommand{\staffCoord}[4]{%
     \ifdefined\@staffCoords
         \edef\@staffCoords{%
             \@staffCoords 
-            #1 &  #2  & #3 \\
+            #1 & #2 & #3 & #4 \\
         }
     \else
         \def\@staffCoords{%
-            #1 &  #2  & #3 \\
+            #1 & #2 & #3 & #4 \\
         }
     \fi
 }
 
 \newcommand{\tableofcoordination}{%
     \begin{center}
-    \begin{tabular}{llr}
+    \begin{tabularx}{\textwidth}{llXr}
         \toprule
-        OFFICE &  ACTION &  DATE \\
+        OFFICE &  ACTION &  OUTCOME &  DATE \\
         \midrule
         \@staffCoords
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \end{center}
 }
 
@@ -183,7 +174,9 @@
 }
 
 \newcommand{\theOplan}{%
-    \ifdefined\CONPLAN
+    \ifdefined\CAMPLAN
+        CAMPLAN%
+    \else\ifdefined\CONPLAN
         CONPLAN%
     \else\ifdefined\OPORD
         OPORD%
@@ -193,11 +186,13 @@
         WEPLAN%
     \else
         OPLAN%
-    \fi\fi\fi\fi
+    \fi\fi\fi\fi\fi
 }
 
 \newcommand{\theOperationsPlan}{%
-    \ifdefined\CONPLAN
+    \ifdefined\CAMPLAN
+        CAMPAIGN PLAN%
+    \else\ifdefined\CONPLAN
         CONCEPTUAL OPERATIONS PLAN%
     \else\ifdefined\OPORD
         OPERATIONS ORDER%
@@ -207,52 +202,19 @@
         WEEKLY PLAN%
     \else
         OPERATIONS PLAN%
-    \fi\fi\fi\fi
+    \fi\fi\fi\fi\fi
 }
 
 \newcommand{\theplan}{%
     \theOperationsPlan~\@oplan%
 }
 
-\newcommand{\letterheadGeometry}{%
-    \ifdefined\FOUO
-        \newgeometry{
-            top=0.5in, 
-            bottom=1.0in, 
-            left=1in, 
-            right=1in, 
-            includehead,
-            headheight=72pt,
-            footskip=8pt
-        }
-    \else\ifdefined\OplanInfosecLvlSet
-        \newgeometry{
-            top=0.5in, 
-            bottom=1.0in, 
-            left=1in, 
-            right=1in, 
-            includehead,
-            headheight=72pt,
-            footskip=8pt
-        }
-    \else
-        \newgeometry{
-            top=0.5in, 
-            bottom=1.0in, 
-            left=1in, 
-            right=1in, 
-            includehead,
-            headheight=72pt,
-            footskip=8pt
-        }
-    \fi\fi
-}
-
 \newcommand{\@SummaryOplanTitle}{%
     \setcounter{page}{1}
 
-    \letterheadGeometry%
     \thispagestyle{letterhead}
+    
+    \vspace*{5ex}
     
     \ifdefined\@endDate
         \textbf{\@incidentName\hfill\@startDate--\@endDate}
@@ -262,10 +224,17 @@
 }
 
 \newcommand{\@OpordTitle}{%
+    \ifdefined\FOUO
+        \FouoCoverPage
+    \else\ifdefined\OplanInfosecLvlSet
+        \InfosecCover
+    \fi\fi
+
     \setcounter{page}{1}
 
-    \letterheadGeometry%
     \thispagestyle{letterhead}
+    
+    \vspace*{5ex}
     
     \theplan
 
@@ -333,8 +302,16 @@
         \end{tabular}
     \end{center}   
 
-    %\cleardoublepage   
-    %\tableofcoordination
+    \cleardoublepage   
+    \ifdefined\FOUO
+        \FouoCoverPage
+    \else\ifdefined\OplanInfosecLvlSet
+        \InfosecCover
+    \fi\fi
+
+    \cleardoublepage   
+    \chapter*{Coordination and Approval}
+    \tableofcoordination
     
     \cleardoublepage
     
@@ -344,8 +321,9 @@
 
     \setcounter{page}{1}
 
-    \letterheadGeometry%
     \thispagestyle{letterhead}
+    
+    \vspace*{5ex}
     
     \theplan
 
@@ -371,11 +349,6 @@
 }
 
 \renewcommand{\maketitle}{%
-    \ifdefined\FOUO
-        \FouoCoverPage
-    \else\ifdefined\OplanInfosecLvlSet
-        \InfosecCover
-    \fi\fi
 
     \ifdefined\SUMMARY
         \@SummaryOplanTitle%
@@ -386,6 +359,4 @@
     \else
         \@FullTitle%
     \fi\fi\fi
-
-    \afterpage{\restoregeometry}
 }

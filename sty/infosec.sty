@@ -254,11 +254,19 @@
 }
 
 % PORTION MARKINGS
+
+%% Very Sensitive %%
 \DeclareRobustCommand{\VsRedact}[1]{%
     \ifdefined\LvlVerySensitive
         #1
     \else
         [REDACTED]
+    \fi
+}
+
+\WithSuffix\DeclareRobustCommand\VsRedact*[1]{%
+    \ifdefined\LvlVerySensitive
+        #1
     \fi
 }
 
@@ -282,14 +290,22 @@
     }
 }
 
-\newcommand{\VsParagraph}[1]{%
-    \paragraph{} \VsPortion{#1}
+\newcommand{\VsParagraph}[2][]{%
+    \paragraph{#1} \VsPortion{#2}
 }
+
+%% Sensitive %%
 
 \DeclareRobustCommand{\SRedact}[1]{%
     \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
     {#1}
     {[REDACTED]}
+}
+
+\WithSuffix\DeclareRobustCommand\SRedact*[1]{%
+    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
+    {#1}
+    {}
 }
 
 \DeclareRobustCommand{\SPortion}[1]{%
@@ -312,14 +328,22 @@
     }
 }
 
-\newcommand{\SParagraph}[1]{%
-    \paragraph{} \SPortion{#1}
+\newcommand{\SParagraph}[2][]{%
+    \paragraph{#1} \SPortion{#2}
 }
+
+%% Somewhat Sensitive %%
 
 \DeclareRobustCommand{\SsRedact}[1]{%
     \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
     {#1}
     {[REDACTED]}
+}
+
+\WithSuffix\DeclareRobustCommand\SsRedact*[1]{%
+    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
+    {#1}
+    {}
 }
 
 \DeclareRobustCommand{\SsPortion}[1]{%
@@ -342,9 +366,11 @@
     }
 }
 
-\newcommand{\SsParagraph}[1]{%
-    \paragraph{} \SsPortion{#1}
+\newcommand{\SsParagraph}[2][]{%
+    \paragraph{#1} \SsPortion{#2}
 }
+
+%% Not Sensitive %%
 
 \DeclareRobustCommand{\NsPortion}[1]{%
     (NS)~#1
@@ -365,8 +391,8 @@
     \end{center}
 }
 
-\newcommand{\NsParagraph}[1]{%
-    \paragraph{} \NsPortion{#1}
+\newcommand{\NsParagraph}[2][]{%
+    \paragraph{#1} \NsPortion{#2}
 }
 
 \endinput

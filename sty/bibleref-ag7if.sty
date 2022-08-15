@@ -1,0 +1,320 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bibleref-ag7if}
+
+\RequirePackage{bibleref}
+\RequirePackage{indextools}
+
+% Paragraph formatting for quoting scriptures
+\newcommand{\ScripPara}[2]{%
+    \noindent
+    \textbf{#1}\hspace{2em}#2
+    \vspace{2ex}
+}
+
+\newcommand{\scrfootcite}[2]{%
+    \footnote{\ibibleverse{#1}(#2)}
+}
+
+% Set up scripture index
+\makeindex[title={Scriptures Referenced},name=scriptures]
+\indexsetup{level=\section,toclevel=section,noclearpage}
+\renewcommand{\biblerefindex}{\index[scriptures]}
+
+% bibleref style using LDS-standard abbreviations
+\newbiblerefstyle{ag7if}{%
+    % Abbreviations
+    %% Old Testament
+    \setbooktitle{Genesis}{Gen.}
+    \setbooktitle{Exodus}{Ex.}
+    \setbooktitle{Leviticus}{Lev.}
+    \setbooktitle{Numbers}{Num.}
+    \setbooktitle{Deuteronomy}{Deut.}
+    \setbooktitle{Joshua}{Josh.}
+    \setbooktitle{Ruth}{Ruth}
+    \setbooktitle{ISamuel}{1 Sam.}
+    \setbooktitle{IISamuel}{2 Sam.}
+    \setbooktitle{IKings}{1 Kgs.}
+    \setbooktitle{IIKings}{2 Kgs.}
+    \setbooktitle{IChronicles}{1 Chron.}
+    \setbooktitle{IIChronicles}{2 Chron.}
+    \setbooktitle{Ezra}{Ezra}
+    \setbooktitle{Nehemiah}{Neh.}
+    \setbooktitle{Esther}{Esth.}
+    \setbooktitle{Job}{Job}
+    \setbooktitle{Psalms}{Ps.}
+    \setbooktitle{Proverbs}{Prov.}
+    \setbooktitle{Ecclesiastes}{Eccl.}
+    \addbiblebook{SongOfSolomon}{Song.}
+    \setbooktitle{Isaiah}{Isa.}
+    \setbooktitle{Jeremiah}{Jer.}
+    \setbooktitle{Lamentations}{Lam.}
+    \setbooktitle{Ezekiel}{Ezek.}
+    \setbooktitle{Daniel}{Dan.}
+    \setbooktitle{Hosea}{Hosea}
+    \setbooktitle{Joel}{Joel}
+    \setbooktitle{Amos}{Amos}
+    \setbooktitle{Obadiah}{Obad.}
+    \setbooktitle{Jonah}{Jonah}
+    \setbooktitle{Micah}{Micah}
+    \setbooktitle{Nahum}{Nahum}
+    \setbooktitle{Habakkuk}{Hab.}
+    \setbooktitle{Zephaniah}{Zeph.}
+    \setbooktitle{Haggai}{Hag.}
+    \setbooktitle{Zechariah}{Zech.}
+    \setbooktitle{Malachi}{Mal.}
+
+    %% New Testament
+    \setbooktitle{Matthew}{Matt.}
+    \setbooktitle{Mark}{Mark}
+    \setbooktitle{Luke}{Luke}
+    \setbooktitle{John}{John}
+    \setbooktitle{Acts}{Acts}
+    \setbooktitle{Romans}{Rom.}
+    \setbooktitle{ICorinthians}{1 Cor.}
+    \setbooktitle{IICorinthians}{2 Cor.}
+    \setbooktitle{Galatians}{Gal.}
+    \setbooktitle{Ephesians}{Eph.}
+    \setbooktitle{Philippians}{Philip.}
+    \setbooktitle{Colossians}{Col.}
+    \setbooktitle{IThessalonians}{1 Thes.}
+    \setbooktitle{IIThessalonians}{2 Thes.}
+    \setbooktitle{ITimothy}{1 Tim.}
+    \setbooktitle{IITimothy}{2 Tim.}
+    \setbooktitle{Titus}{Titus}
+    \setbooktitle{Philemon}{Philem.}
+    \setbooktitle{Hebrews}{Heb.}
+    \setbooktitle{James}{James}
+    \setbooktitle{IPeter}{1 Pet.}
+    \setbooktitle{IIPeter}{2 Pet.}
+    \setbooktitle{IJohn}{1 Jn.}
+    \setbooktitle{IIJohn}{2 Jn.}
+    \setbooktitle{IIIJohn}{3 Jn.}
+    \setbooktitle{Jude}{Jude}
+    \setbooktitle{Revelation}{Rev.}
+
+    %% Book of Mormon
+    \addbiblebook{INephi}{1 Ne.}
+    \addbiblebook{IINephi}{2 Ne.}
+    \addbiblebook{Jacob}{Jacob}
+    \addbiblebook{Enos}{Enos}
+    \addbiblebook{Jarom}{Jarom}
+    \addbiblebook{Omni}{Omni}
+    \addbiblebook{WOM}{W of M}
+    \addbiblebook{Mosiah}{Mosiah}
+    \addbiblebook{Alma}{Alma}
+    \addbiblebook{Helaman}{Hel.}
+    \addbiblebook{IIINephi}{3 Ne.}
+    \addbiblebook{IVNephi}{4 Ne.}
+    \addbiblebook{Mormon}{Morm.}
+    \addbiblebook{Ether}{Ether}
+    \addbiblebook{Moroni}{Moro.}
+
+    %% Doctrine and Covenants
+    \addbiblebook{DoctrineAndCovenants}{D\&C}
+    \addbiblebook{OfficialDeclaration}{OD}
+
+    %% Pearl of Great Price
+    \addbiblebook{Moses}{Moses}
+    \addbiblebook{Abraham}{Abr.}
+    \addbiblebook{JosephSmithMatthew}{JS-M}
+    \addbiblebook{JosephSmithHistory}{JS-H}
+    \addbiblebook{ArticlesOfFaith}{A of F}
+
+    % Index Titles
+    %% Old Testament
+    \setindexbooktitle{Genesis}{Genesis}
+    \setindexbooktitle{Exodus}{Exodus}
+    \setindexbooktitle{Leviticus}{Leviticus}
+    \setindexbooktitle{Numbers}{Numbers}
+    \setindexbooktitle{Deuteronomy}{Deuteronomy}
+    \setindexbooktitle{Joshua}{Joshua}
+    \setindexbooktitle{Ruth}{Ruth}
+    \setindexbooktitle{ISamuel}{1 Samuel}
+    \setindexbooktitle{IISamuel}{2 Samuel}
+    \setindexbooktitle{IKings}{1 Kings}
+    \setindexbooktitle{IIKings}{2 Kings}
+    \setindexbooktitle{IChronicles}{1 Chronicles}
+    \setindexbooktitle{IIChronicles}{2 Chronicles}
+    \setindexbooktitle{Ezra}{Ezra}
+    \setindexbooktitle{Nehemiah}{Nehemiah}
+    \setindexbooktitle{Esther}{Esther}
+    \setindexbooktitle{Job}{Job}
+    \setindexbooktitle{Psalms}{Psalms}
+    \setindexbooktitle{Proverbs}{Proverbs}
+    \setindexbooktitle{Ecclesiastes}{Ecclesiastes}
+    \setindexbooktitle{SongOfSolomon}{Song of Solomon}
+    \setindexbooktitle{Isaiah}{Isaiah}
+    \setindexbooktitle{Jeremiah}{Jeremiah}
+    \setindexbooktitle{Lamentations}{Lamentations}
+    \setindexbooktitle{Ezekiel}{Ezekiel}
+    \setindexbooktitle{Daniel}{Daniel}
+    \setindexbooktitle{Hosea}{Hosea}
+    \setindexbooktitle{Joel}{Joel}
+    \setindexbooktitle{Amos}{Amos}
+    \setindexbooktitle{Obadiah}{Obadiah}
+    \setindexbooktitle{Jonah}{Jonah}
+    \setindexbooktitle{Micah}{Micah}
+    \setindexbooktitle{Nahum}{Nahum}
+    \setindexbooktitle{Habakkuk}{Habakkuk}
+    \setindexbooktitle{Zephaniah}{Zephaniah}
+    \setindexbooktitle{Haggai}{Haggai}
+    \setindexbooktitle{Zechariah}{Zechariah}
+    \setindexbooktitle{Malachi}{Malachi}
+
+    %% New Testament
+    \setindexbooktitle{Matthew}{Matthew}
+    \setindexbooktitle{Mark}{Mark}
+    \setindexbooktitle{Luke}{Luke}
+    \setindexbooktitle{John}{John}
+    \setindexbooktitle{Acts}{Acts}
+    \setindexbooktitle{Romans}{Romans}
+    \setindexbooktitle{ICorinthians}{1 Corinthians}
+    \setindexbooktitle{IICorinthians}{2 Corinthians}
+    \setindexbooktitle{Galatians}{Galatians}
+    \setindexbooktitle{Ephesians}{Ephesians}
+    \setindexbooktitle{Philippians}{Philippians}
+    \setindexbooktitle{Colossians}{Colossians}
+    \setindexbooktitle{IThessalonians}{1 Thessalonians}
+    \setindexbooktitle{IIThessalonians}{2 Thessalonians}
+    \setindexbooktitle{ITimothy}{1 Timothy}
+    \setindexbooktitle{IITimothy}{2 Timothy}
+    \setindexbooktitle{Titus}{Titus}
+    \setindexbooktitle{Philemon}{Philemon}
+    \setindexbooktitle{Hebrews}{Hebrews}
+    \setindexbooktitle{James}{James}
+    \setindexbooktitle{IPeter}{1 Peter}
+    \setindexbooktitle{IIPeter}{2 Peter}
+    \setindexbooktitle{IJohn}{1 John}
+    \setindexbooktitle{IIJohn}{2 John}
+    \setindexbooktitle{IIIJohn}{3 John}
+    \setindexbooktitle{Jude}{Jude}
+    \setindexbooktitle{Revelation}{Revelation}
+
+    %% Book of Mormon
+    \setindexbooktitle{INephi}{1 Nephi}
+    \setindexbooktitle{IINephi}{2 Nephi}
+    \setindexbooktitle{Jacob}{Jacob}
+    \setindexbooktitle{Enos}{Enos}
+    \setindexbooktitle{Jarom}{Jarom}
+    \setindexbooktitle{Omni}{Omni}
+    \setindexbooktitle{WOM}{Words of Mormon}
+    \setindexbooktitle{Mosiah}{Mosiah}
+    \setindexbooktitle{Alma}{Alma}
+    \setindexbooktitle{Helaman}{Helaman}
+    \setindexbooktitle{IIINephi}{3 Nephi}
+    \setindexbooktitle{IVNephi}{4 Nephi}
+    \setindexbooktitle{Mormon}{Mormon}
+    \setindexbooktitle{Ether}{Ether}
+    \setindexbooktitle{Moroni}{Moroni}
+
+    %% Doctrine and Covenants
+    \setindexbooktitle{DoctrineAndCovenants}{Doctrine and Covenants}
+    \setindexbooktitle{OfficialDeclaration}{Official Declaration}
+
+    %% Pearl of Great Price
+    \setindexbooktitle{Moses}{Moses}
+    \setindexbooktitle{Abraham}{Abraham}
+    \setindexbooktitle{JosephSmithMatthew}{Jospeh Smith---Matthew}
+    \setindexbooktitle{JosephSmithHistory}{Joseph Smith---History}
+    \setindexbooktitle{ArticlesOfFaith}{Articles of Faith}
+
+    % Index Order
+    %% Old Testament
+    \biblerefmap{Genesis}{1@Old Testament!01}
+    \biblerefmap{Exodus}{1@Old Testament!02}
+    \biblerefmap{Leviticus}{1@Old Testament!03}
+    \biblerefmap{Numbers}{1@Old Testament!04}
+    \biblerefmap{Deuteronomy}{1@Old Testament!05}
+    \biblerefmap{Joshua}{1@Old Testament!06}
+    \biblerefmap{Ruth}{1@Old Testament!07}
+    \biblerefmap{ISamuel}{1@Old Testament!08}
+    \biblerefmap{IISamuel}{1@Old Testament!09}
+    \biblerefmap{IKings}{1@Old Testament!10}
+    \biblerefmap{IIKings}{1@Old Testament!11}
+    \biblerefmap{IChronicles}{1@Old Testament!12}
+    \biblerefmap{IIChronicles}{1@Old Testament!13}
+    \biblerefmap{Ezra}{1@Old Testament!14}
+    \biblerefmap{Nehemiah}{1@Old Testament!15}
+    \biblerefmap{Esther}{1@Old Testament!16}
+    \biblerefmap{Job}{1@Old Testament!17}
+    \biblerefmap{Psalms}{1@Old Testament!18}
+    \biblerefmap{Proverbs}{1@Old Testament!19}
+    \biblerefmap{Ecclesiastes}{1@Old Testament!20}
+    \biblerefmap{SongOfSolomon}{1@Old Testament!21}
+    \biblerefmap{Isaiah}{1@Old Testament!22}
+    \biblerefmap{Jeremiah}{1@Old Testament!23}
+    \biblerefmap{Lamentations}{1@Old Testament!24}
+    \biblerefmap{Ezekiel}{1@Old Testament!25}
+    \biblerefmap{Daniel}{1@Old Testament!26}
+    \biblerefmap{Hosea}{1@Old Testament!27}
+    \biblerefmap{Joel}{1@Old Testament!28}
+    \biblerefmap{Amos}{1@Old Testament!29}
+    \biblerefmap{Obadiah}{1@Old Testament!30}
+    \biblerefmap{Jonah}{1@Old Testament!31}
+    \biblerefmap{Micah}{1@Old Testament!32}
+    \biblerefmap{Nahum}{1@Old Testament!33}
+    \biblerefmap{Habakkuk}{1@Old Testament!34}
+    \biblerefmap{Zephaniah}{1@Old Testament!35}
+    \biblerefmap{Haggai}{1@Old Testament!36}
+    \biblerefmap{Zechariah}{1@Old Testament!37}
+    \biblerefmap{Malachi}{1@Old Testament!38}
+
+    %% New Testament
+    \biblerefmap{Matthew}{2@New Testament!01}
+    \biblerefmap{Mark}{2@New Testament!02}
+    \biblerefmap{Luke}{2@New Testament!03}
+    \biblerefmap{John}{2@New Testament!04}
+    \biblerefmap{Acts}{2@New Testament!05}
+    \biblerefmap{Romans}{2@New Testament!06}
+    \biblerefmap{ICorinthians}{2@New Testament!07}
+    \biblerefmap{IICorinthians}{2@New Testament!08}
+    \biblerefmap{Galatians}{2@New Testament!09}
+    \biblerefmap{Ephesians}{2@New Testament!10}
+    \biblerefmap{Philippians}{2@New Testament!11}
+    \biblerefmap{Colossians}{2@New Testament!12}
+    \biblerefmap{IThessalonians}{2@New Testament!13}
+    \biblerefmap{IIThessalonians}{2@New Testament!14}
+    \biblerefmap{ITimothy}{2@New Testament!15}
+    \biblerefmap{IITimothy}{2@New Testament!16}
+    \biblerefmap{Titus}{2@New Testament!17}
+    \biblerefmap{Philemon}{2@New Testament!18}
+    \biblerefmap{Hebrews}{2@New Testament!19}
+    \biblerefmap{James}{2@New Testament!20}
+    \biblerefmap{IPeter}{2@New Testament!21}
+    \biblerefmap{IIPeter}{2@New Testament!22}
+    \biblerefmap{IJohn}{2@New Testament!23}
+    \biblerefmap{IIJohn}{2@New Testament!24}
+    \biblerefmap{IIIJohn}{2@New Testament!25}
+    \biblerefmap{Jude}{2@New Testament!26}
+    \biblerefmap{Revelation}{2@New Testament!27}
+
+    %% Book of Mormon
+    \biblerefmap{INephi}{3@Book of Mormon!01}
+    \biblerefmap{IINephi}{3@Book of Mormon!02}
+    \biblerefmap{Jacob}{3@Book of Mormon!03}
+    \biblerefmap{Enos}{3@Book of Mormon!04}
+    \biblerefmap{Jarom}{3@Book of Mormon!05}
+    \biblerefmap{Omni}{3@Book of Mormon!06}
+    \biblerefmap{WOM}{3@Book of Mormon!07}
+    \biblerefmap{Mosiah}{3@Book of Mormon!08}
+    \biblerefmap{Alma}{3@Book of Mormon!09}
+    \biblerefmap{Helaman}{3@Book of Mormon!10}
+    \biblerefmap{IIINephi}{3@Book of Mormon!11}
+    \biblerefmap{IVNephi}{3@Book of Mormon!12}
+    \biblerefmap{Mormon}{3@Book of Mormon!13}
+    \biblerefmap{Ether}{3@Book of Mormon!14}
+    \biblerefmap{Moroni}{3@Book of Mormon!15}
+
+    %% Doctrine and Covenants
+    \biblerefmap{DoctrineAndCovenants}{4@Doctrine and Covenants!01}
+    \biblerefmap{OfficialDeclaration}{4@Doctrine and Covenants!02}
+
+    %% Pearl of Great Price
+    \biblerefmap{Moses}{5@Pearl of Great Price!01}
+    \biblerefmap{Abraham}{5@Pearl of Great Price!02}
+    \biblerefmap{JosephSmithMatthew}{5@Pearl of Great Price!03}
+    \biblerefmap{JosephSmithHistory}{5@Pearl of Great Price!04}
+    \biblerefmap{ArticlesOfFaith}{5@Pearl of Great Price!05}
+}
+
+\biblerefstyle{ag7if}

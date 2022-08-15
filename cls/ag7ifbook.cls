@@ -44,7 +44,7 @@
 
 \LoadClass{book}
 
-\RequirePackage[tocentry]{vhistory}
+\RequirePackage[tocentry,nochapter]{vhistory}
 
 \ifdefined\LetterPageSize
     \RequirePackage[paperheight=11in,paperwidth=8.5in,margin=1in]{geometry}
@@ -79,9 +79,11 @@
 \ifdefined\DRAFT
     \RequirePackage[scale=8]{draftwatermark}
 
-    \renewcommand{\therevision}{%
-        DRAFT
-}
+    \renewcommand{\therevision}{Revision~\vhCurrentVersion{}~(DRAFT)}
+    \renewcommand{\@date}{\vhCurrentDate}
+\else
+    \renewcommand{\therevision}{Revision~\vhCurrentVersion}
+    \renewcommand{\@date}{\vhCurrentDate}
 
 \fi
 
@@ -95,9 +97,7 @@
 }
 
 \renewcommand{\headrulewidth}{0pt}
-
-
-
+\setlength{\headheight}{14pt}
 \fancypagestyle{plain}{%
     \fancyhf{}
     \ifdefined\InfosecLevel
