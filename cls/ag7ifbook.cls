@@ -44,8 +44,6 @@
 
 \LoadClass{book}
 
-\RequirePackage[tocentry,nochapter]{vhistory}
-
 \ifdefined\LetterPageSize
     \RequirePackage[paperheight=11in,paperwidth=8.5in,margin=1in]{geometry}
 \else\ifdefined\QuartoPageSize
@@ -79,6 +77,7 @@
 \ifdefined\DRAFT
     \RequirePackage[scale=8]{draftwatermark}
 
+    % TODO: Check if vhistory is loaded
     \renewcommand{\therevision}{Revision~\vhCurrentVersion{}~(DRAFT)}
     \renewcommand{\@date}{\vhCurrentDate}
 \else
