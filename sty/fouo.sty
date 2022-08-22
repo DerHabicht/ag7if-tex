@@ -1,0 +1,22 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fouo}
+
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{geometry}
+\RequirePackage{pdfpages}
+
+\ProcessOptions\relax
+
+\newcommand{\FouoMark}{%
+    \textcolor{Green}{UNCLASSIFIED//FOUO}
+}
+
+\newcommand{\FouoPortionMark}{%
+    (\textcolor{Green}{U//FOUO})
+}
+
+\newcommand{\FouoCoverPage}{%
+    \newgeometry{voffset=0in}
+    \includepdf{fouo-cover.pdf}
+    \restoregeometry{}
+}

@@ -1,0 +1,468 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tlp}
+
+\RequirePackage{xcolor}
+\RequirePackage{soul}
+\RequirePackage{tikz}
+\RequirePackage{fancyhdr}
+\RequirePackage{geometry}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{etoolbox}
+\RequirePackage{suffix}
+\RequirePackage{etoolbox}
+\RequirePackage{xstring}
+\RequirePackage{xkeyval}
+
+\usetikzlibrary{calc}
+
+\DeclareOptionX{red}{%
+    \newcommand{\LVL}{}
+    \newcommand{\LVLRED}{}
+}
+
+\DeclareOptionX{amber}{%
+    \newcommand{\LVL}{}
+    \newcommand{\LVLAMBER}{}
+}
+
+\DeclareOptionX{green}{%
+    \newcommand{\LVL}{}
+    \newcommand{\LVLGREEN}{}
+}
+
+\DeclareOptionX{white}{%
+    \newcommand{\LVL}{}
+    \newcommand{\LVLWHITE}{}
+}
+
+\DeclareOptionX{compartments}{\forcsvlist{\listadd\COMPARTMENTS}{#1}}
+
+\ProcessOptionsX\relax
+
+\unless\ifdefined\LVL
+    \newcommand{\LVLWHITE}{}
+\fi
+
+\definecolor{TRed}{RGB}{255,0,51}
+\definecolor{TAmber}{RGB}{255,192,0}
+\definecolor{TGreen}{RGB}{51,255,0}
+\definecolor{TWhite}{RGB}{255,255,255}
+
+\fancypagestyle{tlp}{%
+    \fancyhf{}
+}
+
+\newcommand{\@compartment}[1]{#1/}
+\DeclareRobustCommand{\CompartmentList}{%
+    \protect\StrGobbleRight{\forlistloop{\@compartment}{\COMPARTMENTS}}{1}
+}
+
+\DeclareRobustCommand{\TLPRedList}{%
+    \ifdefined\COMPARTMENTS
+        \sethlcolor{black}
+        \textcolor{TRed}{%
+            \hl{TLP:RED//\mbox{\CompartmentList}}
+        }
+    \else
+        \TLPRed{}
+    \fi
+}
+\DeclareRobustCommand{\TLPRed}[1]%
+    {\sethlcolor{black}\textcolor{TRed}{\def\caveat{#1}\ifx\caveat\empty\hl{TLP:RED}\else\hl{TLP:RED//#1}\fi}}
+\DeclareRobustCommand{\TLPAmber}{\sethlcolor{black}\textcolor{TAmber}{\hl{TLP:AMBER}}}
+\DeclareRobustCommand{\TLPGreen}{\sethlcolor{black}\textcolor{TGreen}{\hl{TLP:GREEN}}}
+\DeclareRobustCommand{\TLPWhite}{\sethlcolor{black}\textcolor{white}{\hl{TLP:WHITE}}}
+\DeclareRobustCommand{\TLPLevel}{%
+    \ifdefined\COMPARTMENTS
+        \TLPRedList{}
+    \else
+    \ifdefined\LVLRED
+        \TLPRed{}
+    \else
+    \ifdefined\LVLAMBER
+        \TLPAmber
+    \else
+    \ifdefined\LVLGREEN
+        \TLPGreen
+    \else
+    \ifdefined\LVLWHITE
+        \TLPWhite
+    \fi
+    \fi
+    \fi
+    \fi
+    \fi
+}
+
+\newcommand{\EndTLPRed}{\sethlcolor{black}\textcolor{TRed}{\hl{* * *}}}
+\newcommand{\EndTLPAmber}{\sethlcolor{black}\textcolor{TAmber}{\hl{* * *}}}
+\newcommand{\EndTLPGreen}{\sethlcolor{black}\textcolor{TGreen}{\hl{* * *}}}
+\newcommand{\EndTLPWhite}{\sethlcolor{black}\textcolor{white}{\hl{* * *}}}
+
+\newcommand{\RedCover}{%
+    \thispagestyle{tlp}
+    \topskip0pt
+    \newgeometry{left=2in,right=2in}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TRed] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+
+    \begin{center}
+        \ifdefined\COMPARTMENTS
+            {\Large\TLPRedList{}}
+        \else
+            {\Huge\TLPRed{}}
+        \fi
+
+        \vspace*{\fill}
+
+        {%
+            \Large
+            Restricted to participants.
+
+            DO NOT DISCLOSE THIS INFORMATION!
+        }
+    \end{center}
+
+    \vspace{5em}
+
+    \noindent
+    This document contains sensitive information that must not be disclosed
+    beyond this document's participants. A list of concerned participants must
+    be disclosed with the distribution of this document. Handling, storage,
+    reproduction, and disposition of this document must be in accordance with
+    applicable Information Security Standards.
+
+    \vspace*{\fill}
+
+    \begin{center}
+        {\footnotesize
+            More information about the Traffic Light Protocol can be found at:
+
+            \url{https://www.first.org/tlp}.
+        }
+
+        \vspace{10em}
+
+        \ifdefined\COMPARTMENTS
+            {\Large\TLPRedList{}}
+        \else
+            {\Huge\TLPRed{}}
+        \fi
+    \end{center}
+    \newpage
+    \thispagestyle{tlp}
+    \vspace*{\fill}
+    \begin{center}
+        \Large{}
+        THIS PAGE INTENTIONALLY LEFT BLANK
+    \end{center}
+    \vspace*{\fill}
+    \restoregeometry{}
+}
+
+\newcommand{\AmberCover}{%
+    \thispagestyle{tlp}
+    \topskip0pt
+    \newgeometry{left=2in,right=2in}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TAmber] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+
+    \begin{center}
+        {\Huge\TLPAmber}
+
+        \vspace*{\fill}
+
+        {%
+            \Large
+            Disclosure is limited to participant organizations.
+        }
+    \end{center}
+
+    \vspace{5em}
+
+    \noindent
+    This document contains sensitive information that is not suitable for
+    dissemination beyond the concerned organizations. A list of concerned
+    organizations must be included with this document. Handling, storage,
+    reproduction, and disposition of this document must be in accordance with
+    applicable Information Security Standards.
+
+    \vspace*{\fill}
+
+    \begin{center}
+        {\footnotesize
+            More information about the Traffic Light Protocol can be found at:
+
+            \url{https://www.first.org/tlp}.
+        }
+
+        \vspace{10em}
+
+        {\Huge\TLPAmber}
+    \end{center}
+
+    \newpage
+    \thispagestyle{tlp}
+    \vspace*{\fill}
+    \begin{center}
+        \Large{}
+        THIS PAGE INTENTIONALLY LEFT BLANK
+    \end{center}
+    \vspace*{\fill}
+    \restoregeometry{}
+}
+
+\newcommand{\GreenCover}{%
+    \thispagestyle{tlp}
+    \topskip0pt
+    \newgeometry{left=2in,right=2in}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TGreen] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+
+    \begin{center}
+        {\Huge\TLPGreen}
+
+        \vspace*{\fill}
+
+        {%
+            \Large
+            Disclosure is limited to participant communities.
+        }
+    \end{center}
+
+    \vspace{5em}
+
+    \noindent
+    This document contains sensitive information that is not suitable for
+    dissemination beyond the communities of the concerned participants.
+    Handling, storage, reproduction, and disposition of this document must be
+    in accordance with applicable Information Security Standards.
+
+    \vspace*{\fill}
+
+    \begin{center}
+        {\footnotesize
+            More information about the Traffic Light Protocol can be found at:
+
+            \url{https://www.first.org/tlp}.
+        }
+
+        \vspace{10em}
+
+        {\Huge\TLPGreen}
+    \end{center}
+
+    \newpage
+    \thispagestyle{tlp}
+    \vspace*{\fill}
+    \begin{center}
+        \Large{}
+        THIS PAGE INTENTIONALLY LEFT BLANK
+    \end{center}
+    \vspace*{\fill}
+    \restoregeometry{}
+}
+
+\newcommand{\WhiteCover}{%
+    \thispagestyle{tlp}
+    \topskip0pt
+    \newgeometry{left=2in,right=2in}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [black] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+
+    \begin{center}
+        {\Huge\TLPWhite}
+
+        \vspace*{\fill}
+
+        {%
+            \Large
+            Disclosure is not limited.
+        }
+    \end{center}
+
+    \vspace{5em}
+
+    \noindent
+    It has been determined that this document does not contain sensitive
+    information. The author, however, is free to reserve any and all rights
+    under applicable copyright law. This cover sheet does not waive those
+    rights.
+
+    \vspace*{\fill}
+
+    \begin{center}
+        {\footnotesize
+            More information about the Traffic Light Protocol can be found at:
+
+            \url{https://www.first.org/tlp}.
+        }
+
+        \vspace{10em}
+
+        {\Huge\TLPWhite}
+    \end{center}
+
+    \newpage
+    \thispagestyle{tlp}
+    \vspace*{\fill}
+    \begin{center}
+        \Large{}
+        THIS PAGE INTENTIONALLY LEFT BLANK
+    \end{center}
+    \vspace*{\fill}
+    \restoregeometry{}
+}
+
+\newcommand{\TLPCover}{%
+    \ifdefined\COMPARTMENTS
+        \RedCover
+    \else
+    \ifdefined\LVLRED
+        \RedCover
+    \else
+    \ifdefined\LVLAMBER
+        \AmberCover
+    \else
+    \ifdefined\LVLGREEN
+        \GreenCover
+    \else
+    \ifdefined\LVLWHITE
+        \WhiteCover
+    \fi
+    \fi
+    \fi
+    \fi
+    \fi
+}
+
+\DeclareRobustCommand{\RedRedact}[2][]{%
+    \ifdefined\LVLRED#2\else%
+    \ifdefined\COMPARTMENTS%
+        \def\caveat{#1}%
+        \ifx\caveat\empty[REDACTED]\else%
+            \ifinlist{#1}{\COMPARTMENTS}{#2}{[REDACTED]}%
+        \fi%
+    \else[REDACTED]\fi%
+    \fi%
+}
+
+\DeclareRobustCommand{\RedRedactQuiet}[2][]{%
+    \ifdefined\LVLRED
+        #2
+    \else
+    \ifdefined\COMPARTMENTS
+        \ifinlist{#1}{\COMPARTMENTS}{#2}{}
+    \fi
+    \fi
+}
+
+\DeclareRobustCommand{\RedPortion}[2][]%
+    {\RedRedact[#1]{\sethlcolor{black}\textcolor{TRed}{\def\caveat{#1}\ifx\caveat\empty\hl{R}\else\hl{R//#1}\fi}[#2]}}
+
+\DeclareRobustCommand{\RedSection}[2][]{%
+    \RedRedact[#1]{%
+        \begin{center}
+            \emph{NOTE: The following is \TLPRed{#1}.}
+        \end{center}
+        \vspace{2ex}
+        #2
+        \vspace{2ex}
+        \begin{center}
+            \EndTLPRed
+        \end{center}
+    }
+}
+
+\DeclareRobustCommand{\AmberRedact}[1]{%
+    \ifboolexpr{test {\ifdef{\LVLRED}} or test {\ifdef{\LVLAMBER}}}
+    {#1}
+    {[REDACTED]}
+}
+
+\DeclareRobustCommand{\AmberPortion}[1]{\AmberRedact{\sethlcolor{black}\textcolor{TAmber}{\hl{A}}[#1]}\ignorespaces}
+
+\DeclareRobustCommand\AmberSection[1]{%
+    \AmberRedact{%
+        \begin{center}
+            \emph{NOTE: The following is \TLPAmber.}
+        \end{center}
+        \vspace{2ex}
+        #1
+        \vspace{2ex}
+        \begin{center}
+            \EndTLPAmber
+        \end{center}
+    }
+}
+
+\DeclareRobustCommand{\GreenRedact}[1]{%
+    \ifboolexpr{test {\ifdef{\LVLRED}} or test {\ifdef{\LVLAMBER}} or test {\ifdef{\LVLGREEN}}}
+    {#1}
+    {[REDACTED]}
+}
+
+\DeclareRobustCommand{\GreenPortion}[1]{\GreenRedact{\sethlcolor{black}\textcolor{TGreen}{\hl{G}}[#1]}\ignorespaces}
+
+\DeclareRobustCommand\GreenSection[1]{%
+    \GreenRedact{%
+        \begin{center}
+            \emph{NOTE: The following is \TLPGreen}
+        \end{center}
+        \vspace{2ex}
+        #1
+        \vspace{2ex}
+        \begin{center}
+            \EndTLPGreen
+        \end{center}
+    }
+}
+
+\DeclareRobustCommand{\WhitePortion}[1]{%
+    \sethlcolor{black}\textcolor{TWhite}{\hl{W}} #1
+}
+
+\DeclareRobustCommand\WhiteSection[1]{%
+    \begin{center}
+        \emph{NOTE: The following is \TLPWhite}
+    \end{center}
+    \vspace{2ex}
+    #1
+    \vspace{2ex}
+    \noindent
+    \begin{center}
+        \EndTLPWhite
+    \end{center}
+}

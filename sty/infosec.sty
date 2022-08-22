@@ -1,0 +1,398 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{infosec}
+
+\RequirePackage{xcolor}
+\RequirePackage{soul}
+\RequirePackage{tikz}
+\RequirePackage{fancyhdr}
+\RequirePackage{geometry}
+\RequirePackage{etoolbox}
+\RequirePackage{suffix}
+
+\usetikzlibrary{calc}
+
+\DeclareOption{very-sensitive}{%
+    \newcommand{\InfosecLvlSet}{}
+    \newcommand{\LvlVerySensitive}{}
+}
+
+\DeclareOption{sensitive}{%
+    \newcommand{\InfosecLvlSet}{}
+    \newcommand{\LvlSensitive}{}
+}
+
+\DeclareOption{somewhat-sensitive}{%
+    \newcommand{\InfosecLvlSet}{}
+    \newcommand{\LvlSomewhatSensitive}{}
+}
+
+\DeclareOption{not-sensitive}{%
+    \newcommand{\InfosecLvlSet}{}
+    \newcommand{\LvlNotSensitive}{}
+}
+
+\ProcessOptions\relax
+
+\unless\ifdefined\InfosecLvlSet
+    \newcommand{\LvlVerySensitive}{}
+\fi
+
+% COLORS
+\definecolor{TRed}{RGB}{255,0,51}
+\definecolor{TAmber}{RGB}{204,154,0}
+\definecolor{TGreen}{RGB}{0,128,0}
+\definecolor{TWhite}{RGB}{255,255,255}
+
+% INFOSEC MARKING COMMANDS
+\newcommand{\VerySensitiveText}{VERY SENSITIVE}
+\newcommand{\SensitiveText}{SENSITIVE}
+\newcommand{\SomewhatSensitiveText}{SOMEWHAT SENSITIVE}
+\newcommand{\NotSensitiveText}{NOT SENSITIVE}
+\newcommand{\InfosecLevelText}{%
+    \ifdefined\LvlVerySensitive
+        \VerySensitiveText
+    \fi
+    \ifdefined\LvlSensitive
+        \SensitiveText
+    \fi
+    \ifdefined\LvlSomewhatSensitive
+        \SomewhatSensitiveText
+    \fi
+    \ifdefined\LvlNotSensitive
+        \NotSensitiveText
+    \fi
+}
+
+\DeclareRobustCommand{\VerySensitive}{\textcolor{TRed}{\VerySensitiveText}}
+\DeclareRobustCommand{\Sensitive}{\textcolor{TAmber}{\SensitiveText}}
+\DeclareRobustCommand{\SomewhatSensitive}{\textcolor{TGreen}{\SomewhatSensitiveText}}
+\DeclareRobustCommand{\NotSensitive}{\NotSensitiveText}
+\DeclareRobustCommand{\InfosecLevel}{%
+    \ifdefined\LvlVerySensitive
+        \VerySensitive
+    \fi
+    \ifdefined\LvlSensitive
+        \Sensitive
+    \fi
+    \ifdefined\LvlSomewhatSensitive
+        \SomewhatSensitive
+    \fi
+    \ifdefined\LvlNotSensitive
+        \NotSensitive
+    \fi
+}
+
+% COVER PAGES
+\fancypagestyle{tlp}{%
+    \fancyhf{}
+}
+
+\newcommand{\VerySensitiveStatement}{%
+    \noindent
+    \begin{center}
+        \Large 
+        \textbf{DISSEMINATION REQUIRES EXPLICIT AUTHORIZATION}
+    \end{center}
+    
+    \vfill
+
+    \noindent
+    Unintentional disclosure of the information in this document could have exceptionally grave security implications.
+    A list of individuals authorized to receive this information \textbf{must} be distributed with this document.
+    Disclosure of this document's contents to any individual not on that list is prohibited.
+}
+
+\newcommand{\SensitiveStatement}{%
+    \noindent
+    \begin{center}
+        \Large 
+        \textbf{DISSEMINATE ONLY TO THE ZIT}
+    \end{center}
+    
+    \vfill
+
+    \noindent
+    Unintentional disclosure of the information in this document could have grave security implications. This
+    document's contents may only be disclosed to individuals who belong to the Zone of Implicit Trust (ZIT) as defined
+    by caveat or standard operating procedures.
+}
+
+\newcommand{\SomewhatSensitiveStatement}{%
+    \noindent
+    \begin{center}
+        \Large 
+        \textbf{LEGITIMATE NEED-TO-KNOW REQUIRED FOR DISSEMINATION}
+    \end{center}
+    
+    \vfill
+
+    \noindent
+    Unintentional disclosure of the information in this document could have security implications. This document's
+    contents may only be disclosed to individuals with a legitimate need to know as described in standard operating
+    procedures.
+}
+
+\newcommand{\NotSensitiveStatement}{%
+    \noindent
+    \begin{center}
+        \Large
+        \textbf{DISSEMINATION NOT RESTRICTED}   
+    \end{center}
+    
+    \vfill
+
+    \noindent
+    Unintentional disclosure of the information in this document does not have foreseeable security implications.
+    Disclosure of the information in this document is not restricted. All rights under applicable copyright law are
+    still reserved.
+}
+
+\newcommand{\InfosecStatement}{%
+    \ifdefined\LvlVerySensitive
+        \VerySensitiveStatement
+    \fi
+    \ifdefined\LvlSensitive
+        \SensitiveStatement
+    \fi
+    \ifdefined\LvlSomewhatSensitive
+        \SomewhatSensitiveStatement
+    \fi
+    \ifdefined\LvlNotSensitive
+        \NotSensitiveStatement
+    \fi
+}
+
+\newcommand{\VerySensitiveCoverBorder}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TRed] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+}
+
+\newcommand{\SensitiveCoverBorder}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TAmber] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+}
+
+\newcommand{\SomewhatSensitiveCoverBorder}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TGreen] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+}
+
+\newcommand{\NotSensitiveCoverBorder}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [black] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+}
+
+\newcommand{\InfosecCoverBorder}{%
+    \ifdefined\LvlVerySensitive
+        \VerySensitiveCoverBorder
+    \fi
+    \ifdefined\LvlSensitive
+        \SensitiveCoverBorder
+    \fi
+    \ifdefined\LvlSomewhatSensitive
+        \SomewhatSensitiveCoverBorder
+    \fi
+    \ifdefined\LvlNotSensitive
+        \NotSensitiveCoverBorder
+    \fi
+}
+
+
+\newcommand{\InfosecCover}{%
+    \thispagestyle{tlp}
+    \topskip0pt
+    \newgeometry{left=2in,right=2in,voffset=0in}
+    
+    \InfosecCoverBorder{}
+
+    \begin{center}
+        {\Huge\InfosecLevel}
+    \end{center}
+    
+    \vfill
+
+    \InfosecStatement{}
+    
+    \vfill
+
+    \begin{center}
+        {\Huge\InfosecLevel}
+    \end{center}
+
+    \newpage
+    \thispagestyle{tlp}
+    \vspace*{\fill}
+    \restoregeometry{}
+}
+
+% PORTION MARKINGS
+
+%% Very Sensitive %%
+\DeclareRobustCommand{\VsRedact}[1]{%
+    \ifdefined\LvlVerySensitive
+        #1
+    \else
+        [REDACTED]
+    \fi
+}
+
+\WithSuffix\DeclareRobustCommand\VsRedact*[1]{%
+    \ifdefined\LvlVerySensitive
+        #1
+    \fi
+}
+
+\DeclareRobustCommand{\VsPortion}[1]{%
+    \VsRedact{\textcolor{TRed}{(VS)}~#1}
+}
+
+\newcommand{\EndVsPortion}{\textcolor{TRed}{* * *}}
+
+\WithSuffix\DeclareRobustCommand\VsPortion*[1]{%
+    \VsRedact{%
+        \begin{center}
+            \emph{NOTE: The following is \VerySensitive.}
+        \end{center}
+        \vspace{2ex}
+        #1
+        \vspace{2ex}
+        \begin{center}
+            \EndVsPortion
+        \end{center}
+    }
+}
+
+\newcommand{\VsParagraph}[2][]{%
+    \paragraph{#1} \VsPortion{#2}
+}
+
+%% Sensitive %%
+
+\DeclareRobustCommand{\SRedact}[1]{%
+    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
+    {#1}
+    {[REDACTED]}
+}
+
+\WithSuffix\DeclareRobustCommand\SRedact*[1]{%
+    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
+    {#1}
+    {}
+}
+
+\DeclareRobustCommand{\SPortion}[1]{%
+    \SRedact{\textcolor{TAmber}{(S)}~#1}
+}
+
+\newcommand{\EndSPortion}{\textcolor{TAmber}{* * *}}
+
+\WithSuffix\DeclareRobustCommand\SPortion*[1]{%
+    \SRedact{%
+        \begin{center}
+            \emph{NOTE: The following is \Sensitive.}
+        \end{center}
+        \vspace{2ex}
+        #1
+        \vspace{2ex}
+        \begin{center}
+            \EndSPortion
+        \end{center}
+    }
+}
+
+\newcommand{\SParagraph}[2][]{%
+    \paragraph{#1} \SPortion{#2}
+}
+
+%% Somewhat Sensitive %%
+
+\DeclareRobustCommand{\SsRedact}[1]{%
+    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
+    {#1}
+    {[REDACTED]}
+}
+
+\WithSuffix\DeclareRobustCommand\SsRedact*[1]{%
+    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
+    {#1}
+    {}
+}
+
+\DeclareRobustCommand{\SsPortion}[1]{%
+    \SsRedact{\textcolor{TGreen}{(SS)}~#1}
+}
+
+\newcommand{\EndSsPortion}{\textcolor{TGreen}{* * *}}
+
+\WithSuffix\DeclareRobustCommand\SsPortion*[1]{%
+    \SsRedact{%
+        \begin{center}
+            \emph{NOTE: The following is \SomewhatSensitive}
+        \end{center}
+        \vspace{2ex}
+        #1
+        \vspace{2ex}
+        \begin{center}
+            \EndSsPortion
+        \end{center}
+    }
+}
+
+\newcommand{\SsParagraph}[2][]{%
+    \paragraph{#1} \SsPortion{#2}
+}
+
+%% Not Sensitive %%
+
+\DeclareRobustCommand{\NsPortion}[1]{%
+    (NS)~#1
+}
+
+\newcommand{\EndNsPortion}{* * *}
+
+\WithSuffix\DeclareRobustCommand\NsPortion*[1]{%
+    \begin{center}
+        \emph{NOTE: The following is \NotSensitive}
+    \end{center}
+    \vspace{2ex}
+    #1
+    \vspace{2ex}
+    \noindent
+    \begin{center}
+        \EndNsPortion
+    \end{center}
+}
+
+\newcommand{\NsParagraph}[2][]{%
+    \paragraph{#1} \NsPortion{#2}
+}
+
+\endinput

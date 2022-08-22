@@ -1,0 +1,327 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{usafpub}
+
+\DeclareOption{cap}{%
+    \newcommand{\CAP}{}
+}
+\ProcessOptions\relax
+
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{graphicx}
+\RequirePackage{mathptmx}
+\RequirePackage[absolute]{textpos}
+\RequirePackage{titlesec}
+\RequirePackage[dvipsnames]{xcolor}
+
+% Page Formatting
+\raggedbottom
+
+\setlength{\parskip}{10pt}
+\setlength{\parindent}{0pt}
+
+\renewcommand{\headrulewidth}{0pt}
+
+\fancypagestyle{usaf}{%
+    \fancyhf{}
+    \fancyhead[R]{\thepage}
+    \ifdefined\@securityMark
+        \fancyhead[C]{\@securityMark}
+        \fancyfoot[C]{\@securityMark}
+    \fi
+}
+
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \ifdefined\@securityMark
+        \fancyhead[C]{\@securityMark}
+        \fancyfoot[C]{\@securityMark}
+    \fi
+}
+
+\pagestyle{usaf}
+
+% Letterhead
+\newcommand{\LetterHeadSeal}{%
+    \ifdefined\@seal
+        \begin{textblock*}{1in}(.5in,.5in)
+            \includegraphics[height=1in]{\@seal}
+        \end{textblock*}
+    \fi
+}
+
+\newcommand{\LetterHeadPatch}{%
+    \ifdefined\@unitPatch
+        \begin{textblock*}{1in}(7in,.5in)
+            \includegraphics[height=1in]{\@unitPatch}
+        \end{textblock*}
+    \fi
+}
+
+\newcommand{\UsafLetterHeadFont}[1]{
+	\textcolor{Blue}{\textsf{\textbf{#1}}}\rm
+}
+
+\newcommand{\PlainLetterHead}{
+    \ifdefined\@securityMark
+        \@securityMark\\
+        \vspace{1ex}
+        \UsafLetterHeadFont{%
+            \MakeUppercase{\@unit}\\
+            \@address
+        }
+    \else
+        \UsafLetterHeadFont{%
+            \MakeUppercase{\@unit}\\
+            \@address
+        }
+    \fi
+}
+
+\newcommand{\CapLetterHead}{
+    \ifdefined\@securityMark
+        \@securityMark\\
+        \vspace{1ex}
+        \UsafLetterHeadFont{%
+            HEADQUARTERS \MakeUppercase{\@unit}\\
+            CIVIL AIR PATROL\\
+            UNITED STATES AIR FORCE AUXILIARY\\
+            \@address
+        }
+    \else
+        \UsafLetterHeadFont{%
+            HEADQUARTERS \MakeUppercase{\@unit}\\
+            CIVIL AIR PATROL\\
+            UNITED STATES AIR FORCE AUXILIARY\\
+            \@address
+        }
+    \fi
+}
+
+\fancypagestyle{letterhead}{%
+    \fancyhf{}
+    \ifdefined\CAP
+        \def\@seal{CAP_Seal.jpg}       
+        \fancyhead[C]{\CapLetterHead}
+        \LetterHeadSeal{}
+        \LetterHeadPatch{}
+    \else
+        \fancyhead[C]{\PlainLetterHead}
+        \LetterHeadSeal{}
+    \fi
+    \ifdefined\@securityMark
+        \fancyfoot[C]{\@securityMark}
+    \fi
+}
+
+% Signature Blocks
+\newlength{\sigoffset}
+\setlength{\sigoffset}{3.75in}
+
+% Paragraph numbering
+\setcounter{secnumdepth}{5}
+\renewcommand{\theparagraph}{\makebox[3ex][l]{\arabic{paragraph}.}}
+\titleformat{\paragraph}[runin]{}{\theparagraph}{0pt}{\underline}
+
+% List numbering
+%% Enumerated lists
+\newcounter{usaflisti}
+\renewcommand{\theusaflisti}{\alph{usaflisti}.}
+\newcounter{usaflistii}
+\renewcommand{\theusaflistii}{(\arabic{usaflistii})}
+\newcounter{usaflistiii}
+\renewcommand{\theusaflistiii}{(\alph{usaflistiii})}
+\newcounter{usaflistiv}
+\renewcommand{\theusaflistiv}{\underline{\arabic{usaflistiv}}}
+\newcounter{usaflistv}
+\renewcommand{\theusaflistv}{\underline{\alph{usaflistv}}}
+\newcounter{usaflistvi}
+\renewcommand{\theusaflistvi}{[\arabic{usaflistvi}]}
+
+\renewenvironment{enumerate}{
+    \ifdefined\@usaflistv
+        \def\@usaflistvi{}
+        \setlength{\parindent}{12em}
+        \setcounter{usaflistvi}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistvi}
+            \makebox[3ex][l]{\theusaflistvi}
+        }
+    \else\ifdefined\@usaflistiv
+        \def\@usaflistv{}
+        \setlength{\parindent}{10em}
+        \setcounter{usaflistv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistv}
+            \makebox[3ex][l]{\theusaflistv}
+        }
+    \else\ifdefined\@usaflistiii
+        \def\@usaflistiv{}
+        \setlength{\parindent}{8em}
+        \setcounter{usaflistiv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiv}
+            \makebox[3ex][l]{\theusaflistiv}
+        }
+    \else\ifdefined\@usaflistii
+        \def\@usaflistiii{}
+        \setlength{\parindent}{6em}
+        \setcounter{usaflistiii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiii}
+            \makebox[3ex][l]{\theusaflistiii}
+        }
+    \else\ifdefined\@usaflisti
+        \def\@usaflistii{}
+        \setlength{\parindent}{4em}
+        \setcounter{usaflistii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistii}
+            \makebox[3ex][l]{\theusaflistii}
+        }
+    \else
+        \def\@usaflisti{}
+        \setlength{\parindent}{2em}
+        \setcounter{usaflisti}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflisti}
+            \makebox[3ex][l]{\theusaflisti}
+        }
+    \fi\fi\fi\fi\fi
+}{
+    \noindent
+    \ignorespacesafterend
+}
+
+\newenvironment{UsafMemo}{%
+	\begin{textblock*}{6.75in}(.75in,1.75in)
+}{%
+	\end{textblock*}
+}
+
+% End-package commands
+%% Letterhead
+\newcommand{\securityMark}[1]{%
+    \def\@securityMark{#1}
+}
+
+\newcommand{\seal}[1]{%
+    \def\@seal{#1}
+}
+
+\newcommand{\unitPatch}[1]{%
+    \def\@unitPatch{#1}
+}
+
+\newcommand{\unit}[1]{%
+    \def\@unit{#1}
+}
+
+\newcommand{\address}[1]{%
+    \def\@address{#1}
+}
+
+%% Signature block
+\newcommand{\sigblock}[3]{%
+    \hspace*{\sigoffset}\MakeUppercase{#1}#2\\
+    \hspace*{\sigoffset}#3
+}
+
+\newcommand{\signature}[3]{%
+    \vspace{4em}
+    \sigblock{#1}{#2}{#3}
+}
+
+\newcommand{\sigcont}{%
+    \hspace*{\sigoffset}\hspace{2ex}
+}
+
+\newcommand{\digisign}[4]{%
+    \vspace{2em}
+    \hspace{\sigoffset}\includegraphics[scale=0.2]{#4}\\
+    \sigblock{#1}{#2}{#3}
+}
+
+%% Postscript
+\newcommand{\attachment}[1]{%
+    \def\ATTACHMENT
+    \vspace{2em}
+    \noindent
+    Attachment: \\
+    #1
+}
+
+\newcommand{\attachments}[1]{%
+    \def\ATTACHMENT
+    \vspace{2em}
+    \noindent
+    Attachments:
+    \begin{enumerate}
+    #1
+    \end{enumerate}
+}
+
+\newcommand{\cc}[1]{%
+    \ifdefined\ATTACHMENT
+        \vspace{2em}
+    \else
+        \vspace{1em}
+    \fi
+
+    \noindent
+    cc:\\
+    #1
+}
+
+%% Other Commands
+\newcommand{\ptitle}[1]{%
+    \paragraph{#1}\hfill
+}
+
+\newcommand{\titem}[1]{%
+    \item \underline{#1}
+}
+
+\newcommand{\tVsItem}[2]{%
+    \item \VsPortion{\underline{#1} #2}
+}
+
+\newcommand{\tSItem}[2]{%
+    \item \SPortion{\underline{#1} #2}
+}
+
+\newcommand{\tSsItem}[2]{%
+    \item \SsPortion{\underline{#1} #2}
+}
+
+\newcommand{\tNsItem}[2]{%
+    \item \NsPortion{\underline{#1} #2}
+}
+
+\newcommand{\VsItem}[1]{%
+    \item \VsPortion{#1}
+}
+
+\newcommand{\SItem}[1]{%
+    \item \SPortion{#1}
+}
+
+\newcommand{\SsItem}[1]{%
+    \item \SsPortion{#1}
+}
+
+\newcommand{\NsItem}[1]{%
+    \item \NsPortion{#1}
+}

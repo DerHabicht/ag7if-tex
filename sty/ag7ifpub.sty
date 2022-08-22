@@ -1,0 +1,149 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ag7ifpub}
+
+\DeclareOption{cc}{%
+    \newcommand{\CC}{}
+}
+
+\ProcessOptions\relax
+
+\RequirePackage{hyperref}
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\RequirePackage{titling}
+
+\hypersetup{hidelinks}
+
+\fancypagestyle{nomark}{%
+    \fancyhf{}
+}
+
+\newcommand{\controlnumber}[1]{%
+    \def\@controlnumber{#1}
+}
+
+\newcommand{\thecontrolnumber}{%
+    AG7IF~\@controlnumber
+}
+
+\newcommand{\titlelogo}[1]{%
+    \def\@titlelogo{#1}
+}
+
+\newcommand{\thetitlelogo}[1]{%
+    \includegraphics[width=0.5\textwidth]{\@titlelogo} \\
+}
+
+\newcommand{\revision}[1]{%
+    \def\@revision{#1}
+}
+
+\newcommand{\therevision}{%
+    Revision~\@revision
+}
+
+\newcommand{\PubMark}{%
+    \normalsize
+    \includegraphics[height=0.5in]{arms.png} \\
+    An AG7IF Publication \\
+    \url{www.the-hawk.us}
+}
+
+% TODO: Check if vhistory is loaded
+\newcommand{\TitlePage}{%
+    \begin{titlepage}
+        \ifdefined\InfosecLevel
+            \LARGE
+            \InfosecLevel
+            \vspace*{0.1\textheight}
+        \else
+            \vspace*{0.2\textheight}
+        \fi
+        \centering
+
+        \Large
+        \thecontrolnumber{}
+
+        \vspace{2ex}
+
+        \Huge
+        \thetitle{}
+
+        \Large
+        \vspace{8ex}
+        \therevision{}
+
+        \@date
+
+        \vfill
+
+        \thetitlelogo{}
+
+
+        \ifdefined\InfosecLevel
+            \vfill
+            \LARGE
+            \InfosecLevel
+        \else
+            \vspace{0.1\textheight}
+        \fi
+        
+
+    \end{titlepage}
+}
+
+\newcommand{\Colophon}{%
+    \thispagestyle{nomark}
+    \vspace*{\fill}
+
+    {\parskip=2ex
+        \noindent
+        An AG7IF Publication.
+
+        \noindent
+        129 E 13800 S \\
+        Ste B2 PMB 252 \\
+        Draper, UT 84020 \\
+        \url{www.the-hawk.us}
+
+        \noindent
+        \textcopyright~\the\year~Robert Herschel Hawk.
+
+        \ifdefined\CC
+            \noindent
+            Unless otherwise stated, this work is licensed under the Creative Commons Attribution-NonCommercial 4.0
+            International License. To view a copy of this license, visit
+            \url{http://creativecommons.org/licenses/by-nc/4.0/}.
+        \else
+            \noindent
+            This is a personal publication of Robert Herschel Hawk. It is not intended for public distribution. Do not
+            make copies, in whole or in part, of this document without express written approval.
+        \fi
+
+        \noindent
+        This document was created using \LaTeX.
+        \clearpage
+    }
+}
+
+\newcommand{\BackPage}{%
+    \clearpage
+    \ifodd\value{page}\hbox{}\newpage\fi
+    \thispagestyle{nomark}
+    \begin{center}
+        \vspace*{\fill}
+        \PubMark
+    \end{center}
+}
+
+\renewcommand{\maketitle}{%
+    \ifdefined\InfosecLevel
+        \TitlePage{}
+        \Colophon{}
+        \InfosecCover{}
+    \else
+        \TitlePage{}
+        \Colophon{}
+    \fi
+}
+
