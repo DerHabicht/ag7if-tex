@@ -234,24 +234,24 @@
 }
 
 %% Signature block
-\newcommand{\sigblock}[2]{%
-    \hspace*{\sigoffset}\MakeUppercase{#1}\\
-    \hspace*{\sigoffset}#2
+\newcommand{\sigblock}[3]{%
+    \hspace*{\sigoffset}\MakeUppercase{#1}#2\\
+    \hspace*{\sigoffset}#3
 }
 
-\newcommand{\signature}[2]{%
+\newcommand{\signature}[3]{%
     \vspace{4em}
-    \sigblock{#1}{#2}
+    \sigblock{#1}{#2}{#3}
 }
 
 \newcommand{\sigcont}{%
     \hspace*{\sigoffset}\hspace{2ex}
 }
 
-\newcommand{\digisign}[3]{%
+\newcommand{\digisign}[4]{%
     \vspace{2em}
-    \hspace{\sigoffset}\includegraphics[scale=0.2]{#3}\\
-    \sigblock{#1}{#2}
+    \hspace{\sigoffset}\includegraphics[scale=0.2]{#4}\\
+    \sigblock{#1}{#2}{#3}
 }
 
 %% Postscript
