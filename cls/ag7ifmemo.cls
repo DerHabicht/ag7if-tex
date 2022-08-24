@@ -13,9 +13,33 @@
 \DeclareOption{rfc}{%
     \newcommand{\RFC}{}
 }
+\DeclareOption{very-sensitive}{%
+    \newcommand{\@INFOSEC}{}
+}
+\DeclareOption{sensitive}{%
+    \newcommand{\@INFOSEC}{}
+}
+\DeclareOption{somewhat-sensitive}{%
+    \newcommand{\@INFOSEC}{}
+}
+\DeclareOption{not-sensitive}{%
+    \newcommand{\@INFOSEC}{}
+}
+\DeclareOption{fouo}{%
+    \newcommand{\@FOUO}{}
+}
 \ProcessOptions\relax
 
-\LoadClass{usafmemo}
+\ifdefined\@FOUO
+    \LoadClass[fouo]{usafmemo}
+\else
+    \LoadClass{usafmemo}
+\fi
+
+\ifdefined\@INFOSEC
+    \RequirePackage{infosec}
+    \securityMark{\InfosecLevel}
+\fi
 
 \renewcommand{\maketitle}{%
     \thispagestyle{letterhead}

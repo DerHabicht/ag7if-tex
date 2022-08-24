@@ -80,29 +80,24 @@
 
 \pagestyle{usaf}
 
-% Header
-% Paragraphs
-\newcounter{memopar}
-\renewcommand{\thememopar}{\arabic{memopar}.}
-\newenvironment{body}{
-    \setlength{\parindent}{0pt}
-    \setcounter{memopar}{0}
-    \bigskip
-    \renewcommand{\item}{
-        \par
-        \refstepcounter{memopar}
-        \makebox[2ex][l]{\thememopar}
-    }
-}{
-    \bigskip
-    \noindent
-    \ignorespacesafterend
-}
-
 % Table of Contents Formatting
-\setcounter{tocdepth}{5}
-\cftsetindents{section}{0em}{2em}
-\cftsetindents{paragraph}{0em}{2em}
+\setcounter{tocdepth}{4}
+\cftsetindents{chapter}{0em}{2em}
+\cftsetindents{section}{2em}{2em}
+\cftsetindents{subsection}{4em}{2em}
+\cftsetindents{paragraph}{6em}{3em}
+
+% Sections
+\renewcommand{\thesection}{\arabic{section}}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.\hspace{1em}}{0pt}{}
+
+% Subsections
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.\hspace{1em}}{0pt}{}
+
+% Paragraphs
+\renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{paragraph}}
+\titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
 
 % Annex Sectioning
 \renewcommand{\thechapter}{\Alph{chapter}}

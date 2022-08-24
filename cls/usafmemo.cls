@@ -7,16 +7,24 @@
 \DeclareOption{mr}{%
     \newcommand{\MR}{}
 }
+\DeclareOption{fouo}{%
+    \newcommand{\FOUO}{}
+}
 \ProcessOptions\relax
 
 \LoadClass[12pt]{article}
 
 \RequirePackage{enumerate}
 \RequirePackage{usafpub}
-
+\ifdefined\FOUO
+    \RequirePackage{fouo}
+    \securityMark{\FouoMark}
+\fi
 \ifdefined\DRAFT
     \RequirePackage{draftwatermark}
 \fi
+
+\pagestyle{usaf}
 
 % Header
 % Paragraphs
