@@ -41,6 +41,8 @@
     \securityMark{\InfosecLevel}
 \fi
 
+\pagestyle{usaf}
+
 \renewcommand{\maketitle}{%
     \thispagestyle{letterhead}
 

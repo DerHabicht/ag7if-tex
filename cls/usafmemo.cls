@@ -15,6 +15,7 @@
 \LoadClass[12pt]{article}
 
 \RequirePackage{enumerate}
+\RequirePackage{nth}
 \RequirePackage{usafpub}
 \ifdefined\FOUO
     \RequirePackage{fouo}
@@ -43,6 +44,23 @@
     \bigskip
     \noindent
     \ignorespacesafterend
+}
+
+% Environments
+%% Indorsement Format
+\newcounter{indorsement}
+\newenvironment{indorsement}[6]{%
+\stepcounter{indorsement}
+\def\@indName{#4}
+\def\@indRank{#5}
+\def\@indTitle{#6}
+\vspace{2em}
+
+\nth{\arabic{indorsement}} Ind, #1\hfill{}#2
+
+MEMORANDUM FOR \MakeUppercase{#3}
+}{%
+    \signature{\@indName}{\@indRank}{\@indTitle}
 }
 
 % Commands

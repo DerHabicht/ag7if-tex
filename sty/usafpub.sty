@@ -248,6 +248,12 @@
     \hspace*{\sigoffset}\hspace{2ex}
 }
 
+\newcommand{\textsign}[3]{%
+    \vspace{2em}
+    \hspace*{\sigoffset}// SIGNED //\\
+    \sigblock{#1}{#2}{#3}
+}
+
 \newcommand{\digisign}[4]{%
     \vspace{2em}
     \hspace{\sigoffset}\includegraphics[scale=0.2]{#4}\\
