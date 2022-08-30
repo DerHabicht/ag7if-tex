@@ -37,6 +37,7 @@
 ]{geometry}
 \RequirePackage{longtable}
 \RequirePackage{tocloft}
+\RequirePackage[table]{xcolor}
 
 \ifdefined\DRAFT
     \RequirePackage{draftwatermark}
@@ -108,7 +109,9 @@
     \\
 }
 \newcommand{\Step}[3]{#1 & \if\relax\detokenize{#2}\relax\else(#2)\fi & #3\\}
+\newcommand{\StepHL}[3]{\rowcolor{lightgray} #1 & \if\relax\detokenize{#2}\relax\else(#2)\fi & #3\\}
 \newcommand{\ChecklistComment}[1]{\multicolumn{3}{l}{\underline{\textit{#1}}}\\}
+\newcommand{\ChecklistCommentHL}[1]{\rowcolor{lightgray} \multicolumn{3}{l}{\underline{\textit{#1}}}\\}
 
 %Page formatting
 \fancypagestyle{plain}{\fancyhf{}}

@@ -6,7 +6,6 @@
 }
 \ProcessOptions\relax
 
-\RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
 \RequirePackage[
     margin=1in,
@@ -235,8 +234,13 @@
 
 %% Signature block
 \newcommand{\sigblock}[3]{%
-    \hspace*{\sigoffset}\MakeUppercase{#1}#2\\
-    \hspace*{\sigoffset}#3
+    \ifx#2\empty
+        \hspace*{\sigoffset}\MakeUppercase{#1}\\
+        \hspace*{\sigoffset}#3
+    \else
+        \hspace*{\sigoffset}\MakeUppercase{#1}, #2\\
+        \hspace*{\sigoffset}#3
+    \fi
 }
 
 \newcommand{\signature}[3]{%

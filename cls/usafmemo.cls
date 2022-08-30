@@ -17,6 +17,7 @@
 \RequirePackage{enumerate}
 \RequirePackage{nth}
 \RequirePackage{usafpub}
+\RequirePackage{xstring}
 \ifdefined\FOUO
     \RequirePackage{fouo}
     \securityMark{\FouoMark}
@@ -49,18 +50,23 @@
 % Environments
 %% Indorsement Format
 \newcounter{indorsement}
-\newenvironment{indorsement}[6]{%
+\newenvironment{indorsement}[7][reg]{%
 \stepcounter{indorsement}
-\def\@indName{#4}
-\def\@indRank{#5}
-\def\@indTitle{#6}
+\def\@sigType{#1}
+\def\@indName{#5}
+\def\@indRank{#6}
+\def\@indTitle{#7}
 \vspace{2em}
 
-\nth{\arabic{indorsement}} Ind, #1\hfill{}#2
+\nth{\arabic{indorsement}} Ind, #2\hfill{}#3
 
-MEMORANDUM FOR \MakeUppercase{#3}
+MEMORANDUM FOR \MakeUppercase{#4}
 }{%
-    \signature{\@indName}{\@indRank}{\@indTitle}
+    \IfEq{\@sigType}{text}{%
+        \textsign{\@indName}{\@indRank}{\@indTitle}
+    }{%
+        \signature{\@indName}{\@indRank}{\@indTitle}
+    }
 }
 
 % Commands

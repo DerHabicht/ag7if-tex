@@ -60,10 +60,12 @@
             \fi
             \par\vspace{1.5em}
             \normalsize
-            \ifx\@amended\empty
-                Adopted~\@adopted
-            \else
-                Adopted~\@adopted, Amended:~\@amended
+            \ifdefined\@adopted
+                \ifx\@amended\empty
+                    Adopted~\@adopted
+                \else
+                    Adopted~\@adopted, Amended:~\@amended
+                \fi
             \fi
         }%
     \end{center}%

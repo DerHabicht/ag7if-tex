@@ -143,23 +143,21 @@
     \ifdefined\@staffCoords
         \edef\@staffCoords{%
             \@staffCoords 
-            #1 & #2 & #3 & #4 \\
+            #1 & #2 & #3 & #4 \\ \hline
         }
     \else
         \def\@staffCoords{%
-            #1 & #2 & #3 & #4 \\
+            #1 & #2 & #3 & #4 \\ \hline
         }
     \fi
 }
 
 \newcommand{\tableofcoordination}{%
     \begin{center}
-    \begin{tabularx}{\textwidth}{llXr}
-        \toprule
-        OFFICE &  ACTION &  OUTCOME &  DATE \\
-        \midrule
+    \begin{tabularx}{\textwidth}{|l|l|X|r|}
+        \hline
+        OFFICE &  ACTION &  OUTCOME &  DATE \\ \hline
         \@staffCoords
-        \bottomrule
     \end{tabularx}
     \end{center}
 }
