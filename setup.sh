@@ -22,3 +22,8 @@ ln -s "$REPO_DIR/cls/callsigns.cls" "$HOME/texmf/tex/callsigns.cls"
 ln -s "$REPO_DIR/cls/oplan.cls" "$HOME/texmf/tex/oplan.cls"
 ln -s "$REPO_DIR/cls/usafmemo.cls" "$HOME/texmf/tex/usafmemo.cls"
 ln -s "$REPO_DIR/cls/usafpaper.cls" "$HOME/texmf/tex/usafpaper.cls"
+
+# Bibliographies
+ln -s "$REPO_DIR/bib/ag7if.bib" "$HOME/texmf/bibtex/bib/ag7if.bib"
+ln -s "$REPO_DIR/bib/ag7if.bib" "$HOME/texmf/bibtex/bib/cap.bib"
+ln -s "$REPO_DIR/bib/ag7if.bib" "$HOME/texmf/bibtex/bib/lhl.bib"
