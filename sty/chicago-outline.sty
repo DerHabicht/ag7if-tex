@@ -1,0 +1,35 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ag7ifform}
+
+\DeclareOption{short}{%
+    \newcommand{\@SHORT}{}
+}
+
+\ProcessOptions\relax
+
+\RequirePackage{enumitem}
+
+% Environment Definition and Setup
+\setlistdepth{7}
+\ifdefined\@SHORT
+    \newlist{outline}{enumerate}{5}
+    \setlist[outline, 1]{label=\arabic*.}
+    \setlist[outline, 2]{label=\alph*)}
+    \setlist[outline, 3]{label=(\arabic*)}
+    \setlist[outline, 4]{label=(\alph*)}
+    \setlist[outline, 5]{label=(\roman*)}
+\else
+    \newlist{outline}{enumerate}{7}
+    \setlist[outline, 1]{label=\Roman*.}
+    \setlist[outline, 2]{label=\Alph*.}
+    \setlist[outline, 3]{label=\arabic*.}
+    \setlist[outline, 4]{label=\alph*)}
+    \setlist[outline, 5]{label=(\arabic*)}
+    \setlist[outline, 6]{label=(\alph*)}
+    \setlist[outline, 7]{label=(\roman*)}
+\fi
+
+% End-User Commands
+\newcommand{\1}[1]{%
+    \ifdefined
+}

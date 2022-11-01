@@ -12,12 +12,12 @@
 }
 
 \newcommand{\scrfootcite}[2]{%
-    \footnote{\ibibleverse{#1}(#2)}
+    \footnote{\ibibleverse{#1}#2}
 }
 
 % Set up scripture index
 \makeindex[title={Scriptures Referenced},name=scriptures]
-\indexsetup{level=\section,toclevel=section,noclearpage}
+%\indexsetup{level=\section,toclevel=section,noclearpage}
 \renewcommand{\biblerefindex}{\index[scriptures]}
 
 % bibleref style using LDS-standard abbreviations

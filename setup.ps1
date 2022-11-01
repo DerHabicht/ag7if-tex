@@ -17,6 +17,8 @@ New-Item -Path "${TEXMFHOME}\tex\ag7ifmemo.cls" -ItemType SymbolicLink -Value .\
 New-Item -Path "${TEXMFHOME}\tex\ag7ifref.cls" -ItemType SymbolicLink -Value .\cls\ag7ifref.cls 
 New-Item -Path "${TEXMFHOME}\tex\bylaws.cls" -ItemType SymbolicLink -Value .\cls\bylaws.cls 
 New-Item -Path "${TEXMFHOME}\tex\callsigns.cls" -ItemType SymbolicLink -Value .\cls\callsigns.cls 
+New-Item -Path "${TEXMFHOME}\tex\contbook.cls" -ItemType SymbolicLink -Value .\cls\contbook.cls 
+New-Item -Path "${TEXMFHOME}\tex\fileplan.cls" -ItemType SymbolicLink -Value .\cls\fileplan.cls 
 New-Item -Path "${TEXMFHOME}\tex\oplan.cls" -ItemType SymbolicLink -Value .\cls\oplan.cls 
 New-Item -Path "${TEXMFHOME}\tex\usafmemo.cls" -ItemType SymbolicLink -Value .\cls\usafmemo.cls 
 New-Item -Path "${TEXMFHOME}\tex\usafpaper.cls" -ItemType SymbolicLink -Value .\cls\usafpaper.cls 

@@ -39,14 +39,39 @@
 }
 
 \newcommand{\therevision}{%
-    Revision~\@revision
+    \ifdefined\@revision
+        Revision~\@revision
+    \fi
 }
+
+\newcommand{\publisher}[1]{\def\@publisher{#1}}
+\newcommand{\publisherAddress}[1]{\def\@publisherAddress{#1}}
+\newcommand{\publisherLogo}[1]{\def\@publisherLogo{#1}}
+\newcommand{\publisherWeb}[1]{\def\@publisherWeb{#1}}
+\newcommand{\copyrightOwner}[1]{\def\@copyrightOwner{#1}}
+\newcommand{\copyrightStatement}[1]{\def\@copyrightStatement{#1}}
 
 \newcommand{\PubMark}{%
     \normalsize
-    \includegraphics[height=0.5in]{arms.png} \\
-    An AG7IF Publication \\
-    \url{www.the-hawk.us}
+    \ifdefined\@publisherLogo
+        \includegraphics[height=0.5in]{\@publisherLogo}
+    \else
+        \includegraphics[height=0.5in]{arms.png}
+    \fi
+    
+    \vspace{1em}
+    
+    \ifdefined\@publisher
+        \@publisher
+    \else
+        An AG7IF Publication
+    \fi
+
+    \ifdefined\@publisherWeb
+        \url{\@publisherWeb}
+    \else
+        \url{www.the-hawk.us}
+    \fi
 }
 
 % TODO: Check if vhistory is loaded
@@ -97,28 +122,56 @@
     \vspace*{\fill}
 
     {\parskip=2ex
-        \noindent
-        An AG7IF Publication.
-
-        \noindent
-        129 E 13800 S \\
-        Ste B2 PMB 252 \\
-        Draper, UT 84020 \\
-        \url{www.the-hawk.us}
-
-        \noindent
-        \textcopyright~\the\year~Robert Herschel Hawk.
-
-        \ifdefined\CC
+        \ifdefined\@publisher
             \noindent
-            Unless otherwise stated, this work is licensed under the Creative Commons Attribution-NonCommercial 4.0
-            International License. To view a copy of this license, visit
-            \url{http://creativecommons.org/licenses/by-nc/4.0/}.
+            \@publisher.
         \else
             \noindent
-            This is a personal publication of Robert Herschel Hawk. It is not intended for public distribution. Do not
-            make copies, in whole or in part, of this document without express written approval.
+            An AG7IF Publication.
         \fi
+
+        \ifdefined\@publisherAddress
+            \noindent
+            \@publisherAddress \\
+        \else
+            \noindent
+            129 E 13800 S \\
+            Ste B2 PMB 252 \\
+            Draper, UT 84020 \\
+        \fi
+        \ifdefined\@publisherWeb
+            \url{\@publisherWeb}
+        \else
+            \url{www.the-hawk.us}
+        \fi
+
+        \ifdefined\@copyrightOwner
+            \noindent
+            \textcopyright~\the\year~\@copyrightOwner.
+        \else
+            \noindent
+            \textcopyright~\the\year~Robert Herschel Hawk.
+        \fi
+
+        \ifdefined\@copyrightStatement
+            \noindent
+            \@copyrightStatement
+        \else
+            \ifdefined\CC
+                \noindent
+                Unless otherwise stated, this work is licensed under the Creative Commons Attribution-NonCommercial 4.0
+                International License. To view a copy of this license, visit
+                \url{http://creativecommons.org/licenses/by-nc/4.0/}.
+            \else
+                \noindent
+                All rights reserved. This is a personal publication of Robert Herschel Hawk. It is not intended for public
+                distribution. No part of this document may be used or reproduced in any manner whatsoever without written
+                permission.
+            \fi
+        \fi
+
+        \noindent
+        Published~\the\year.
 
         \noindent
         This document was created using \LaTeX.

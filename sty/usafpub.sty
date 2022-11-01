@@ -266,7 +266,7 @@
 
 %% Postscript
 \newcommand{\attachment}[1]{%
-    \def\ATTACHMENT
+    \def\@ATTACHMENT{}
     \vspace{2em}
     \noindent
     Attachment: \\
@@ -274,7 +274,7 @@
 }
 
 \newcommand{\attachments}[1]{%
-    \def\ATTACHMENT
+    \def\@ATTACHMENT{}
     \vspace{2em}
     \noindent
     Attachments:
@@ -284,7 +284,8 @@
 }
 
 \newcommand{\cc}[1]{%
-    \ifdefined\ATTACHMENT
+    \def\@CC{}
+    \ifdefined\@ATTACHMENT
         \vspace{2em}
     \else
         \vspace{1em}
@@ -292,6 +293,20 @@
 
     \noindent
     cc:\\
+    #1
+}
+
+\newcommand{\distribution}[1]{%
+    \ifdefined\@ATTACHMENT
+        \vspace{2em}
+    \else\ifdefined\@CC
+        \vspace{2em}
+    \else
+        \vspace{1em}
+    \fi\fi
+
+    \noindent
+    DISTRIBUTION:\\
     #1
 }
 

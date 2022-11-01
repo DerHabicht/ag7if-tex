@@ -1,6 +1,10 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ag7ifform}
 
+\DeclareOption{quarto}{%
+    \newcommand{\QUARTO}{}
+}
+
 \DeclareOption{landscapeForm}{%
     \newcommand{\LSCAPE}{}
 }
@@ -10,25 +14,48 @@
 
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{ag7ifform}
-\ifdefined\LSCAPE
-    \RequirePackage[
-        paperheight=8.5in,
-        paperwidth=11in,
-        top=1.0in,
-        bottom=1.0in,
-        left=0.5in,
-        right=0.5in
-    ]{geometry}
+\ifdefined\QUARTO
+    \ifdefined\LSCAPE
+        \RequirePackage[
+            paperheight=5.5in,
+            paperwidth=8.5in,
+            top=1.0in,
+            bottom=1.0in,
+            left=0.5in,
+            right=0.5in
+        ]{geometry}
+    \else
+        \RequirePackage[
+            paperheight=8.5in,
+            paperwidth=5.5in,
+            top=1.0in,
+            bottom=1.0in,
+            left=0.5in,
+            right=0.5in
+        ]{geometry}
+    \fi
 \else
-    \RequirePackage[
-        paperheight=11in,
-        paperwidth=8.5in,
-        top=1.0in,
-        bottom=1.0in,
-        left=0.5in,
-        right=0.5in
-    ]{geometry}
-\fi
+    \ifdefined\LSCAPE
+        \RequirePackage[
+            paperheight=8.5in,
+            paperwidth=11in,
+            top=1.0in,
+            bottom=1.0in,
+            left=0.5in,
+            right=0.5in
+        ]{geometry}
+    \else
+        \RequirePackage[
+            paperheight=11in,
+            paperwidth=8.5in,
+            top=1.0in,
+            bottom=1.0in,
+            left=0.5in,
+            right=0.5in
+        ]{geometry}
+    \fi
+\fi    
+
 \RequirePackage{fancyhdr}
 \RequirePackage{lastpage}
 

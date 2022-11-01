@@ -96,8 +96,16 @@
 \titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.\hspace{1em}}{0pt}{}
 
 % Paragraphs
-\renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{paragraph}}
-\titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
+\ifdefined\OPORD
+    \renewcommand{\theparagraph}{\arabic{paragraph}}
+    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
+\else\ifdefined\SUMMARY
+    \renewcommand{\theparagraph}{\arabic{paragraph}}
+    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\textbf}
+\else
+    \renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{paragraph}}
+    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
+\fi\fi
 
 % Annex Sectioning
 \renewcommand{\thechapter}{\Alph{chapter}}
@@ -188,13 +196,13 @@
     \else\ifdefined\CONPLAN
         CONCEPTUAL OPERATIONS PLAN%
     \else\ifdefined\OPORD
-        OPERATIONS ORDER%
+        OPERATION ORDER%
     \else\ifdefined\FRAGO
         FRAGMENTARY OPERATIONS ORDER%
     \else\ifdefined\WEPLAN
         WEEKLY PLAN%
     \else
-        OPERATIONS PLAN%
+        OPERATION PLAN%
     \fi\fi\fi\fi\fi
 }
 
