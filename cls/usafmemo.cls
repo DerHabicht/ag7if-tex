@@ -15,6 +15,11 @@
 \LoadClass[12pt]{article}
 
 \RequirePackage{enumerate}
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
 \RequirePackage{nth}
 \RequirePackage{usafpub}
 \RequirePackage{xstring}

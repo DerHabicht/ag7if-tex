@@ -71,6 +71,7 @@
 \RequirePackage{ag7ifpub}
 \RequirePackage{booktabs}
 \RequirePackage{chngcntr}
+\RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
 \usepackage{longtable}
@@ -115,3 +116,109 @@
 \fancyfoot[RO,LE]{\thepage}
 
 \pagestyle{fancy}
+
+% List formatting
+%% Enumerated lists
+\newcounter{usaflisti}
+\renewcommand{\theusaflisti}{\alph{usaflisti}.}
+\newcounter{usaflistii}
+\renewcommand{\theusaflistii}{(\arabic{usaflistii})}
+\newcounter{usaflistiii}
+\renewcommand{\theusaflistiii}{(\alph{usaflistiii})}
+\newcounter{usaflistiv}
+\renewcommand{\theusaflistiv}{\underline{\arabic{usaflistiv}}}
+\newcounter{usaflistv}
+\renewcommand{\theusaflistv}{\underline{\alph{usaflistv}}}
+\newcounter{usaflistvi}
+\renewcommand{\theusaflistvi}{[\arabic{usaflistvi}]}
+
+\renewenvironment{enumerate}{
+    \ifdefined\@usaflistv
+        \def\@usaflistvi{}
+        \setlength{\parindent}{12em}
+        \setcounter{usaflistvi}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistvi}
+            \makebox[3ex][l]{\theusaflistvi}
+        }
+    \else\ifdefined\@usaflistiv
+        \def\@usaflistv{}
+        \setlength{\parindent}{10em}
+        \setcounter{usaflistv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistv}
+            \makebox[3ex][l]{\theusaflistv}
+        }
+    \else\ifdefined\@usaflistiii
+        \def\@usaflistiv{}
+        \setlength{\parindent}{8em}
+        \setcounter{usaflistiv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiv}
+            \makebox[3ex][l]{\theusaflistiv}
+        }
+    \else\ifdefined\@usaflistii
+        \def\@usaflistiii{}
+        \setlength{\parindent}{6em}
+        \setcounter{usaflistiii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiii}
+            \makebox[3ex][l]{\theusaflistiii}
+        }
+    \else\ifdefined\@usaflisti
+        \def\@usaflistii{}
+        \setlength{\parindent}{4em}
+        \setcounter{usaflistii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistii}
+            \makebox[3ex][l]{\theusaflistii}
+        }
+    \else
+        \def\@usaflisti{}
+        \setlength{\parindent}{2em}
+        \setcounter{usaflisti}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflisti}
+            \makebox[3ex][l]{\theusaflisti}
+        }
+    \fi\fi\fi\fi\fi
+}{
+    \noindent
+    \ignorespacesafterend
+}
+
+%% Bullets
+\setlist[itemize]{leftmargin=*,topsep=0pt}
+\renewcommand{\labelitemi}{-}
+\renewcommand{\labelitemii}{-{}-}
+\renewcommand{\labelitemiii}{-{}-{}-}
+\renewcommand{\labelitemiv}{-{}-{}-{}-}
+
+%% Outlines
+\setlistdepth{7}
+\ifdefined\@SHORT
+    \newlist{outline}{enumerate}{5}
+    \setlist[outline, 1]{label=\arabic*.}
+    \setlist[outline, 2]{label=\alph*)}
+    \setlist[outline, 3]{label=(\arabic*)}
+    \setlist[outline, 4]{label=(\alph*)}
+    \setlist[outline, 5]{label=(\roman*)}
+\else
+    \newlist{outline}{enumerate}{7}
+    \setlist[outline, 1]{label=\Roman*.}
+    \setlist[outline, 2]{label=\Alph*.}
+    \setlist[outline, 3]{label=\arabic*.}
+    \setlist[outline, 4]{label=\alph*)}
+    \setlist[outline, 5]{label=(\arabic*)}
+    \setlist[outline, 6]{label=(\alph*)}
+    \setlist[outline, 7]{label=(\roman*)}
+\fi
+
+
+

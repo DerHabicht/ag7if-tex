@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO_DIR="$HOME/code/ag7if-tex/"
+REPO_DIR="$HOME/Repositories/Code/ag7if-tex/"
 
 # Packages
 ln -s "$REPO_DIR/sty/ag7ifform.sty" "$HOME/texmf/tex/ag7ifform.sty"

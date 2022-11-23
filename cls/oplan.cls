@@ -49,6 +49,11 @@
 \RequirePackage{booktabs}
 \RequirePackage{emptypage}
 \RequirePackage{enumerate}
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
 \RequirePackage{tabularx}
 \RequirePackage{titlecaps}
 \RequirePackage{tocloft}

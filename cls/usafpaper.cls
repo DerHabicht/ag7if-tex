@@ -28,6 +28,11 @@
 
 \LoadClass[12pt]{article}
 
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
 \RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
@@ -79,29 +84,3 @@
     \end{center}
 }
 
-% Bullets
-\setlist[itemize]{leftmargin=*,topsep=0pt}
-\renewcommand{\labelitemi}{-}
-\renewcommand{\labelitemii}{-{}-}
-\renewcommand{\labelitemiii}{-{}-{}-}
-\renewcommand{\labelitemiv}{-{}-{}-{}-}
-
-% Outlines
-\setlistdepth{7}
-\ifdefined\@SHORT
-    \newlist{outline}{enumerate}{5}
-    \setlist[outline, 1]{label=\arabic*.}
-    \setlist[outline, 2]{label=\alph*)}
-    \setlist[outline, 3]{label=(\arabic*)}
-    \setlist[outline, 4]{label=(\alph*)}
-    \setlist[outline, 5]{label=(\roman*)}
-\else
-    \newlist{outline}{enumerate}{7}
-    \setlist[outline, 1]{label=\Roman*.}
-    \setlist[outline, 2]{label=\Alph*.}
-    \setlist[outline, 3]{label=\arabic*.}
-    \setlist[outline, 4]{label=\alph*)}
-    \setlist[outline, 5]{label=(\arabic*)}
-    \setlist[outline, 6]{label=(\alph*)}
-    \setlist[outline, 7]{label=(\roman*)}
-\fi
