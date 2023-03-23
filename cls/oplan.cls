@@ -19,8 +19,8 @@
 \DeclareOption{frago}{%
     \newcommand{\FRAGO}{}
 }
-\DeclareOption{weplan}{%
-    \newcommand{\WEPLAN}{}
+\DeclareOption{splan}{%
+    \newcommand{\SPLAN}{}
 }
 \DeclareOption{very-sensitive}{%
     \newcommand{\OplanInfosecLvlSet}{}
@@ -183,8 +183,8 @@
         OPORD%
     \else\ifdefined\FRAGO
         FRAGO%
-    \else\ifdefined\WEPLAN
-        WEPLAN%
+    \else\ifdefined\SPLAN
+        SPLAN%
     \else
         OPLAN%
     \fi\fi\fi\fi\fi
@@ -199,8 +199,8 @@
         OPERATION ORDER%
     \else\ifdefined\FRAGO
         FRAGMENTARY OPERATIONS ORDER%
-    \else\ifdefined\WEPLAN
-        WEEKLY PLAN%
+    \else\ifdefined\SPLAN
+        SPRINT PLAN%
     \else
         OPERATION PLAN%
     \fi\fi\fi\fi\fi
