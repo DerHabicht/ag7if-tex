@@ -96,16 +96,18 @@
 \titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.\hspace{1em}}{0pt}{}
 
 % Paragraphs
-\ifdefined\OPORD
+\ifdefined\SUMMARY
     \renewcommand{\theparagraph}{\arabic{paragraph}}
-    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
-\else\ifdefined\SUMMARY
-    \renewcommand{\theparagraph}{\arabic{paragraph}}
-    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\textbf}
+    \titleformat{\paragraph}[runin]{}{\textbf{\theparagraph.\hspace{1em}}}{0pt}{\textbf}
 \else
     \renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{paragraph}}
-    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
-\fi\fi
+    \titleformat{\paragraph}[runin]{}{\textbf{\theparagraph.\hspace{1em}}}{0pt}{\textbf}
+\fi
+
+% Itemized titles
+\renewcommand{\titem}[1]{%
+    \item \textbf{#1}
+}
 
 % Annex Sectioning
 \renewcommand{\thechapter}{\Alph{chapter}}
