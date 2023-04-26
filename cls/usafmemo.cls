@@ -70,7 +70,11 @@ MEMORANDUM FOR \MakeUppercase{#4}
     \IfEq{\@sigType}{text}{%
         \textsign{\@indName}{\@indRank}{\@indTitle}
     }{%
-        \signature{\@indName}{\@indRank}{\@indTitle}
+        \ifx\@indRank\empty
+            \signature{\@indName}{}{\@indTitle}
+        \else
+            \signature{\@indName}{\@indRank}{\@indTitle}
+        \fi
     }
 }
 

@@ -258,7 +258,8 @@
 
 %% Signature block
 \newcommand{\sigblock}[3]{%
-    \ifx#2\empty
+    \def\temp{#2}
+    \ifx\temp\empty
         \hspace*{\sigoffset}\MakeUppercase{#1}\\
         \hspace*{\sigoffset}#3
     \else
