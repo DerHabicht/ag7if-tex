@@ -5,6 +5,10 @@
     \newcommand{\DRAFT}{}
 }
 
+\DeclareOption{compliance}{%
+    \newcommand{\COMPLIANCE}{}
+}
+
 \DeclareOption{letter}{%
     \newcommand{\LetterPageSize}{}
 }
@@ -69,16 +73,18 @@
 \fi\fi\fi\fi
 
 \RequirePackage{ag7ifpub}
+\RequirePackage[notes,backend=biber]{biblatex-chicago}
 \RequirePackage{booktabs}
 \RequirePackage{chngcntr}
 \RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
+\RequirePackage{glossaries}
+\RequirePackage{makeidx}
 \RequirePackage{titlesec}
+\RequirePackage[tablegrid]{vhistory}
 \usepackage{longtable}
 \ifdefined\DRAFT
     \RequirePackage[scale=8]{draftwatermark}
-
-    % TODO: Check if vhistory is loaded
     \renewcommand{\therevision}{Revision~\vhCurrentVersion{}~(DRAFT)}
     \renewcommand{\@date}{\vhCurrentDate}
 \else
@@ -116,6 +122,44 @@
 \fancyfoot[RO,LE]{\thepage}
 
 \pagestyle{fancy}
+
+% General Book Formatting
+%% Front Matter
+\newcommand{\FrontMatter}{%
+    \maketitle
+    \frontmatter
+    \ifdefined\MANUSCRIPT\else
+        \ifdefined\COMPLIANCE
+            \include{compliance.tex}
+        \else\fi
+        \include{version_history.tex}
+    \fi
+    \tableofcontents
+    \ifdefined\MANUSCRIPT\else
+        \listoffigures
+        \listoftables
+    \fi
+}
+
+%% Back Matter
+%%% Build Back Matter
+\newcommand{\BuildBackMatter}{%
+    \input{glossary.tex}
+    \makeglossaries%
+    \addbibresource{references.bib}
+    \makeindex
+}
+
+%%% Insert Back Matter
+\newcommand{\BackMatter}{%
+    \backmatter%
+    \ifdefined\MANUSCRIPT\else
+        \printglossaries%
+        \printbibliography%
+        \printindex
+        \BackPage{}
+    \fi
+}
 
 % List formatting
 %% Enumerated lists
@@ -195,10 +239,6 @@
 
 %% Bullets
 \setlist[itemize]{leftmargin=*,topsep=0pt}
-\renewcommand{\labelitemi}{-}
-\renewcommand{\labelitemii}{-{}-}
-\renewcommand{\labelitemiii}{-{}-{}-}
-\renewcommand{\labelitemiv}{-{}-{}-{}-}
 
 %% Outlines
 \setlistdepth{7}

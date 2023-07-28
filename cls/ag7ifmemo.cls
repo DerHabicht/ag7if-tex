@@ -4,14 +4,8 @@
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
 }
-\DeclareOption{pm}{%
-    \newcommand{\PM}{}
-}
 \DeclareOption{mr}{%
     \newcommand{\MR}{}
-}
-\DeclareOption{rfc}{%
-    \newcommand{\RFC}{}
 }
 \DeclareOption{very-sensitive}{%
     \newcommand{\@INFOSEC}{}
@@ -25,16 +19,9 @@
 \DeclareOption{not-sensitive}{%
     \newcommand{\@INFOSEC}{}
 }
-\DeclareOption{fouo}{%
-    \newcommand{\@FOUO}{}
-}
 \ProcessOptions\relax
 
-\ifdefined\@FOUO
-    \LoadClass[fouo]{usafmemo}
-\else
-    \LoadClass{usafmemo}
-\fi
+\LoadClass{usafmemo}
 
 \ifdefined\@INFOSEC
     \RequirePackage{infosec}
@@ -57,13 +44,7 @@
     \hfill\@date
 
     \vspace*{1em}
-    \ifdefined\PM
-        POLICY MEMORANDUM
-    \else\ifdefined\RFC
-        REQUEST FOR COMMENT
-    \else
-        MEMORANDUM FOR\hspace{0.25em}
-    \fi\fi
+    MEMORANDUM FOR\hspace{0.25em}
     \ifdefined\MR
         RECORD
     \else
@@ -72,15 +53,13 @@
         \end{minipage}
     \fi
 
-    \ifdefined\PM
-    \else\ifdefined\MR
-    \else\ifdefined\RFC
+    \ifdefined\MR
     \else
         FROM:\hspace{0.25em}
         \begin{minipage}[t]{0.75\textwidth}
         \@memofrom
         \end{minipage}
-    \fi\fi\fi
+    \fi
 
     SUBJECT:~ \@subject
 }
