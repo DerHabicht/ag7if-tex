@@ -84,14 +84,14 @@
         \@securityMark\\
         \vspace{1ex}
         \UsafLetterHeadFont{%
-            HEADQUARTERS \MakeUppercase{\@unit}\\
+            \MakeUppercase{\@unit}\\
             CIVIL AIR PATROL\\
             UNITED STATES AIR FORCE AUXILIARY\\
             \@address
         }
     \else
         \UsafLetterHeadFont{%
-            HEADQUARTERS \MakeUppercase{\@unit}\\
+            \MakeUppercase{\@unit}\\
             CIVIL AIR PATROL\\
             UNITED STATES AIR FORCE AUXILIARY\\
             \@address
@@ -279,7 +279,7 @@
 
 \newcommand{\textsign}[3]{%
     \vspace{2em}
-    \hspace*{\sigoffset}// SIGNED //\\
+    \hspace*{\sigoffset}\hspace{6ex}// SIGNED //\\
     \sigblock{#1}{#2}{#3}
 }
 

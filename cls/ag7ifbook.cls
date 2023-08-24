@@ -1,6 +1,20 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ag7ifbook}
 
+% Document Setup:
+%   \documentclass[<MANUSCRIPT>,<DRAFT>,<paper-size>,<infosec>]{ag7ifbook}
+%   
+%   \controlnumber{<CTL_NUM>}
+%   \title{<TITLE>}
+%   \titlelogo{<TITLE_LOGO_PATH>}
+%
+%   \publisher{<PUBLISHER>}
+%   \publisherAddress{<PUB_ADDRESS>}
+%   \publisherWeb{<PUB_WEBSITE>}
+%   \publisherLogo{<PUB_LOGO_PATH>}
+%
+%   \copyrightOwner{<COPYRIGHT_OWNER>}
+
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
 }
@@ -92,6 +106,8 @@
     \renewcommand{\@date}{\vhCurrentDate}
 
 \fi
+
+\renewcommand{\thesubsection}{\Alph{subsection}.}
 
 \setcounter{secnumdepth}{4}
 \counterwithout{paragraph}{subsubsection}
