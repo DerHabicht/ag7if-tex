@@ -3,7 +3,7 @@
 
 % Document setup:
 %
-% \documentclass[<DRAFT>,<cap>,<plan_type>,<infosec>]{oplan}
+% \documentclass[<DRAFT>,<cap>,<vhistory>,<plan_type>,<infosec>,]{oplan}
 %
 % <\usepackage[tocentry,tablegrid]{vhistory}>
 %
@@ -158,16 +158,13 @@
 \titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.\hspace{1em}}{0pt}{}
 
 % Paragraphs
-\ifdefined\OPORD
-    \renewcommand{\theparagraph}{\arabic{paragraph}}
-    \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
-\else\ifdefined\SUMMARY
+\ifdefined\SUMMARY
     \renewcommand{\theparagraph}{\arabic{paragraph}}
     \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\textbf}
 \else
     \renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{paragraph}}
     \titleformat{\paragraph}[runin]{}{\theparagraph.\hspace{1em}}{0pt}{\underline}
-\fi\fi
+\fi
 
 % Annex Sectioning
 \renewcommand{\thechapter}{\Alph{chapter}}
@@ -254,11 +251,11 @@
     \ifdefined\CAMPLAN
         CAMPAIGN PLAN%
     \else\ifdefined\CONPLAN
-        CONCEPTUAL OPERATIONS PLAN%
+        CONCEPTUAL OPERATION PLAN%
     \else\ifdefined\OPORD
         OPERATION ORDER%
     \else\ifdefined\FRAGO
-        FRAGMENTARY OPERATIONS ORDER%
+        FRAGMENTARY OPERATION ORDER%
     \else\ifdefined\WEPLAN
         WEEKLY PLAN%
     \else
@@ -284,7 +281,7 @@
     \fi
 }
 
-\newcommand{\@OpordTitle}{%
+\newcommand{\@FragOrdTitle}{%
     \ifdefined\FOUO
         \FouoCoverPage
     \else\ifdefined\OplanInfosecLvlSet
@@ -359,23 +356,22 @@
         % NOTE: The assumption is made here that if @coverSealD is defined, so is C, B, A, etc.
         \ifdefined\@coverSealD
             \includegraphics[height=2in]{\@coverSealA}
-            \hspace{1in} 
+            \hspace{0.25in} 
             \includegraphics[height=2in]{\@coverSealB}
 
-            \noindent
             \includegraphics[height=2in]{\@coverSealC}
-            \hspace{1in}
+            \hspace{0.25in}
             \includegraphics[height=2in]{\@coverSealD}
         \else\ifdefined\@coverSealC
-            \includegraphics[height=2in]{\@coverSealA}
-            \hspace{0.5in} 
-            \includegraphics[height=2in]{\@coverSealB}
-            \hspace{0.in} 
-            \includegraphics[height=2in]{\@coverSealC}
+            \includegraphics[height=3in]{\@coverSealA}
+
+            \includegraphics[height=3in]{\@coverSealB}
+            \hspace{0.25in} 
+            \includegraphics[height=3in]{\@coverSealC}
         \else\ifdefined\@coverSealB
-            \includegraphics[height=2in]{\@coverSealA}
-            \hspace{1in} 
-            \includegraphics[height=2in]{\@coverSealB}
+            \includegraphics[height=3in]{\@coverSealA}
+            \hspace{0.25in} 
+            \includegraphics[height=3in]{\@coverSealB}
         \else\ifdefined\@coverSealA
             \includegraphics[height=4in]{\@coverSealA}
         \else
@@ -451,11 +447,9 @@
 
     \ifdefined\SUMMARY
         \@SummaryOplanTitle%
-    \else\ifdefined\OPORD
-        \@OpordTitle%
     \else\ifdefined\FRAGO
-        \@OpordTitle%
+        \@FragOrdTitle%
     \else
         \@FullTitle%
-    \fi\fi\fi
+    \fi\fi
 }
