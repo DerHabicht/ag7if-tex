@@ -32,3 +32,12 @@
 \newcommand{\FormTextField}[3]{%
     \TextField[multiline, height=#1, width=#2, borderwidth=0, bordercolor={}, backgroundcolor={}]{#3}{}%
 }
+
+\newcommand{\FormDropDown}[3]{%
+    \def\temp{#2}\ifx\empty
+        \ChoiceMenu[print, combo, bordercolor={0 0 0}, name=#1]{}{#3}
+    \else
+        \ChoiceMenu[print, combo, bordercolor={0 0 0}, default=#2, name=#1]{}{#3}
+    \fi
+}
+

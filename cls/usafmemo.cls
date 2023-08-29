@@ -1,6 +1,47 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{usafmemo}
 
+% Document Setup:
+%
+% \documentclass[<DRAFT>,<cap>,<mr>,<fouo>]{usafmemo}
+%
+% \seal{<SEAL_PATH>} % Optional if using the <cap> document option
+% \unitPatch{<UNIT_PATCH_PATH>}
+% \unit{<UNIT>}
+% \address{<UNIT_ADDRESS> \\ <CITY>, <STATE> <ZIP>}
+%
+% \memofor{<MEMO_FOR_LINE>} % Ignored if using the <mr> document option
+% \memofrom{<MEMO_FROM_LINE>}
+% \subject{<SUBJECT>}
+%
+% \begin{document}
+% \maketitle
+%
+% \paragraph{} <CONTENT>
+%
+% \paragraph{} <CONTENT>
+%
+% \signature{<NAME>}{<GRADE>}{<DUTY_ASSIGNMENT>} % For hand-signing after printing
+% \textsign{<NAME>}{<GRADE>}{<DUTY_ASSIGNMENT>} % Inserts "// SIGNED //" above the signature block
+% \digisign{<NAME>}{<GRADE>}{<DUTY_ASSIGNMENT>}{<SIG_IMG_PATH>} % For including an image of the signature
+%
+% \attachment{<ATTACHMENT>} % For a single attachment
+% \attachments{%
+%   \item <ATTACHMENT_1>
+%   \item <ATTACHMENT_2>
+% } % For multiple attachments
+%
+% \cc{%
+%   <CC_TO_1> \\
+%   <CC_TO_2>
+% }
+%
+% \distribution{%
+%   <DIST_TO_1> \\
+%   <DIST_TO_2>
+% }
+% \end{document}
+
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
 }
@@ -15,6 +56,11 @@
 \LoadClass[12pt]{article}
 
 \RequirePackage{enumerate}
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
 \RequirePackage{nth}
 \RequirePackage{usafpub}
 \RequirePackage{xstring}
@@ -65,7 +111,11 @@ MEMORANDUM FOR \MakeUppercase{#4}
     \IfEq{\@sigType}{text}{%
         \textsign{\@indName}{\@indRank}{\@indTitle}
     }{%
-        \signature{\@indName}{\@indRank}{\@indTitle}
+        \ifx\@indRank\empty
+            \signature{\@indName}{}{\@indTitle}
+        \else
+            \signature{\@indName}{\@indRank}{\@indTitle}
+        \fi
     }
 }
 

@@ -6,12 +6,8 @@
 }
 \ProcessOptions\relax
 
+\RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
-\RequirePackage[
-    margin=1in,
-    headheight=15pt,
-    footskip=0.5in
-]{geometry}
 \RequirePackage[T1]{fontenc}
 \RequirePackage{graphicx}
 \RequirePackage{mathptmx}
@@ -88,14 +84,14 @@
         \@securityMark\\
         \vspace{1ex}
         \UsafLetterHeadFont{%
-            HEADQUARTERS \MakeUppercase{\@unit}\\
+            \MakeUppercase{\@unit}\\
             CIVIL AIR PATROL\\
             UNITED STATES AIR FORCE AUXILIARY\\
             \@address
         }
     \else
         \UsafLetterHeadFont{%
-            HEADQUARTERS \MakeUppercase{\@unit}\\
+            \MakeUppercase{\@unit}\\
             CIVIL AIR PATROL\\
             UNITED STATES AIR FORCE AUXILIARY\\
             \@address
@@ -204,6 +200,34 @@
     \ignorespacesafterend
 }
 
+% Bullets
+\setlist[itemize]{leftmargin=*,topsep=0pt}
+\renewcommand{\labelitemi}{-}
+\renewcommand{\labelitemii}{-{}-}
+\renewcommand{\labelitemiii}{-{}-{}-}
+\renewcommand{\labelitemiv}{-{}-{}-{}-}
+
+% Outlines
+\setlistdepth{7}
+\ifdefined\@SHORT
+    \newlist{outline}{enumerate}{5}
+    \setlist[outline, 1]{label=\arabic*.}
+    \setlist[outline, 2]{label=\alph*)}
+    \setlist[outline, 3]{label=(\arabic*)}
+    \setlist[outline, 4]{label=(\alph*)}
+    \setlist[outline, 5]{label=(\roman*)}
+\else
+    \newlist{outline}{enumerate}{7}
+    \setlist[outline, 1]{label=\Roman*.}
+    \setlist[outline, 2]{label=\Alph*.}
+    \setlist[outline, 3]{label=\arabic*.}
+    \setlist[outline, 4]{label=\alph*)}
+    \setlist[outline, 5]{label=(\arabic*)}
+    \setlist[outline, 6]{label=(\alph*)}
+    \setlist[outline, 7]{label=(\roman*)}
+\fi
+
+
 \newenvironment{UsafMemo}{%
 	\begin{textblock*}{6.75in}(.75in,1.75in)
 }{%
@@ -255,7 +279,7 @@
 
 \newcommand{\textsign}[3]{%
     \vspace{2em}
-    \hspace*{\sigoffset}// SIGNED //\\
+    \hspace*{\sigoffset}\hspace{6ex}// SIGNED //\\
     \sigblock{#1}{#2}{#3}
 }
 

@@ -1,6 +1,63 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{oplan}
 
+% Document setup:
+%
+% \documentclass[<DRAFT>,<cap>,<vhistory>,<plan_type>,<infosec>,]{oplan}
+%
+% <\usepackage[tocentry,tablegrid]{vhistory}>
+%
+% \oplan{<OPLAN_NUMBER>}
+% \incidentNumber{<INCIDENT_NUMBER>}
+% \incident[<INCIDENT_TYPE>]{<INCIDENT_NAME>}
+% \coverSeal%
+%   {<COVER_SEAL1_PATH>}%
+%   {<COVER_SEAL2_PATH>}%
+%   {<COVER_SEAL3_PATH>}%
+%   {<COVER_SEAL4_PATH>}
+% \effective{<PLAN_EFFECTIVE_DATE>}
+% \location{<INCIDENT_LOCATION>}
+% \incidentDate[<END_DATE>]{<START_DATE>}
+% \commander[<TITLE>]{<NAME>}{<CONTACT>}
+%
+% \seal{<SEAL_PATH>} % Optional if using the <cap> document option
+% \unitPatch{<UNIT_PATCH_PATH>}
+% \unit{<UNIT>}
+% \address{<UNIT ADDRESS> \\ <CITY>, <STATE> <ZIP>}
+%
+% \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
+% \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
+% \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
+%
+% \references{%
+%   \item <REF_1>
+%   \item <REF_2>
+% }
+%
+% \begin{document}
+% \maketitle
+% 
+% \section{<SITUATION>}
+% \subsection{<SUBSEC_HEADING>}
+% \paragraph{<PARA_HEADING>}
+% \begin{enumerate}
+%   \titem{<ITEM_HEADER>}
+% \end{enumerate}
+%
+% \section{<MISSION>}
+%
+% \section{<EXECUTION>}
+%
+% \section{<SUSTAINMENT>}
+%
+% \section{<C4>}
+%
+% \signature{<NAME>}{<GRADE>}{<DUTY_ASSIGNMENT>} % For hand-signing after printing
+% \textsign{<NAME>}{<GRADE>}{<DUTY_ASSIGNMENT>} % Inserts "// SIGNED //" above the signature block
+% \digisign{<NAME>}{<GRADE>}{<DUTY_ASSIGNMENT>}{<SIG_IMG_PATH>} % For including an image of the signature
+%
+% \end{document}
+
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
 }
@@ -18,6 +75,9 @@
 }
 \DeclareOption{frago}{%
     \newcommand{\FRAGO}{}
+}
+\DeclareOption{weplan}{%
+    \newcommand{\WEPLAN}{}
 }
 \DeclareOption{splan}{%
     \newcommand{\SPLAN}{}
@@ -49,6 +109,11 @@
 \RequirePackage{booktabs}
 \RequirePackage{emptypage}
 \RequirePackage{enumerate}
+\RequirePackage[
+    margin=1in,
+    headheight=15pt,
+    footskip=0.5in
+]{geometry}
 \RequirePackage{tabularx}
 \RequirePackage{titlecaps}
 \RequirePackage{tocloft}
@@ -149,17 +214,15 @@
     \def\@commanderContact{#3}%
 }
 
-\newcommand{\staffCoord}[4]{%
-    \ifdefined\@staffCoords
-        \edef\@staffCoords{%
-            \@staffCoords 
-            #1 & #2 & #3 & #4 \\ \hline
-        }
-    \else
-        \def\@staffCoords{%
-            #1 & #2 & #3 & #4 \\ \hline
-        }
-    \fi
+\newcommand{\coordChain}{}
+
+\newcommand\staffCoord[1]{%
+    \g@addto@macro\coordChain{\hline\@gobble}%
+  \@for\tmp:=#1\do{%
+ \expandafter\g@addto@macro\expandafter\coordChain
+                   \expandafter{\expandafter&\tmp}%
+}%
+    \g@addto@macro\coordChain{\\}%
 }
 
 \newcommand{\tableofcoordination}{%
@@ -167,7 +230,7 @@
     \begin{tabularx}{\textwidth}{|l|l|X|r|}
         \hline
         OFFICE &  ACTION &  OUTCOME &  DATE \\ \hline
-        \@staffCoords
+        \coordChain \hline
     \end{tabularx}
     \end{center}
 }
@@ -185,27 +248,31 @@
         OPORD%
     \else\ifdefined\FRAGO
         FRAGO%
+    \else\ifdefined\WEPLAN
+        WEPLAN%
     \else\ifdefined\SPLAN
         SPLAN%
     \else
         OPLAN%
-    \fi\fi\fi\fi\fi
+    \fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theOperationsPlan}{%
     \ifdefined\CAMPLAN
         CAMPAIGN PLAN%
     \else\ifdefined\CONPLAN
-        CONCEPTUAL OPERATIONS PLAN%
+        CONCEPTUAL OPERATION PLAN%
     \else\ifdefined\OPORD
         OPERATION ORDER%
     \else\ifdefined\FRAGO
-        FRAGMENTARY OPERATIONS ORDER%
+        FRAGMENTARY OPERATION ORDER%
     \else\ifdefined\SPLAN
         SPRINT PLAN%
+    \else\ifdefined\WEPLAN
+        WEEKLY PLAN%
     \else
         OPERATION PLAN%
-    \fi\fi\fi\fi\fi
+    \fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theplan}{%
@@ -226,7 +293,7 @@
     \fi
 }
 
-\newcommand{\@OpordTitle}{%
+\newcommand{\@FragOrdTitle}{%
     \ifdefined\FOUO
         \FouoCoverPage
     \else\ifdefined\OplanInfosecLvlSet
@@ -262,8 +329,26 @@
     \fi
 }
 
-\newcommand{\coverSeal}[1]{%
-    \def\@coverSeal{#1}%
+\newcommand{\coverSeal}[4]{%
+    \def\tempA{#1}%
+    \def\tempB{#2}%
+    \def\tempC{#3}%
+    \def\tempD{#4}%
+
+    \def\@coverSealA{#1}%
+
+    \ifx\tempB\empty\else
+    \def\@coverSealB{#2}%
+    \fi
+
+    \ifx\tempC\empty\else
+    \def\@coverSealC{#3}%
+    \fi
+
+    \ifx\tempD\empty\else
+    \def\@coverSealD{#4}%
+    \fi
+
 }
 
 \newcommand{\@FullTitle}{%
@@ -280,11 +365,30 @@
         
         \vfill
 
-        \ifdefined\@coverSeal
-            \includegraphics[height=4in]{\@coverSeal}
+        % NOTE: The assumption is made here that if @coverSealD is defined, so is C, B, A, etc.
+        \ifdefined\@coverSealD
+            \includegraphics[height=2in]{\@coverSealA}
+            \hspace{0.25in} 
+            \includegraphics[height=2in]{\@coverSealB}
+
+            \includegraphics[height=2in]{\@coverSealC}
+            \hspace{0.25in}
+            \includegraphics[height=2in]{\@coverSealD}
+        \else\ifdefined\@coverSealC
+            \includegraphics[height=3in]{\@coverSealA}
+
+            \includegraphics[height=3in]{\@coverSealB}
+            \hspace{0.25in} 
+            \includegraphics[height=3in]{\@coverSealC}
+        \else\ifdefined\@coverSealB
+            \includegraphics[height=3in]{\@coverSealA}
+            \hspace{0.25in} 
+            \includegraphics[height=3in]{\@coverSealB}
+        \else\ifdefined\@coverSealA
+            \includegraphics[height=4in]{\@coverSealA}
         \else
             \includegraphics[height=4in]{\@seal}
-        \fi
+        \fi\fi\fi\fi
 
         \vfill
 
@@ -355,11 +459,9 @@
 
     \ifdefined\SUMMARY
         \@SummaryOplanTitle%
-    \else\ifdefined\OPORD
-        \@OpordTitle%
     \else\ifdefined\FRAGO
-        \@OpordTitle%
+        \@FragOrdTitle%
     \else
         \@FullTitle%
-    \fi\fi\fi
+    \fi\fi
 }

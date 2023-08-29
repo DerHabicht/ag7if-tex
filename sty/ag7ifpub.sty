@@ -1,6 +1,10 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{ag7ifpub}
 
+\DeclareOption{MANUSCRIPT}{%
+    \newcommand{\MANUSCRIPT}{}
+}
+
 \DeclareOption{cc}{%
     \newcommand{\CC}{}
 }
@@ -32,6 +36,14 @@
 
 \newcommand{\thetitlelogo}[1]{%
     \includegraphics[width=0.5\textwidth]{\@titlelogo} \\
+}
+
+\newcommand{\subtitle}[1]{%
+    \def\@subtitle{#1}
+}
+
+\newcommand{\thesubtitle}{%
+    \@subtitle%
 }
 
 \newcommand{\revision}[1]{%
@@ -70,7 +82,7 @@
     \ifdefined\@publisherWeb
         \url{\@publisherWeb}
     \else
-        \url{www.the-hawk.us}
+        \url{www.ag7if.net}
     \fi
 }
 
@@ -95,15 +107,23 @@
         \thetitle{}
 
         \Large
-        \vspace{8ex}
+        \ifdefined\@subtitle
+            \vspace{2ex}
+            \thesubtitle{}
+            \vspace{5ex}
+        \else
+            \vspace{8ex}
+        \fi
+
         \therevision{}
 
         \@date
 
         \vfill
 
-        \thetitlelogo{}
-
+        \ifdefined\MANUSCRIPT\else
+            \thetitlelogo{}
+        \fi
 
         \ifdefined\InfosecLevel
             \vfill
@@ -180,6 +200,7 @@
 }
 
 \newcommand{\BackPage}{%
+    \ifdefined\MANUSCRIPT\else
     \clearpage
     \ifodd\value{page}\hbox{}\newpage\fi
     \thispagestyle{nomark}
@@ -187,6 +208,7 @@
         \vspace*{\fill}
         \PubMark
     \end{center}
+    \fi
 }
 
 \renewcommand{\maketitle}{%
@@ -196,7 +218,9 @@
         \InfosecCover{}
     \else
         \TitlePage{}
-        \Colophon{}
+        \ifdefined\MANUSCRIPT\else
+            \Colophon{}
+        \fi
     \fi
 }
 

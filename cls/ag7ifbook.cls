@@ -1,8 +1,26 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ag7ifbook}
 
+% Document Setup:
+%   \documentclass[<MANUSCRIPT>,<DRAFT>,<paper-size>,<infosec>]{ag7ifbook}
+%   
+%   \controlnumber{<CTL_NUM>}
+%   \title{<TITLE>}
+%   \titlelogo{<TITLE_LOGO_PATH>}
+%
+%   \publisher{<PUBLISHER>}
+%   \publisherAddress{<PUB_ADDRESS>}
+%   \publisherWeb{<PUB_WEBSITE>}
+%   \publisherLogo{<PUB_LOGO_PATH>}
+%
+%   \copyrightOwner{<COPYRIGHT_OWNER>}
+
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
+}
+
+\DeclareOption{compliance}{%
+    \newcommand{\COMPLIANCE}{}
 }
 
 \DeclareOption{letter}{%
@@ -69,15 +87,18 @@
 \fi\fi\fi\fi
 
 \RequirePackage{ag7ifpub}
+\RequirePackage[notes,backend=biber]{biblatex-chicago}
 \RequirePackage{booktabs}
 \RequirePackage{chngcntr}
+\RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
+\RequirePackage{glossaries}
+\RequirePackage{makeidx}
 \RequirePackage{titlesec}
+\RequirePackage[tablegrid]{vhistory}
 \usepackage{longtable}
 \ifdefined\DRAFT
     \RequirePackage[scale=8]{draftwatermark}
-
-    % TODO: Check if vhistory is loaded
     \renewcommand{\therevision}{Revision~\vhCurrentVersion{}~(DRAFT)}
     \renewcommand{\@date}{\vhCurrentDate}
 \else
@@ -85,6 +106,8 @@
     \renewcommand{\@date}{\vhCurrentDate}
 
 \fi
+
+\renewcommand{\thesubsection}{\Alph{subsection}.}
 
 \setcounter{secnumdepth}{4}
 \counterwithout{paragraph}{subsubsection}
@@ -115,3 +138,143 @@
 \fancyfoot[RO,LE]{\thepage}
 
 \pagestyle{fancy}
+
+% General Book Formatting
+%% Front Matter
+\newcommand{\FrontMatter}{%
+    \maketitle
+    \frontmatter
+    \ifdefined\MANUSCRIPT\else
+        \ifdefined\COMPLIANCE
+            \include{compliance.tex}
+        \else\fi
+        \include{version_history.tex}
+    \fi
+    \tableofcontents
+    \ifdefined\MANUSCRIPT\else
+        \listoffigures
+        \listoftables
+    \fi
+}
+
+%% Back Matter
+%%% Build Back Matter
+\newcommand{\BuildBackMatter}{%
+    \input{glossary.tex}
+    \makeglossaries%
+    \addbibresource{references.bib}
+    \makeindex
+}
+
+%%% Insert Back Matter
+\newcommand{\BackMatter}{%
+    \backmatter%
+    \ifdefined\MANUSCRIPT\else
+        \printglossaries%
+        \printbibliography%
+        \printindex
+        \BackPage{}
+    \fi
+}
+
+% List formatting
+%% Enumerated lists
+\newcounter{usaflisti}
+\renewcommand{\theusaflisti}{\alph{usaflisti}.}
+\newcounter{usaflistii}
+\renewcommand{\theusaflistii}{(\arabic{usaflistii})}
+\newcounter{usaflistiii}
+\renewcommand{\theusaflistiii}{(\alph{usaflistiii})}
+\newcounter{usaflistiv}
+\renewcommand{\theusaflistiv}{\underline{\arabic{usaflistiv}}}
+\newcounter{usaflistv}
+\renewcommand{\theusaflistv}{\underline{\alph{usaflistv}}}
+\newcounter{usaflistvi}
+\renewcommand{\theusaflistvi}{[\arabic{usaflistvi}]}
+
+\renewenvironment{enumerate}{
+    \ifdefined\@usaflistv
+        \def\@usaflistvi{}
+        \setlength{\parindent}{12em}
+        \setcounter{usaflistvi}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistvi}
+            \makebox[3ex][l]{\theusaflistvi}
+        }
+    \else\ifdefined\@usaflistiv
+        \def\@usaflistv{}
+        \setlength{\parindent}{10em}
+        \setcounter{usaflistv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistv}
+            \makebox[3ex][l]{\theusaflistv}
+        }
+    \else\ifdefined\@usaflistiii
+        \def\@usaflistiv{}
+        \setlength{\parindent}{8em}
+        \setcounter{usaflistiv}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiv}
+            \makebox[3ex][l]{\theusaflistiv}
+        }
+    \else\ifdefined\@usaflistii
+        \def\@usaflistiii{}
+        \setlength{\parindent}{6em}
+        \setcounter{usaflistiii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistiii}
+            \makebox[3ex][l]{\theusaflistiii}
+        }
+    \else\ifdefined\@usaflisti
+        \def\@usaflistii{}
+        \setlength{\parindent}{4em}
+        \setcounter{usaflistii}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflistii}
+            \makebox[3ex][l]{\theusaflistii}
+        }
+    \else
+        \def\@usaflisti{}
+        \setlength{\parindent}{2em}
+        \setcounter{usaflisti}{0}
+        \renewcommand{\item}{
+            \par
+            \refstepcounter{usaflisti}
+            \makebox[3ex][l]{\theusaflisti}
+        }
+    \fi\fi\fi\fi\fi
+}{
+    \noindent
+    \ignorespacesafterend
+}
+
+%% Bullets
+\setlist[itemize]{leftmargin=*,topsep=0pt}
+
+%% Outlines
+\setlistdepth{7}
+\ifdefined\@SHORT
+    \newlist{outline}{enumerate}{5}
+    \setlist[outline, 1]{label=\arabic*.}
+    \setlist[outline, 2]{label=\alph*)}
+    \setlist[outline, 3]{label=(\arabic*)}
+    \setlist[outline, 4]{label=(\alph*)}
+    \setlist[outline, 5]{label=(\roman*)}
+\else
+    \newlist{outline}{enumerate}{7}
+    \setlist[outline, 1]{label=\Roman*.}
+    \setlist[outline, 2]{label=\Alph*.}
+    \setlist[outline, 3]{label=\arabic*.}
+    \setlist[outline, 4]{label=\alph*)}
+    \setlist[outline, 5]{label=(\arabic*)}
+    \setlist[outline, 6]{label=(\alph*)}
+    \setlist[outline, 7]{label=(\roman*)}
+\fi
+
+
+
