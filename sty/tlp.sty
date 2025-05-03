@@ -4,7 +4,6 @@
 \RequirePackage{xcolor}
 \RequirePackage{soul}
 \RequirePackage{tikz}
-\RequirePackage{fancyhdr}
 \RequirePackage{geometry}
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{etoolbox}
@@ -20,6 +19,11 @@
     \newcommand{\LVLRED}{}
 }
 
+\DeclareOptionX{amber-strict}{
+    \newcommand{\LVL}{}
+    \newcommand{\LVLAMBERSTRICT}{}
+}
+
 \DeclareOptionX{amber}{%
     \newcommand{\LVL}{}
     \newcommand{\LVLAMBER}{}
@@ -30,9 +34,9 @@
     \newcommand{\LVLGREEN}{}
 }
 
-\DeclareOptionX{white}{%
+\DeclareOptionX{clear}{%
     \newcommand{\LVL}{}
-    \newcommand{\LVLWHITE}{}
+    \newcommand{\LVLCLEAR}{}
 }
 
 \DeclareOptionX{compartments}{\forcsvlist{\listadd\COMPARTMENTS}{#1}}
@@ -40,17 +44,13 @@
 \ProcessOptionsX\relax
 
 \unless\ifdefined\LVL
-    \newcommand{\LVLWHITE}{}
+    \newcommand{\LVLCLEAR}{}
 \fi
 
-\definecolor{TRed}{RGB}{255,0,51}
+\definecolor{TRed}{RGB}{255,43,43}
 \definecolor{TAmber}{RGB}{255,192,0}
 \definecolor{TGreen}{RGB}{51,255,0}
-\definecolor{TWhite}{RGB}{255,255,255}
-
-\fancypagestyle{tlp}{%
-    \fancyhf{}
-}
+\definecolor{TClear}{RGB}{255,255,255}
 
 \newcommand{\@compartment}[1]{#1/}
 \DeclareRobustCommand{\CompartmentList}{%
@@ -61,17 +61,19 @@
     \ifdefined\COMPARTMENTS
         \sethlcolor{black}
         \textcolor{TRed}{%
-            \hl{TLP:RED//\mbox{\CompartmentList}}
+            \hl{TLP:RED+\mbox{\CompartmentList}}
         }
     \else
         \TLPRed{}
     \fi
 }
 \DeclareRobustCommand{\TLPRed}[1]%
-    {\sethlcolor{black}\textcolor{TRed}{\def\caveat{#1}\ifx\caveat\empty\hl{TLP:RED}\else\hl{TLP:RED//#1}\fi}}
+    {\sethlcolor{black}\textcolor{TRed}
+    {\def\caveat{#1}\ifx\caveat\empty\hl{TLP:RED}\else\hl{TLP:RED//#1}\fi}}
+\DeclareRobustCommand{\TLPAmberStrict}{\sethlcolor{black}\textcolor{TAmber}{\hl{TLP:AMBER+STRICT}}}
 \DeclareRobustCommand{\TLPAmber}{\sethlcolor{black}\textcolor{TAmber}{\hl{TLP:AMBER}}}
 \DeclareRobustCommand{\TLPGreen}{\sethlcolor{black}\textcolor{TGreen}{\hl{TLP:GREEN}}}
-\DeclareRobustCommand{\TLPWhite}{\sethlcolor{black}\textcolor{white}{\hl{TLP:WHITE}}}
+\DeclareRobustCommand{\TLPClear}{\sethlcolor{black}\textcolor{TClear}{\hl{TLP:CLEAR}}}
 \DeclareRobustCommand{\TLPLevel}{%
     \ifdefined\COMPARTMENTS
         \TLPRedList{}
@@ -79,14 +81,18 @@
     \ifdefined\LVLRED
         \TLPRed{}
     \else
+    \ifdefined\LVLAMBERSTRICT
+        \TLPAmberStrict
+    \else
     \ifdefined\LVLAMBER
         \TLPAmber
     \else
     \ifdefined\LVLGREEN
         \TLPGreen
     \else
-    \ifdefined\LVLWHITE
-        \TLPWhite
+    \ifdefined\LVLCLEAR
+        \TLPClear
+    \fi
     \fi
     \fi
     \fi
@@ -97,10 +103,10 @@
 \newcommand{\EndTLPRed}{\sethlcolor{black}\textcolor{TRed}{\hl{* * *}}}
 \newcommand{\EndTLPAmber}{\sethlcolor{black}\textcolor{TAmber}{\hl{* * *}}}
 \newcommand{\EndTLPGreen}{\sethlcolor{black}\textcolor{TGreen}{\hl{* * *}}}
-\newcommand{\EndTLPWhite}{\sethlcolor{black}\textcolor{white}{\hl{* * *}}}
+\newcommand{\EndTLPClear}{\sethlcolor{black}\textcolor{TClear}{\hl{* * *}}}
 
 \newcommand{\RedCover}{%
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \topskip0pt
     \newgeometry{left=2in,right=2in}
 
@@ -125,20 +131,19 @@
 
         {%
             \Large
-            Restricted to participants.
-
-            DO NOT DISCLOSE THIS INFORMATION!
+            EYES ONLY
+            
+            \vspace{1em}
+            NO FURTHER DISCLOSURE
         }
     \end{center}
 
     \vspace{5em}
 
     \noindent
-    This document contains sensitive information that must not be disclosed
-    beyond this document's participants. A list of concerned participants must
-    be disclosed with the distribution of this document. Handling, storage,
-    reproduction, and disposition of this document must be in accordance with
-    applicable Information Security Standards.
+     Sources may use TLP:RED when information cannot be effectively acted upon without
+     significant risk for the privacy, reputation, or operations of the organizations involved.
+     Recipients may therefore not share TLP:RED information with anyone else.
 
     \vspace*{\fill}
 
@@ -158,7 +163,70 @@
         \fi
     \end{center}
     \newpage
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+        \Large{}
+        THIS PAGE INTENTIONALLY LEFT BLANK
+    \end{center}
+    \vspace*{\fill}
+    \restoregeometry{}
+}
+
+\newcommand{\AmberStrictCover}{%
+    \thispagestyle{empty}
+    \topskip0pt
+    \newgeometry{left=2in,right=2in}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        % page frame
+        \fill [TAmber] (current page.north west)
+            rectangle (current page.south east);
+        \fill [white]
+            ($(current page.north west)+(1in,-1in)$)
+            rectangle
+            ($(current page.south east)+(-1in,1in)$);
+    \end{tikzpicture}
+
+    \begin{center}
+        {\Huge\TLPAmberStrict}
+
+        \vspace*{\fill}
+
+        {%
+            \Large
+            LIMITED DISCLOSURE
+
+            \vspace{1em}
+            DISCLOSE ONLY WITHIN THE ORGANIZATION 
+        }
+    \end{center}
+
+    \vspace{5em}
+
+    \noindent
+    Sources may use TLP:AMBER+STRICT when information requires support to be effectively 
+    acted upon, yet carries risk to privacy, reputation, or operations if shared 
+    outside of the organizations involved. Recipients may share TLP:AMBER+STRICT information 
+    only with members of their own organization, but only on a need-to-know basis to protect 
+    their organization and its clients and prevent further harm.
+
+    \vspace*{\fill}
+
+    \begin{center}
+        {\footnotesize
+            More information about the Traffic Light Protocol can be found at:
+
+            \url{https://www.first.org/tlp}.
+        }
+
+        \vspace{10em}
+
+        {\Huge\TLPAmberStrict}
+    \end{center}
+
+    \newpage
+    \thispagestyle{empty}
     \vspace*{\fill}
     \begin{center}
         \Large{}
@@ -169,7 +237,7 @@
 }
 
 \newcommand{\AmberCover}{%
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \topskip0pt
     \newgeometry{left=2in,right=2in}
 
@@ -190,18 +258,22 @@
 
         {%
             \Large
-            Disclosure is limited to participant organizations.
+            LIMITED DISCLOSURE 
+
+            \vspace{1em}
+            DISCLOSE ONLY WITHIN THE ORGANIZATION AND ITS CLIENTS
         }
     \end{center}
 
     \vspace{5em}
 
     \noindent
-    This document contains sensitive information that is not suitable for
-    dissemination beyond the concerned organizations. A list of concerned
-    organizations must be included with this document. Handling, storage,
-    reproduction, and disposition of this document must be in accordance with
-    applicable Information Security Standards.
+    Sources may use TLP:AMBER when information requires support to be effectively 
+    acted upon, yet carries risk to privacy, reputation, or operations if shared 
+    outside of the organizations involved. Recipients may share TLP:AMBER 
+    information with members of their own organization and its clients, but only 
+    on a need-to-know basis to protect their organization and its clients and 
+    prevent further harm.
 
     \vspace*{\fill}
 
@@ -218,7 +290,7 @@
     \end{center}
 
     \newpage
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \vspace*{\fill}
     \begin{center}
         \Large{}
@@ -229,7 +301,7 @@
 }
 
 \newcommand{\GreenCover}{%
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \topskip0pt
     \newgeometry{left=2in,right=2in}
 
@@ -250,17 +322,20 @@
 
         {%
             \Large
-            Disclosure is limited to participant communities.
+            LIMITED DISCLOSURE
+
+            \vspace{1em}
+            DISCLOSE ONLY WITHIN THE COMMUNITY
         }
     \end{center}
 
     \vspace{5em}
 
     \noindent
-    This document contains sensitive information that is not suitable for
-    dissemination beyond the communities of the concerned participants.
-    Handling, storage, reproduction, and disposition of this document must be
-    in accordance with applicable Information Security Standards.
+    Sources may use TLP:GREEN when information is useful to increase awareness within
+    their wider community. Recipients may share TLP:GREEN information with peers and 
+    partner organizations within their community, but not via publicly accessible channels. 
+    TLP:GREEN information may not be shared outside of the community.
 
     \vspace*{\fill}
 
@@ -277,7 +352,7 @@
     \end{center}
 
     \newpage
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \vspace*{\fill}
     \begin{center}
         \Large{}
@@ -287,8 +362,8 @@
     \restoregeometry{}
 }
 
-\newcommand{\WhiteCover}{%
-    \thispagestyle{tlp}
+\newcommand{\ClearCover}{%
+    \thispagestyle{empty}
     \topskip0pt
     \newgeometry{left=2in,right=2in}
 
@@ -303,23 +378,24 @@
     \end{tikzpicture}
 
     \begin{center}
-        {\Huge\TLPWhite}
+        {\Huge\TLPClear}
 
         \vspace*{\fill}
 
         {%
             \Large
-            Disclosure is not limited.
+            DISCLOSURE IS NOT LIMITED
         }
     \end{center}
 
     \vspace{5em}
 
     \noindent
-    It has been determined that this document does not contain sensitive
-    information. The author, however, is free to reserve any and all rights
-    under applicable copyright law. This cover sheet does not waive those
-    rights.
+    Recipients may spread this to the world, there is no limit on disclosure. 
+    Sources may use TLP:CLEAR when information carries minimal or no foreseeable 
+    risk of misuse, in accordance with applicable rules and procedures for public 
+    release. Subject to standard copyright rules, TLP:CLEAR information may be 
+    shared without restriction.
 
     \vspace*{\fill}
 
@@ -332,11 +408,11 @@
 
         \vspace{10em}
 
-        {\Huge\TLPWhite}
+        {\Huge\TLPClear}
     \end{center}
 
     \newpage
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \vspace*{\fill}
     \begin{center}
         \Large{}
@@ -353,116 +429,21 @@
     \ifdefined\LVLRED
         \RedCover
     \else
+    \ifdefined\LVLAMBERSTRICT
+        \AmberStrictCover
+    \else
     \ifdefined\LVLAMBER
         \AmberCover
     \else
     \ifdefined\LVLGREEN
         \GreenCover
     \else
-    \ifdefined\LVLWHITE
-        \WhiteCover
+    \ifdefined\LVLCLEAR
+        \ClearCover
     \fi
     \fi
     \fi
     \fi
     \fi
-}
-
-\DeclareRobustCommand{\RedRedact}[2][]{%
-    \ifdefined\LVLRED#2\else%
-    \ifdefined\COMPARTMENTS%
-        \def\caveat{#1}%
-        \ifx\caveat\empty[REDACTED]\else%
-            \ifinlist{#1}{\COMPARTMENTS}{#2}{[REDACTED]}%
-        \fi%
-    \else[REDACTED]\fi%
-    \fi%
-}
-
-\DeclareRobustCommand{\RedRedactQuiet}[2][]{%
-    \ifdefined\LVLRED
-        #2
-    \else
-    \ifdefined\COMPARTMENTS
-        \ifinlist{#1}{\COMPARTMENTS}{#2}{}
     \fi
-    \fi
-}
-
-\DeclareRobustCommand{\RedPortion}[2][]%
-    {\RedRedact[#1]{\sethlcolor{black}\textcolor{TRed}{\def\caveat{#1}\ifx\caveat\empty\hl{R}\else\hl{R//#1}\fi}[#2]}}
-
-\DeclareRobustCommand{\RedSection}[2][]{%
-    \RedRedact[#1]{%
-        \begin{center}
-            \emph{NOTE: The following is \TLPRed{#1}.}
-        \end{center}
-        \vspace{2ex}
-        #2
-        \vspace{2ex}
-        \begin{center}
-            \EndTLPRed
-        \end{center}
-    }
-}
-
-\DeclareRobustCommand{\AmberRedact}[1]{%
-    \ifboolexpr{test {\ifdef{\LVLRED}} or test {\ifdef{\LVLAMBER}}}
-    {#1}
-    {[REDACTED]}
-}
-
-\DeclareRobustCommand{\AmberPortion}[1]{\AmberRedact{\sethlcolor{black}\textcolor{TAmber}{\hl{A}}[#1]}\ignorespaces}
-
-\DeclareRobustCommand\AmberSection[1]{%
-    \AmberRedact{%
-        \begin{center}
-            \emph{NOTE: The following is \TLPAmber.}
-        \end{center}
-        \vspace{2ex}
-        #1
-        \vspace{2ex}
-        \begin{center}
-            \EndTLPAmber
-        \end{center}
-    }
-}
-
-\DeclareRobustCommand{\GreenRedact}[1]{%
-    \ifboolexpr{test {\ifdef{\LVLRED}} or test {\ifdef{\LVLAMBER}} or test {\ifdef{\LVLGREEN}}}
-    {#1}
-    {[REDACTED]}
-}
-
-\DeclareRobustCommand{\GreenPortion}[1]{\GreenRedact{\sethlcolor{black}\textcolor{TGreen}{\hl{G}}[#1]}\ignorespaces}
-
-\DeclareRobustCommand\GreenSection[1]{%
-    \GreenRedact{%
-        \begin{center}
-            \emph{NOTE: The following is \TLPGreen}
-        \end{center}
-        \vspace{2ex}
-        #1
-        \vspace{2ex}
-        \begin{center}
-            \EndTLPGreen
-        \end{center}
-    }
-}
-
-\DeclareRobustCommand{\WhitePortion}[1]{%
-    \sethlcolor{black}\textcolor{TWhite}{\hl{W}} #1
-}
-
-\DeclareRobustCommand\WhiteSection[1]{%
-    \begin{center}
-        \emph{NOTE: The following is \TLPWhite}
-    \end{center}
-    \vspace{2ex}
-    #1
-    \vspace{2ex}
-    \noindent
-    \begin{center}
-        \EndTLPWhite
-    \end{center}
 }

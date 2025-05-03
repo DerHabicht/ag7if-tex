@@ -4,7 +4,6 @@
 \RequirePackage{xcolor}
 \RequirePackage{soul}
 \RequirePackage{tikz}
-\RequirePackage{fancyhdr}
 \RequirePackage{geometry}
 \RequirePackage{etoolbox}
 \RequirePackage{suffix}
@@ -38,10 +37,10 @@
 \fi
 
 % COLORS
-\definecolor{TRed}{RGB}{255,0,51}
-\definecolor{TAmber}{RGB}{204,154,0}
-\definecolor{TGreen}{RGB}{0,128,0}
-\definecolor{TWhite}{RGB}{255,255,255}
+\definecolor{VSColor}{RGB}{128,0,0}
+\definecolor{SColor}{RGB}{255,200,0}
+\definecolor{SSColor}{RGB}{0,0,128}
+\definecolor{NSColor}{RGB}{0,64,0}
 
 % INFOSEC MARKING COMMANDS
 \newcommand{\VerySensitiveText}{VERY SENSITIVE}
@@ -63,10 +62,10 @@
     \fi
 }
 
-\DeclareRobustCommand{\VerySensitive}{\textcolor{TRed}{\VerySensitiveText}}
-\DeclareRobustCommand{\Sensitive}{\textcolor{TAmber}{\SensitiveText}}
-\DeclareRobustCommand{\SomewhatSensitive}{\textcolor{TGreen}{\SomewhatSensitiveText}}
-\DeclareRobustCommand{\NotSensitive}{\NotSensitiveText}
+\DeclareRobustCommand{\VerySensitive}{\textcolor{VSColor}{\VerySensitiveText}}
+\DeclareRobustCommand{\Sensitive}{\textcolor{SColor}{\SensitiveText}}
+\DeclareRobustCommand{\SomewhatSensitive}{\textcolor{SSColor}{\SomewhatSensitiveText}}
+\DeclareRobustCommand{\NotSensitive}{\textcolor{NSColor}{\NotSensitiveText}}
 \DeclareRobustCommand{\InfosecLevel}{%
     \ifdefined\LvlVerySensitive
         \VerySensitive
@@ -83,67 +82,64 @@
 }
 
 % COVER PAGES
-\fancypagestyle{tlp}{%
-    \fancyhf{}
-}
-
 \newcommand{\VerySensitiveStatement}{%
     \noindent
     \begin{center}
         \Large 
-        \textbf{DISSEMINATION REQUIRES EXPLICIT AUTHORIZATION}
+        \textbf{POTENTIAL FOR EXCEPTIONALLY GRAVE HARM}
     \end{center}
     
     \vfill
 
     \noindent
-    Unintentional disclosure of the information in this document could have exceptionally grave security implications.
-    A list of individuals authorized to receive this information \textbf{must} be distributed with this document.
-    Disclosure of this document's contents to any individual not on that list is prohibited.
+    Uncontrolled dissemination of the information in this document could cause 
+    exceptionally grave operational harm. This information must be handled,
+    communicated, stored, and disposed of with the strongest available encryption 
+    and security precautions.
 }
 
 \newcommand{\SensitiveStatement}{%
     \noindent
     \begin{center}
         \Large 
-        \textbf{DISSEMINATE ONLY TO THE ZIT}
+        \textbf{POTENTIAL FOR GRAVE HARM}
     \end{center}
     
     \vfill
 
     \noindent
-    Unintentional disclosure of the information in this document could have grave security implications. This
-    document's contents may only be disclosed to individuals who belong to the Zone of Implicit Trust (ZIT) as defined
-    by caveat or standard operating procedures.
+    Uncontrolled dissemination of the information in this document could cause grave
+    operational harm. This information must be handled confidentially and 
+    encrypted before transmitting and while stored at rest.
 }
 
 \newcommand{\SomewhatSensitiveStatement}{%
     \noindent
     \begin{center}
         \Large 
-        \textbf{LEGITIMATE NEED-TO-KNOW REQUIRED FOR DISSEMINATION}
+        \textbf{POTENTIAL FOR HARM}
     \end{center}
     
     \vfill
 
     \noindent
-    Unintentional disclosure of the information in this document could have security implications. This document's
-    contents may only be disclosed to individuals with a legitimate need to know as described in standard operating
-    procedures.
+    Uncontrolled dissemination of the information in this document could cause
+    operational harm. This information must be handled confidentially and
+    transmitted only over end-to-end encrypted services.
 }
 
 \newcommand{\NotSensitiveStatement}{%
     \noindent
     \begin{center}
         \Large
-        \textbf{DISSEMINATION NOT RESTRICTED}   
+        \textbf{NO FORESEEABLE POTENTIAL FOR HARM}   
     \end{center}
     
     \vfill
 
     \noindent
-    Unintentional disclosure of the information in this document does not have foreseeable security implications.
-    Disclosure of the information in this document is not restricted. All rights under applicable copyright law are
+    Uncontrolled disclosure of the information in this document will not cause
+    foreseeable operational harm. All rights under applicable copyright law are
     still reserved.
 }
 
@@ -165,7 +161,7 @@
 \newcommand{\VerySensitiveCoverBorder}{%
     \begin{tikzpicture}[remember picture, overlay]
         % page frame
-        \fill [TRed] (current page.north west)
+        \fill [VSColor] (current page.north west)
             rectangle (current page.south east);
         \fill [white]
             ($(current page.north west)+(1in,-1in)$)
@@ -177,7 +173,7 @@
 \newcommand{\SensitiveCoverBorder}{%
     \begin{tikzpicture}[remember picture, overlay]
         % page frame
-        \fill [TAmber] (current page.north west)
+        \fill [SColor] (current page.north west)
             rectangle (current page.south east);
         \fill [white]
             ($(current page.north west)+(1in,-1in)$)
@@ -189,7 +185,7 @@
 \newcommand{\SomewhatSensitiveCoverBorder}{%
     \begin{tikzpicture}[remember picture, overlay]
         % page frame
-        \fill [TGreen] (current page.north west)
+        \fill [SSColor] (current page.north west)
             rectangle (current page.south east);
         \fill [white]
             ($(current page.north west)+(1in,-1in)$)
@@ -201,7 +197,7 @@
 \newcommand{\NotSensitiveCoverBorder}{%
     \begin{tikzpicture}[remember picture, overlay]
         % page frame
-        \fill [black] (current page.north west)
+        \fill [NSColor] (current page.north west)
             rectangle (current page.south east);
         \fill [white]
             ($(current page.north west)+(1in,-1in)$)
@@ -227,7 +223,7 @@
 
 
 \newcommand{\InfosecCover}{%
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
     \topskip0pt
     \newgeometry{left=2in,right=2in,voffset=0in}
     
@@ -248,7 +244,12 @@
     \end{center}
 
     \newpage
-    \thispagestyle{tlp}
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+        \Large{}
+        THIS PAGE INTENTIONALLY LEFT BLANK
+    \end{center}
     \vspace*{\fill}
     \restoregeometry{}
 }
@@ -271,10 +272,10 @@
 }
 
 \DeclareRobustCommand{\VsPortion}[1]{%
-    \VsRedact{\textcolor{TRed}{(VS)}~#1}
+    \VsRedact{\textcolor{VSColor}{(VS)}~#1}
 }
 
-\newcommand{\EndVsPortion}{\textcolor{TRed}{* * *}}
+\newcommand{\EndVsPortion}{\textcolor{VSColor}{* * *}}
 
 \WithSuffix\DeclareRobustCommand\VsPortion*[1]{%
     \VsRedact{%
@@ -309,10 +310,10 @@
 }
 
 \DeclareRobustCommand{\SPortion}[1]{%
-    \SRedact{\textcolor{TAmber}{(S)}~#1}
+    \SRedact{\textcolor{SColor}{(S)}~#1}
 }
 
-\newcommand{\EndSPortion}{\textcolor{TAmber}{* * *}}
+\newcommand{\EndSPortion}{\textcolor{SColor}{* * *}}
 
 \WithSuffix\DeclareRobustCommand\SPortion*[1]{%
     \SRedact{%
@@ -347,10 +348,10 @@
 }
 
 \DeclareRobustCommand{\SsPortion}[1]{%
-    \SsRedact{\textcolor{TGreen}{(SS)}~#1}
+    \SsRedact{\textcolor{SSColor}{(SS)}~#1}
 }
 
-\newcommand{\EndSsPortion}{\textcolor{TGreen}{* * *}}
+\newcommand{\EndSsPortion}{\textcolor{SSColor}{* * *}}
 
 \WithSuffix\DeclareRobustCommand\SsPortion*[1]{%
     \SsRedact{%
