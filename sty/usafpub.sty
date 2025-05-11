@@ -102,7 +102,7 @@
 \fancypagestyle{letterhead}{%
     \fancyhf{}
     \ifdefined\CAP
-        \def\@seal{CAP_Seal.jpg}       
+        \def\@seal{CAPSeal}       
         \fancyhead[C]{\CapLetterHead}
         \LetterHeadSeal{}
         \LetterHeadPatch{}
@@ -138,74 +138,21 @@
 \renewcommand{\theusaflistv}{\underline{\alph{usaflistv}}}
 \newcounter{usaflistvi}
 \renewcommand{\theusaflistvi}{[\arabic{usaflistvi}]}
-
-\renewenvironment{enumerate}{
-    \ifdefined\@usaflistv
-        \def\@usaflistvi{}
-        \setlength{\parindent}{12em}
-        \setcounter{usaflistvi}{0}
-        \renewcommand{\item}{
-            \par
-            \refstepcounter{usaflistvi}
-            \makebox[3ex][l]{\theusaflistvi}
-        }
-    \else\ifdefined\@usaflistiv
-        \def\@usaflistv{}
-        \setlength{\parindent}{10em}
-        \setcounter{usaflistv}{0}
-        \renewcommand{\item}{
-            \par
-            \refstepcounter{usaflistv}
-            \makebox[3ex][l]{\theusaflistv}
-        }
-    \else\ifdefined\@usaflistiii
-        \def\@usaflistiv{}
-        \setlength{\parindent}{8em}
-        \setcounter{usaflistiv}{0}
-        \renewcommand{\item}{
-            \par
-            \refstepcounter{usaflistiv}
-            \makebox[3ex][l]{\theusaflistiv}
-        }
-    \else\ifdefined\@usaflistii
-        \def\@usaflistiii{}
-        \setlength{\parindent}{6em}
-        \setcounter{usaflistiii}{0}
-        \renewcommand{\item}{
-            \par
-            \refstepcounter{usaflistiii}
-            \makebox[3ex][l]{\theusaflistiii}
-        }
-    \else\ifdefined\@usaflisti
-        \def\@usaflistii{}
-        \setlength{\parindent}{4em}
-        \setcounter{usaflistii}{0}
-        \renewcommand{\item}{
-            \par
-            \refstepcounter{usaflistii}
-            \makebox[3ex][l]{\theusaflistii}
-        }
-    \else
-        \def\@usaflisti{}
-        \setlength{\parindent}{2em}
-        \setcounter{usaflisti}{0}
-        \renewcommand{\item}{
-            \par
-            \refstepcounter{usaflisti}
-            \makebox[3ex][l]{\theusaflisti}
-        }
-    \fi\fi\fi\fi\fi
-}{
-    \noindent
-    \ignorespacesafterend
-}
+\newlist{usafenum}{enumerate}{6}
+\setlist[usafenum, 1]{label=\alph*.}
+\setlist[usafenum, 2]{label=\arabic*)}
+\setlist[usafenum, 3]{label=\alph*)}
+\setlist[usafenum, 4]{label=\underline{\arabic*}}
+\setlist[usafenum, 5]{label=\underline{\alph*}}
+\setlist[usafenum, 6]{label=[\arabic*]}
 
 % Bullets
 \setlist[itemize]{leftmargin=*,topsep=0pt}
-\renewcommand{\labelitemi}{-}
-\renewcommand{\labelitemii}{-{}-}
-\renewcommand{\labelitemiii}{-{}-{}-}
-\renewcommand{\labelitemiv}{-{}-{}-{}-}
+\newlist{usafitem}{itemize}{4}
+\setlist[usafitem, 1]{label=-}
+\setlist[usafitem, 2]{label=-{}-}
+\setlist[usafitem, 3]{label=-{}-{}-}
+\setlist[usafitem, 4]{label=-{}-{}-{}-}
 
 % Outlines
 \setlistdepth{7}

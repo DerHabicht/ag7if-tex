@@ -61,8 +61,8 @@
 \DeclareOption{DRAFT}{%
     \newcommand{\DRAFT}{}
 }
-\DeclareOption{summary}{%
-    \newcommand{\SUMMARY}{}
+\DeclareOption{bplan}{%
+    \newcommand{\BPLAN}{}
 }
 \DeclareOption{camplan}{%
     \newcommand{\CAMPLAN}{}
@@ -81,6 +81,9 @@
 }
 \DeclareOption{splan}{%
     \newcommand{\SPLAN}{}
+}
+\DeclareOption{vhistory}{%
+    \newcommand{\vhistory}{}
 }
 \DeclareOption{very-sensitive}{%
     \newcommand{\OplanInfosecLvlSet}{}
@@ -114,6 +117,7 @@
     headheight=15pt,
     footskip=0.5in
 ]{geometry}
+\RequirePackage{suffix}
 \RequirePackage{tabularx}
 \RequirePackage{titlecaps}
 \RequirePackage{tocloft}
@@ -139,6 +143,10 @@
     \RequirePackage{usafpub}
 \fi\fi
 
+\ifdefined\vhistory
+    \RequirePackage[nochapter,tablegrid]{vhistory}
+\fi
+
 \ifdefined\DRAFT
     \RequirePackage{draftwatermark}
 \fi
@@ -146,37 +154,89 @@
 \pagestyle{usaf}
 
 % Table of Contents Formatting
-\setcounter{tocdepth}{4}
-\cftsetindents{chapter}{0em}{2em}
-\cftsetindents{section}{2em}{2em}
-\cftsetindents{subsection}{4em}{2em}
-\cftsetindents{paragraph}{6em}{3em}
+\setcounter{tocdepth}{2}
+
+% Chapters
+\newif\if@appendix \@appendixfalse
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+
+\renewcommand{\chapter}[1]{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \if@mainmatter
+        \if@appendix
+            \thispagestyle{plain}%
+        \else
+            \ifnum\c@chapter=0
+                \thispagestyle{letterhead}
+                
+                \vspace*{5ex}
+                
+                \theplan
+
+                EFFECTIVE:~\@effective
+                
+                \ifdefined\@incidentNumber
+                    \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
+                \else
+                    \MakeUppercase{\@incidentType}:~\@incidentName
+                \fi
+                
+                \ifdefined\@references
+                {
+                    REFERENCES:
+                    \setlength{\parskip}{0pt}
+                    \begin{enumerate}
+                        \setlength{\itemsep}{0pt}
+                        \setlength{\parskip}{0pt}
+                        \@references
+                    \end{enumerate}
+                }
+                \fi
+
+                \vspace*{2ex}
+            \else
+                \thispagestyle{plain}%
+            \fi
+        \fi
+    \else
+        \thispagestyle{plain}%
+    \fi
+
+    \stepcounter{chapter}%
+    {\normalfont\bfseries\large\thechapter\quad#1}
+    \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#1}
+}
+
+\WithSuffix\newcommand\chapter*[1]{%
+    {\normalfont\Large\bfseries#1}
+}
+
+\renewcommand\appendix{%
+    \par
+    \@appendixtrue%
+    \setcounter{chapter}{0}%
+    \setcounter{section}{0}%
+    \gdef\@chapapp{\appendixname}%
+    \gdef\thechapter{\@Alph\c@chapter}%
+}
+
 
 % Sections
-\renewcommand{\thesection}{\arabic{section}}
-\titleformat{\section}{\normalfont\large\bfseries}{\thesection.\hspace{1em}}{0pt}{}
-
-% Subsections
-\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
-\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.\hspace{1em}}{0pt}{}
+\titleformat{\section}{}{\large\textbf{\thesection\hspace{1em}}}{0pt}{\large\textbf}
+\titleformat{\subsection}{}{\large\textbf{\thesubsection\hspace{1em}}}{0pt}{\large\textbf}
+\titleformat{\subsubsection}{}{\large\textbf{\thesubsubsection\hspace{1em}}}{0pt}{\large\textbf}
 
 % Paragraphs
-\ifdefined\SUMMARY
-    \renewcommand{\theparagraph}{\arabic{paragraph}}
-    \titleformat{\paragraph}[runin]{}{\textbf{\theparagraph.\hspace{1em}}}{0pt}{\textbf}
-\else
-    \renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{paragraph}}
-    \titleformat{\paragraph}[runin]{}{\textbf{\theparagraph.\hspace{1em}}}{0pt}{\textbf}
-\fi
+\renewcommand{\theparagraph}{\arabic{chapter}.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}}
+\titleformat{\paragraph}[runin]{}{\textbf{\theparagraph\hspace{1em}}}{0pt}{\textbf}
 
 % Itemized titles
 \renewcommand{\titem}[1]{%
     \item \textbf{#1}
 }
 
-% Annex Sectioning
-\renewcommand{\thechapter}{\Alph{chapter}}
-\titleformat{\chapter}{\normalfont\Large\bfseries}{Annex~\thechapter---}{0pt}{}
+
 
 % Titlepage/Header
 \newcommand{\oplan}[1]{%
@@ -214,6 +274,10 @@
     \def\@commanderContact{#3}%
 }
 
+\newcommand{\sponsor}[1]{%
+    \def\@sponsor{#1}%
+}
+
 \newcommand{\coordChain}{}
 
 \newcommand\staffCoord[1]{%
@@ -240,7 +304,9 @@
 }
 
 \newcommand{\theOplan}{%
-    \ifdefined\CAMPLAN
+    \ifdefined\BPLAN
+        BPLAN%
+    \else\ifdefined\CAMPLAN
         CAMPLAN%
     \else\ifdefined\CONPLAN
         CONPLAN%
@@ -254,14 +320,16 @@
         SPLAN%
     \else
         OPLAN%
-    \fi\fi\fi\fi\fi\fi
+    \fi\fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theOperationsPlan}{%
-    \ifdefined\CAMPLAN
+    \ifdefined\BPLAN
+        BASE PLAN%
+    \else\ifdefined\CAMPLAN
         CAMPAIGN PLAN%
     \else\ifdefined\CONPLAN
-        CONCEPTUAL OPERATION PLAN%
+        CONCEPT PLAN%
     \else\ifdefined\OPORD
         OPERATION ORDER%
     \else\ifdefined\FRAGO
@@ -272,25 +340,11 @@
         WEEKLY PLAN%
     \else
         OPERATION PLAN%
-    \fi\fi\fi\fi\fi\fi
+    \fi\fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theplan}{%
     \theOperationsPlan~\@oplan%
-}
-
-\newcommand{\@SummaryOplanTitle}{%
-    \setcounter{page}{1}
-
-    \thispagestyle{letterhead}
-    
-    \vspace*{5ex}
-    
-    \ifdefined\@endDate
-        \textbf{\@incidentName\hfill\@startDate--\@endDate}
-    \else
-        \textbf{\@incidentName\hfill\@startDate}
-    \fi
 }
 
 \newcommand{\@FragOrdTitle}{%
@@ -314,18 +368,6 @@
         \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
     \else
         \MakeUppercase{\@incidentType}:~\@incidentName
-    \fi
-    
-    \ifdefined\@references
-    {
-        REFERENCES:
-        \setlength{\parskip}{0pt}
-        \begin{enumerate}
-            \setlength{\itemsep}{0pt}
-            \setlength{\parskip}{0pt}
-            \@references
-        \end{enumerate}
-    }
     \fi
 }
 
@@ -352,6 +394,7 @@
 }
 
 \newcommand{\@FullTitle}{%
+    \frontmatter
     \thispagestyle{plain}
     \begin{center}
         \huge
@@ -406,6 +449,8 @@
                                                                   &                    \\ 
             \titlecap{\@incidentType}~\titlecap{\@commanderType}: & \@commander        \\
                                                                   & \@commanderContact \\
+                                                                  &                    \\
+            Lead Organization and Unit:                           & \@sponsor          \\
         \end{tabular}
     \end{center}   
 
@@ -421,47 +466,29 @@
     \tableofcoordination
     
     \cleardoublepage
+
+    \ifdefined\vhistory
+        \chapter*{Revision History}
+        \vhistory
+
+        \cleardoublepage
+    \fi
     
     \tableofcontents
     
     \cleardoublepage
 
-    \setcounter{page}{1}
+    \setcounter{page}{1} 
 
-    \thispagestyle{letterhead}
-    
-    \vspace*{5ex}
-    
-    \theplan
+    \mainmatter
 
-    EFFECTIVE:~\@effective
-    
-    \ifdefined\@incidentNumber
-        \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
-    \else
-        \MakeUppercase{\@incidentType}:~\@incidentName
-    \fi
-    
-    \ifdefined\@references
-    {
-        REFERENCES:
-        \setlength{\parskip}{0pt}
-        \begin{enumerate}
-            \setlength{\itemsep}{0pt}
-            \setlength{\parskip}{0pt}
-            \@references
-        \end{enumerate}
-    }
-    \fi
 }
 
 \renewcommand{\maketitle}{%
 
-    \ifdefined\SUMMARY
-        \@SummaryOplanTitle%
-    \else\ifdefined\FRAGO
+    \ifdefined\FRAGO
         \@FragOrdTitle%
     \else
         \@FullTitle%
-    \fi\fi
+    \fi
 }
