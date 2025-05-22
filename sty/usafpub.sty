@@ -9,11 +9,16 @@
 \RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
 \RequirePackage[T1]{fontenc}
-\RequirePackage{graphicx}
 \RequirePackage{mathptmx}
 \RequirePackage[absolute]{textpos}
 \RequirePackage{titlesec}
 \RequirePackage[dvipsnames]{xcolor}
+
+\ifdefined\DRAFT
+	\RequirePackage[draft]{graphicx}
+\else
+	\RequirePackage{graphicx}
+\fi
 
 % Page Formatting
 \raggedbottom
