@@ -161,6 +161,9 @@
 % Table of Contents Formatting
 \setcounter{tocdepth}{2}
 
+\Crefname{appendix}{Annex}{annexes}
+\crefname{appendix}{annex}{annexes}
+
 % Chapters
 \newif\if@appendix \@appendixfalse
 
