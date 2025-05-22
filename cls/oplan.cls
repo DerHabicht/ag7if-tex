@@ -453,7 +453,7 @@
                                                                   &                    \\
             \ifdefined\CAMPLAN\else\ifdefined\SPLAN\else\ifdefined\STRATPLAN\else
                 \titlecap{\@incidentType}~Location:               & \@location         \\
-            \fi\fi
+            \fi\fi\fi
         \ifdefined\@startDate                                 
             \titlecap{\@incidentType}~Start:                      & \@startDate        \\
         \fi
