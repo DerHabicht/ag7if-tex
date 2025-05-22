@@ -114,6 +114,7 @@
 
 \RequirePackage{afterpage}
 \RequirePackage{booktabs}
+\RequirePackage{cleveref}
 \RequirePackage{emptypage}
 \RequirePackage{enumerate}
 \RequirePackage[
