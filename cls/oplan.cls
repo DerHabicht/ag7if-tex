@@ -19,6 +19,7 @@
 % \location{<INCIDENT_LOCATION>}
 % \incidentDate[<END_DATE>]{<START_DATE>}
 % \commander[<TITLE>]{<NAME>}{<CONTACT>}
+% \sponsor{<SPONSORING_ORG_AND_UNIT>}
 %
 % \seal{<SEAL_PATH>} % Optional if using the <cap> document option
 % \unitPatch{<UNIT_PATCH_PATH>}
@@ -81,6 +82,9 @@
 }
 \DeclareOption{splan}{%
     \newcommand{\SPLAN}{}
+}
+\DeclareOption{stratplan}{%
+    \newcommand{\STRATPLAN}{}
 }
 \DeclareOption{vhistory}{%
     \newcommand{\vhistory}{}
@@ -318,9 +322,11 @@
         WEPLAN%
     \else\ifdefined\SPLAN
         SPLAN%
+    \else\ifdefined\STRATPLAN
+        STRATPLAN%
     \else
         OPLAN%
-    \fi\fi\fi\fi\fi\fi\fi
+    \fi\fi\fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theOperationsPlan}{%
@@ -336,11 +342,13 @@
         FRAGMENTARY OPERATION ORDER%
     \else\ifdefined\SPLAN
         SPRINT PLAN%
+    \else\ifdefined\STRATPLAN
+        STRATEGIC PLAN%
     \else\ifdefined\WEPLAN
         WEEKLY PLAN%
     \else
         OPERATION PLAN%
-    \fi\fi\fi\fi\fi\fi\fi
+    \fi\fi\fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theplan}{%
@@ -438,8 +446,10 @@
         \normalsize
         \begin{tabular}{ll}
             \theOplan~Effective:                                  & \@effective        \\
-                                                                  &                    \\ 
-            \titlecap{\@incidentType}~Location:                   & \@location         \\
+                                                                  &                    \\
+            \ifdefined\CAMPLAN\else\ifdefined\SPLAN\else\ifdefined\STRATPLAN\else
+                \titlecap{\@incidentType}~Location:               & \@location         \\
+            \fi\fi
         \ifdefined\@startDate                                 
             \titlecap{\@incidentType}~Start:                      & \@startDate        \\
         \fi
