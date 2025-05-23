@@ -105,9 +105,6 @@
     \newcommand{\OplanInfosecLvlSet}{}
     \newcommand{\OplanLvlNotSensitive}{}
 }
-\DeclareOption{fouo}{%
-    \newcommand{\FOUO}{}
-}
 \ProcessOptions\relax
 
 \LoadClass[12pt]{book}
@@ -128,10 +125,7 @@
 \RequirePackage{tocloft}
 \RequirePackage[dvipsnames,table]{xcolor}
 
-\ifdefined\FOUO
-    \RequirePackage{fouo}
-    \def\@securityMark{\FouoMark}
-\else\ifdefined\OplanInfosecLvlSet
+\ifdefined\OplanInfosecLvlSet
     \def\@securityMark{PLACEHOLDER}
     \RequirePackage{usafpub}
     \ifdefined\OplanLvlVerySensitive
@@ -146,7 +140,7 @@
     \def\@securityMark{\InfosecLevel}
 \else
     \RequirePackage{usafpub}
-\fi\fi
+\fi
 
 \ifdefined\vhistory
     \RequirePackage[nochapter,tablegrid]{vhistory}
@@ -360,11 +354,9 @@
 }
 
 \newcommand{\@FragOrdTitle}{%
-    \ifdefined\FOUO
-        \FouoCoverPage
-    \else\ifdefined\OplanInfosecLvlSet
+    \ifdefined\OplanInfosecLvlSet
         \InfosecCover
-    \fi\fi
+    \fi
 
     \setcounter{page}{1}
 
@@ -469,11 +461,10 @@
     \end{center}   
 
     \cleardoublepage   
-    \ifdefined\FOUO
-        \FouoCoverPage
-    \else\ifdefined\OplanInfosecLvlSet
+    
+    \ifdefined\OplanInfosecLvlSet
         \InfosecCover
-    \fi\fi
+    \fi
 
     \cleardoublepage   
     \chapter*{Coordination and Approval}
