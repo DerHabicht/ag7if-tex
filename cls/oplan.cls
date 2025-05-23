@@ -399,6 +399,12 @@
 
 \newcommand{\@FullTitle}{%
     \frontmatter
+
+    \ifdefined\OplanInfosecLvlSet
+        \InfosecCover
+        \cleardoublepage
+    \fi
+
     \thispagestyle{plain}
     \begin{center}
         \huge
@@ -462,11 +468,6 @@
 
     \cleardoublepage   
     
-    \ifdefined\OplanInfosecLvlSet
-        \InfosecCover
-    \fi
-
-    \cleardoublepage   
     \chapter*{Coordination and Approval}
     \tableofcoordination
     
