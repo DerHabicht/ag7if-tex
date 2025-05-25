@@ -13,6 +13,7 @@
 \LoadClass[12pt]{article}
 
 \RequirePackage[hidelinks]{hyperref}
+\RequirePackage{tabularx}
 \RequirePackage{ag7ifform}
 \ifdefined\QUARTO
     \ifdefined\LSCAPE
@@ -63,7 +64,7 @@
 \setlength{\headheight}{25pt}
 
 \newcommand{\IncidentHeader}{%
-    \begin{tabular}{|p{2.1in}|p{5.0in}|}
+    \begin{tabularx}{\textwidth}{|p{2.1in}|X|}
         \hline
         \textbf{Incident Name:}
             \newline
@@ -77,7 +78,7 @@
             ~Time From: \FormTextBoxR{0.75in}{timefrom}
             ~Time To: \FormTextBoxR{0.75in}{timeto}
          \\ \hline
-    \end{tabular}
+    \end{tabularx}
 }
 
 \newcommand{\FormHeader}{%
