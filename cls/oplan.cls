@@ -109,6 +109,7 @@
 
 \LoadClass[12pt]{book}
 
+\RequirePackage[hidelinks]{hyperref}
 \RequirePackage{afterpage}
 \RequirePackage{booktabs}
 \RequirePackage{cleveref}
