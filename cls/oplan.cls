@@ -176,7 +176,11 @@
                 
                 \theplan
 
-                EFFECTIVE:~\@effective
+                \ifdefined\DRAFT
+                    EFFECTIVE:~DRAFT
+                \else
+                    EFFECTIVE:~\@effective
+                \fi
                 
                 \ifdefined\SPLAN\else\ifdefined\@incidentNumber
                     \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
@@ -366,7 +370,11 @@
     
     \theplan
 
-    EFFECTIVE:~\@effective
+    \ifdefined\DRAFT
+        EFFECTIVE:~DRAFT
+    \else
+        EFFECTIVE:~\@effective
+    \fi
     
     \ifdefined\@incidentNumber
         \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
@@ -449,7 +457,7 @@
 
         \normalsize
         \begin{tabular}{ll}
-            \theOplan~Effective:                                  & \@effective        \\
+            \theOplan~Effective:                                  & \ifdefined\DRAFT DRAFT\else\@effective\fi \\
                                                                   &                    \\
             \ifdefined\CAMPLAN\else\ifdefined\SPLAN\else\ifdefined\STRATPLAN\else
                 \titlecap{\@incidentType}~Location:               & \@location         \\
