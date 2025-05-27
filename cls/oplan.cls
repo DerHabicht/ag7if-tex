@@ -5,8 +5,6 @@
 %
 % \documentclass[<DRAFT>,<cap>,<vhistory>,<plan_type>,<infosec>,]{oplan}
 %
-% <\usepackage[tocentry,tablegrid]{vhistory}>
-%
 % \oplan{<OPLAN_NUMBER>}
 % \incidentNumber{<INCIDENT_NUMBER>}
 % \incident[<INCIDENT_TYPE>]{<INCIDENT_NAME>}
@@ -82,6 +80,7 @@
 }
 \DeclareOption{splan}{%
     \newcommand{\SPLAN}{}
+    \def\@incidentType{Sprint}
 }
 \DeclareOption{stratplan}{%
     \newcommand{\STRATPLAN}{}
@@ -179,11 +178,11 @@
 
                 EFFECTIVE:~\@effective
                 
-                \ifdefined\@incidentNumber
+                \ifdefined\SPLAN\else\ifdefined\@incidentNumber
                     \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
                 \else
                     \MakeUppercase{\@incidentType}:~\@incidentName
-                \fi
+                \fi\fi
                 
                 \ifdefined\@references
                 {
@@ -415,7 +414,9 @@
             \MakeUppercase{\@incidentType}~\@incidentNumber
         \fi
 
-        \MakeUppercase{\@incidentName}
+        \ifdefined\@incidentName
+            \MakeUppercase{\@incidentName}
+        \fi
         
         \vfill
 
