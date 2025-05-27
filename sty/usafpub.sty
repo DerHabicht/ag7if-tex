@@ -2,7 +2,10 @@
 \ProvidesPackage{usafpub}
 
 \DeclareOption{cap}{%
-    \newcommand{\CAP}{}
+    \newcommand{\@CAP}{}
+}
+\DeclareOption{draft}{%
+    \newcommand{\@DRAFT}{}
 }
 \ProcessOptions\relax
 
@@ -14,7 +17,7 @@
 \RequirePackage{titlesec}
 \RequirePackage[dvipsnames]{xcolor}
 
-\ifdefined\DRAFT
+\ifdefined\@DRAFT
 	\RequirePackage[draft]{graphicx}
 \else
 	\RequirePackage{graphicx}
@@ -30,7 +33,13 @@
 
 \fancypagestyle{usaf}{%
     \fancyhf{}
-    \fancyhead[R]{\thepage}
+    \ifdefined\@tlpMark
+        \fancyhead[L]{\thepage}
+        \fancyhead[R]{\@tlpMark}
+        \fancyfoot[R]{\@tlpMark}
+    \else
+        \fancyhead[R]{\thepage}
+    \fi
     \ifdefined\@securityMark
         \fancyhead[C]{\@securityMark}
         \fancyfoot[C]{\@securityMark}
@@ -39,6 +48,10 @@
 
 \fancypagestyle{plain}{%
     \fancyhf{}
+    \ifdefined\@tlpMark
+        \fancyhead[R]{\@tlpMark}
+        \fancyfoot[R]{\@tlpMark}
+    \fi
     \ifdefined\@securityMark
         \fancyhead[C]{\@securityMark}
         \fancyfoot[C]{\@securityMark}
@@ -106,7 +119,7 @@
 
 \fancypagestyle{letterhead}{%
     \fancyhf{}
-    \ifdefined\CAP
+    \ifdefined\@CAP
         \def\@seal{CAPSeal}       
         \fancyhead[C]{\CapLetterHead}
         \LetterHeadSeal{}
@@ -114,9 +127,13 @@
     \else
         \fancyhead[C]{\PlainLetterHead}
         \LetterHeadSeal{}
+        \LetterHeadPatch{}
     \fi
     \ifdefined\@securityMark
         \fancyfoot[C]{\@securityMark}
+    \fi
+    \ifdefined\@tlpMark
+        \fancyfoot[R]{\@tlpMark}
     \fi
 }
 

@@ -15,36 +15,36 @@
 \usetikzlibrary{calc}
 
 \DeclareOptionX{red}{%
-    \newcommand{\LVL}{}
-    \newcommand{\LVLRED}{}
+    \newcommand{\@LVL}{}
+    \newcommand{\@LVLRED}{}
 }
 
 \DeclareOptionX{amber-strict}{
-    \newcommand{\LVL}{}
-    \newcommand{\LVLAMBERSTRICT}{}
+    \newcommand{\@LVL}{}
+    \newcommand{\@LVLAMBERSTRICT}{}
 }
 
 \DeclareOptionX{amber}{%
-    \newcommand{\LVL}{}
-    \newcommand{\LVLAMBER}{}
+    \newcommand{\@LVL}{}
+    \newcommand{\@LVLAMBER}{}
 }
 
 \DeclareOptionX{green}{%
-    \newcommand{\LVL}{}
-    \newcommand{\LVLGREEN}{}
+    \newcommand{\@LVL}{}
+    \newcommand{\@LVLGREEN}{}
 }
 
 \DeclareOptionX{clear}{%
-    \newcommand{\LVL}{}
-    \newcommand{\LVLCLEAR}{}
+    \newcommand{\@LVL}{}
+    \newcommand{\@LVLCLEAR}{}
 }
 
-\DeclareOptionX{compartments}{\forcsvlist{\listadd\COMPARTMENTS}{#1}}
+\DeclareOptionX{compartments}{\forcsvlist{\listadd\@COMPARTMENTS}{#1}}
 
 \ProcessOptionsX\relax
 
-\unless\ifdefined\LVL
-    \newcommand{\LVLCLEAR}{}
+\unless\ifdefined\@LVL
+    \newcommand{\@LVLCLEAR}{}
 \fi
 
 \definecolor{TRed}{RGB}{255,43,43}
@@ -54,11 +54,11 @@
 
 \newcommand{\@compartment}[1]{#1/}
 \DeclareRobustCommand{\CompartmentList}{%
-    \protect\StrGobbleRight{\forlistloop{\@compartment}{\COMPARTMENTS}}{1}
+    \protect\StrGobbleRight{\forlistloop{\@compartment}{\@COMPARTMENTS}}{1}
 }
 
 \DeclareRobustCommand{\TLPRedList}{%
-    \ifdefined\COMPARTMENTS
+    \ifdefined\@COMPARTMENTS
         \sethlcolor{black}
         \textcolor{TRed}{%
             \hl{TLP:RED+\mbox{\CompartmentList}}
@@ -75,22 +75,22 @@
 \DeclareRobustCommand{\TLPGreen}{\sethlcolor{black}\textcolor{TGreen}{\hl{TLP:GREEN}}}
 \DeclareRobustCommand{\TLPClear}{\sethlcolor{black}\textcolor{TClear}{\hl{TLP:CLEAR}}}
 \DeclareRobustCommand{\TLPLevel}{%
-    \ifdefined\COMPARTMENTS
+    \ifdefined\@COMPARTMENTS
         \TLPRedList{}
     \else
-    \ifdefined\LVLRED
+    \ifdefined\@LVLRED
         \TLPRed{}
     \else
-    \ifdefined\LVLAMBERSTRICT
+    \ifdefined\@LVLAMBERSTRICT
         \TLPAmberStrict
     \else
-    \ifdefined\LVLAMBER
+    \ifdefined\@LVLAMBER
         \TLPAmber
     \else
-    \ifdefined\LVLGREEN
+    \ifdefined\@LVLGREEN
         \TLPGreen
     \else
-    \ifdefined\LVLCLEAR
+    \ifdefined\@LVLCLEAR
         \TLPClear
     \fi
     \fi
@@ -100,350 +100,3 @@
     \fi
 }
 
-\newcommand{\EndTLPRed}{\sethlcolor{black}\textcolor{TRed}{\hl{* * *}}}
-\newcommand{\EndTLPAmber}{\sethlcolor{black}\textcolor{TAmber}{\hl{* * *}}}
-\newcommand{\EndTLPGreen}{\sethlcolor{black}\textcolor{TGreen}{\hl{* * *}}}
-\newcommand{\EndTLPClear}{\sethlcolor{black}\textcolor{TClear}{\hl{* * *}}}
-
-\newcommand{\RedCover}{%
-    \thispagestyle{empty}
-    \topskip0pt
-    \newgeometry{left=2in,right=2in}
-
-    \begin{tikzpicture}[remember picture, overlay]
-        % page frame
-        \fill [TRed] (current page.north west)
-            rectangle (current page.south east);
-        \fill [white]
-            ($(current page.north west)+(1in,-1in)$)
-            rectangle
-            ($(current page.south east)+(-1in,1in)$);
-    \end{tikzpicture}
-
-    \begin{center}
-        \ifdefined\COMPARTMENTS
-            {\Large\TLPRedList{}}
-        \else
-            {\Huge\TLPRed{}}
-        \fi
-
-        \vspace*{\fill}
-
-        {%
-            \Large
-            EYES ONLY
-            
-            \vspace{1em}
-            NO FURTHER DISCLOSURE
-        }
-    \end{center}
-
-    \vspace{5em}
-
-    \noindent
-     Sources may use TLP:RED when information cannot be effectively acted upon without
-     significant risk for the privacy, reputation, or operations of the organizations involved.
-     Recipients may therefore not share TLP:RED information with anyone else.
-
-    \vspace*{\fill}
-
-    \begin{center}
-        {\footnotesize
-            More information about the Traffic Light Protocol can be found at:
-
-            \url{https://www.first.org/tlp}.
-        }
-
-        \vspace{10em}
-
-        \ifdefined\COMPARTMENTS
-            {\Large\TLPRedList{}}
-        \else
-            {\Huge\TLPRed{}}
-        \fi
-    \end{center}
-    \newpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \Large{}
-        THIS PAGE INTENTIONALLY LEFT BLANK
-    \end{center}
-    \vspace*{\fill}
-    \restoregeometry{}
-}
-
-\newcommand{\AmberStrictCover}{%
-    \thispagestyle{empty}
-    \topskip0pt
-    \newgeometry{left=2in,right=2in}
-
-    \begin{tikzpicture}[remember picture, overlay]
-        % page frame
-        \fill [TAmber] (current page.north west)
-            rectangle (current page.south east);
-        \fill [white]
-            ($(current page.north west)+(1in,-1in)$)
-            rectangle
-            ($(current page.south east)+(-1in,1in)$);
-    \end{tikzpicture}
-
-    \begin{center}
-        {\Huge\TLPAmberStrict}
-
-        \vspace*{\fill}
-
-        {%
-            \Large
-            LIMITED DISCLOSURE
-
-            \vspace{1em}
-            DISCLOSE ONLY WITHIN THE ORGANIZATION 
-        }
-    \end{center}
-
-    \vspace{5em}
-
-    \noindent
-    Sources may use TLP:AMBER+STRICT when information requires support to be effectively 
-    acted upon, yet carries risk to privacy, reputation, or operations if shared 
-    outside of the organizations involved. Recipients may share TLP:AMBER+STRICT information 
-    only with members of their own organization, but only on a need-to-know basis to protect 
-    their organization and its clients and prevent further harm.
-
-    \vspace*{\fill}
-
-    \begin{center}
-        {\footnotesize
-            More information about the Traffic Light Protocol can be found at:
-
-            \url{https://www.first.org/tlp}.
-        }
-
-        \vspace{10em}
-
-        {\Huge\TLPAmberStrict}
-    \end{center}
-
-    \newpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \Large{}
-        THIS PAGE INTENTIONALLY LEFT BLANK
-    \end{center}
-    \vspace*{\fill}
-    \restoregeometry{}
-}
-
-\newcommand{\AmberCover}{%
-    \thispagestyle{empty}
-    \topskip0pt
-    \newgeometry{left=2in,right=2in}
-
-    \begin{tikzpicture}[remember picture, overlay]
-        % page frame
-        \fill [TAmber] (current page.north west)
-            rectangle (current page.south east);
-        \fill [white]
-            ($(current page.north west)+(1in,-1in)$)
-            rectangle
-            ($(current page.south east)+(-1in,1in)$);
-    \end{tikzpicture}
-
-    \begin{center}
-        {\Huge\TLPAmber}
-
-        \vspace*{\fill}
-
-        {%
-            \Large
-            LIMITED DISCLOSURE 
-
-            \vspace{1em}
-            DISCLOSE ONLY WITHIN THE ORGANIZATION AND ITS CLIENTS
-        }
-    \end{center}
-
-    \vspace{5em}
-
-    \noindent
-    Sources may use TLP:AMBER when information requires support to be effectively 
-    acted upon, yet carries risk to privacy, reputation, or operations if shared 
-    outside of the organizations involved. Recipients may share TLP:AMBER 
-    information with members of their own organization and its clients, but only 
-    on a need-to-know basis to protect their organization and its clients and 
-    prevent further harm.
-
-    \vspace*{\fill}
-
-    \begin{center}
-        {\footnotesize
-            More information about the Traffic Light Protocol can be found at:
-
-            \url{https://www.first.org/tlp}.
-        }
-
-        \vspace{10em}
-
-        {\Huge\TLPAmber}
-    \end{center}
-
-    \newpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \Large{}
-        THIS PAGE INTENTIONALLY LEFT BLANK
-    \end{center}
-    \vspace*{\fill}
-    \restoregeometry{}
-}
-
-\newcommand{\GreenCover}{%
-    \thispagestyle{empty}
-    \topskip0pt
-    \newgeometry{left=2in,right=2in}
-
-    \begin{tikzpicture}[remember picture, overlay]
-        % page frame
-        \fill [TGreen] (current page.north west)
-            rectangle (current page.south east);
-        \fill [white]
-            ($(current page.north west)+(1in,-1in)$)
-            rectangle
-            ($(current page.south east)+(-1in,1in)$);
-    \end{tikzpicture}
-
-    \begin{center}
-        {\Huge\TLPGreen}
-
-        \vspace*{\fill}
-
-        {%
-            \Large
-            LIMITED DISCLOSURE
-
-            \vspace{1em}
-            DISCLOSE ONLY WITHIN THE COMMUNITY
-        }
-    \end{center}
-
-    \vspace{5em}
-
-    \noindent
-    Sources may use TLP:GREEN when information is useful to increase awareness within
-    their wider community. Recipients may share TLP:GREEN information with peers and 
-    partner organizations within their community, but not via publicly accessible channels. 
-    TLP:GREEN information may not be shared outside of the community.
-
-    \vspace*{\fill}
-
-    \begin{center}
-        {\footnotesize
-            More information about the Traffic Light Protocol can be found at:
-
-            \url{https://www.first.org/tlp}.
-        }
-
-        \vspace{10em}
-
-        {\Huge\TLPGreen}
-    \end{center}
-
-    \newpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \Large{}
-        THIS PAGE INTENTIONALLY LEFT BLANK
-    \end{center}
-    \vspace*{\fill}
-    \restoregeometry{}
-}
-
-\newcommand{\ClearCover}{%
-    \thispagestyle{empty}
-    \topskip0pt
-    \newgeometry{left=2in,right=2in}
-
-    \begin{tikzpicture}[remember picture, overlay]
-        % page frame
-        \fill [black] (current page.north west)
-            rectangle (current page.south east);
-        \fill [white]
-            ($(current page.north west)+(1in,-1in)$)
-            rectangle
-            ($(current page.south east)+(-1in,1in)$);
-    \end{tikzpicture}
-
-    \begin{center}
-        {\Huge\TLPClear}
-
-        \vspace*{\fill}
-
-        {%
-            \Large
-            DISCLOSURE IS NOT LIMITED
-        }
-    \end{center}
-
-    \vspace{5em}
-
-    \noindent
-    Recipients may spread this to the world, there is no limit on disclosure. 
-    Sources may use TLP:CLEAR when information carries minimal or no foreseeable 
-    risk of misuse, in accordance with applicable rules and procedures for public 
-    release. Subject to standard copyright rules, TLP:CLEAR information may be 
-    shared without restriction.
-
-    \vspace*{\fill}
-
-    \begin{center}
-        {\footnotesize
-            More information about the Traffic Light Protocol can be found at:
-
-            \url{https://www.first.org/tlp}.
-        }
-
-        \vspace{10em}
-
-        {\Huge\TLPClear}
-    \end{center}
-
-    \newpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \Large{}
-        THIS PAGE INTENTIONALLY LEFT BLANK
-    \end{center}
-    \vspace*{\fill}
-    \restoregeometry{}
-}
-
-\newcommand{\TLPCover}{%
-    \ifdefined\COMPARTMENTS
-        \RedCover
-    \else
-    \ifdefined\LVLRED
-        \RedCover
-    \else
-    \ifdefined\LVLAMBERSTRICT
-        \AmberStrictCover
-    \else
-    \ifdefined\LVLAMBER
-        \AmberCover
-    \else
-    \ifdefined\LVLGREEN
-        \GreenCover
-    \else
-    \ifdefined\LVLCLEAR
-        \ClearCover
-    \fi
-    \fi
-    \fi
-    \fi
-    \fi
-    \fi
-}
