@@ -43,13 +43,46 @@
 % \end{document}
 
 \DeclareOption{DRAFT}{%
-    \newcommand{\DRAFT}{}
+    \newcommand{\@DRAFT}{}
 }
-\DeclareOption{mr}{%
-    \newcommand{\MR}{}
+\DeclareOption{mfr}{%
+    \newcommand{\@MFR}{}
 }
-\DeclareOption{fouo}{%
-    \newcommand{\FOUO}{}
+\DeclareOption{very-sensitive}{%
+    \newcommand{\@MemoInfosecLvlSet}{}
+    \newcommand{\@MemoLvlVerySensitive}{}
+}
+\DeclareOption{sensitive}{%
+    \newcommand{\@MemoInfosecLvlSet}{}
+    \newcommand{\@MemoLvlSensitive}{}
+}
+\DeclareOption{somewhat-sensitive}{%
+    \newcommand{\@MemoInfosecLvlSet}{}
+    \newcommand{\@MemoLvlSomewhatSensitive}{}
+}
+\DeclareOption{not-sensitive}{%
+    \newcommand{\@MemoInfosecLvlSet}{}
+    \newcommand{\@MemoLvlNotSensitive}{}
+}
+\DeclareOption{tlp-red}{%
+    \newcommand{\@MemoTlpLvlSet}{}
+    \newcommand{\@MemoTlpRed}{}
+}
+\DeclareOption{tlp-amber-strict}{%
+    \newcommand{\@MemoTlpLvlSet}{}
+    \newcommand{\@MemoTlpAmberStrict}{}
+}
+\DeclareOption{tlp-amber}{%
+    \newcommand{\@MemoTlpLvlSet}{}
+    \newcommand{\@MemoTlpAmber}{}
+}
+\DeclareOption{tlp-green}{%
+    \newcommand{\@MemoTlpLvlSet}{}
+    \newcommand{\@MemoTlpGreen}{}
+}
+\DeclareOption{tlp-clear}{%
+    \newcommand{\@MemoTlpLvlSet}{}
+    \newcommand{\@MemoTlpClear}{}
 }
 \ProcessOptions\relax
 
@@ -62,13 +95,41 @@
     footskip=0.5in
 ]{geometry}
 \RequirePackage{nth}
-\RequirePackage{usafpub}
-\RequirePackage{xstring}
-\ifdefined\FOUO
-    \RequirePackage{fouo}
-    \securityMark{\FouoMark}
+\ifdefined\@MemoInfosecLvlSet
+    \def\@securityMark{PLACEHOLDER}
+    \ifdefined\@MemoTlpLvlSet
+        \def\@tlpMark{PLACEHOLDER}
+    \fi
+    \RequirePackage{usafpub}
+    \ifdefined\@MemoLvlVerySensitive
+        \RequirePackage[very-sensitive]{infosec}
+    \else\ifdefined\@MemoLvlSensitive
+        \RequirePackage[sensitive]{infosec}
+    \else\ifdefined\@MemoLvlSomewhatSensitive
+        \RequirePackage[somewhat-sensitive]{infosec}
+    \else\ifdefined\@MemoLvlNotSensitive
+        \RequirePackage[not-sensitive]{infosec}
+    \fi\fi\fi\fi
+    \ifdefined\@MemoTlpRed
+        \RequirePackage[red]{tlp}
+    \else\ifdefined\@MemoTlpAmberStrict
+        \RequirePackage[amber-strict]{tlp}
+    \else\ifdefined\@MemoTlpAmber
+        \RequirePackage[amber]{tlp}
+    \else\ifdefined\@MemoTlpGreen
+        \RequirePackage[green]{tlp}
+    \else\ifdefined\@MemoTlpClear
+        \RequirePackage[clear]{tlp}
+    \fi\fi\fi\fi\fi
+    \def\@securityMark{\InfosecLevel}
+    \ifdefined\@MemoTlpLvlSet
+        \def\@tlpMark{\TLPLevel}
+    \fi
+\else
+    \RequirePackage{usafpub}
 \fi
-\ifdefined\DRAFT
+\RequirePackage{xstring}
+\ifdefined\@DRAFT
     \RequirePackage{draftwatermark}
 \fi
 
@@ -107,7 +168,9 @@
 \nth{\arabic{indorsement}} Ind, #2\hfill{}#3
 
 MEMORANDUM FOR \MakeUppercase{#4}
+
 }{%
+
     \IfEq{\@sigType}{text}{%
         \textsign{\@indName}{\@indRank}{\@indTitle}
     }{%
@@ -120,6 +183,10 @@ MEMORANDUM FOR \MakeUppercase{#4}
 }
 
 % Commands
+\newcommand{\controlNumber}[1]{%
+    \def\@controlNumber{#1}
+}
+
 \renewcommand{\date}[1]{%
     \def\@date{#1}
 }
@@ -127,16 +194,20 @@ MEMORANDUM FOR \MakeUppercase{#4}
 \renewcommand{\maketitle}{%
     \thispagestyle{letterhead}
 
-    \ifdefined\FOUO
+    \ifdefined\@MemoInfosecLvlSet
         \vspace*{0.5in}
     \else
         \vspace*{0.25in}
     \fi
+    \ifdefined\@controlNumber
+        \hfill\@controlNumber
+    \fi
+
     \hfill\@date
 
     \vspace*{1em}
     MEMORANDUM FOR\hspace{0.25em}
-    \ifdefined\MR
+    \ifdefined\@MFR
         RECORD
     \else
         \begin{minipage}[t]{0.75\textwidth}
@@ -144,7 +215,7 @@ MEMORANDUM FOR \MakeUppercase{#4}
         \end{minipage}
     \fi
 
-    \ifdefined\MR\else
+    \ifdefined\@MFR\else
         FROM:\hspace{0.25em}
         \begin{minipage}[t]{0.75\textwidth}
         \@memofrom

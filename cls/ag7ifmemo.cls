@@ -2,10 +2,10 @@
 \ProvidesClass{ag7ifmemo}
 
 \DeclareOption{DRAFT}{%
-    \newcommand{\DRAFT}{}
+    \newcommand{\@DRAFT}{}
 }
-\DeclareOption{mr}{%
-    \newcommand{\MR}{}
+\DeclareOption{mfr}{%
+    \newcommand{\@MFR}{}
 }
 \DeclareOption{very-sensitive}{%
     \newcommand{\@INFOSEC}{}
@@ -33,7 +33,7 @@
 \renewcommand{\maketitle}{%
     \thispagestyle{letterhead}
 
-    \ifdefined\FOUO
+    \ifdefined\@INFOSEC
         \vspace*{0.5in}
     \else
         \vspace*{0.25in}
@@ -45,7 +45,7 @@
 
     \vspace*{1em}
     MEMORANDUM FOR\hspace{0.25em}
-    \ifdefined\MR
+    \ifdefined\@MFR
         RECORD
     \else
         \begin{minipage}[t]{0.75\textwidth}
@@ -53,7 +53,7 @@
         \end{minipage}
     \fi
 
-    \ifdefined\MR
+    \ifdefined\@MFR
     \else
         FROM:\hspace{0.25em}
         \begin{minipage}[t]{0.75\textwidth}
