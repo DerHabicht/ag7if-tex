@@ -20,7 +20,7 @@
 \setlength{\headheight}{15pt}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhf{}
-\rhead{\thepage}
+\fancyhead[R]{\thepage}
 \pagestyle{fancy}
 
 % Title
