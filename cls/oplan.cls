@@ -184,7 +184,7 @@
 
 \ifdefined\@references
     \RequirePackage[notes,backend=biber]{biblatex-chicago}
-    \bibliography{references}
+    \addbibresource{references.bib}
 \fi
 
 \ifdefined\@DRAFT
