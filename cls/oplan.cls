@@ -29,11 +29,6 @@
 % \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
 % \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
 %
-% \references{%
-%   \item <REF_1>
-%   \item <REF_2>
-% }
-%
 % \begin{document}
 % \maketitle
 % 
@@ -88,6 +83,9 @@
 }
 \DeclareOption{vhistory}{%
     \newcommand{\vhistory}{}
+}
+\DeclareOption{refs}{%
+    \newcommand{\@references}{}
 }
 \DeclareOption{very-sensitive}{%
     \newcommand{\@OplanInfosecLvlSet}{}
@@ -184,6 +182,11 @@
     \RequirePackage[nochapter,tablegrid]{vhistory}
 \fi
 
+\ifdefined\@references
+    \RequirePackage[notes,backend=biber]{biblatex-chicago}
+    \bibliography{references}
+\fi
+
 \ifdefined\@DRAFT
     \RequirePackage{draftwatermark}
 \fi
@@ -225,19 +228,13 @@
                 \else
                     \MakeUppercase{\@incidentType}:~\@incidentName
                 \fi\fi
-                
-                \ifdefined\@references
-                {
-                    REFERENCES:
-                    \setlength{\parskip}{0pt}
-                    \begin{enumerate}
-                        \setlength{\itemsep}{0pt}
-                        \setlength{\parskip}{0pt}
-                        \@references
-                    \end{enumerate}
-                }
-                \fi
 
+                \vspace*{2ex}
+
+                \ifdefined\@references
+                    \printbibliography[title={References}]
+                \fi
+                
                 \vspace*{2ex}
             \else
                 \thispagestyle{plain}%
@@ -248,7 +245,7 @@
     \fi
 
     \stepcounter{chapter}%
-    {\normalfont\bfseries\large\thechapter\quad#1}
+    {\normalfont\bfseries\Large\thechapter\quad#1}
     \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#1}
 }
 
@@ -341,10 +338,6 @@
         \coordChain \hline
     \end{tabularx}
     \end{center}
-}
-
-\newcommand{\references}[1]{%
-    \def\@references{#1}%
 }
 
 \newcommand{\theOplan}{%
@@ -527,7 +520,7 @@
 
         \cleardoublepage
     \fi
-    
+   
     \tableofcontents
     
     \cleardoublepage
@@ -535,7 +528,6 @@
     \setcounter{page}{1} 
 
     \mainmatter
-
 }
 
 \renewcommand{\maketitle}{%
