@@ -61,6 +61,7 @@
 }
 \DeclareOption{camplan}{%
     \newcommand{\@CAMPLAN}{}
+    \def\@incidentType{Campaign}
 }
 \DeclareOption{conplan}{%
     \newcommand{\@CONPLAN}{}
@@ -289,7 +290,9 @@
 }
 
 \newcommand{\incident}[2][incident]{%
-    \def\@incidentType{#1}%
+    \ifdefined\@incidentType\else
+        \def\@incidentType{#1}
+    \fi
     \def\@incidentName{#2}%
 }
 
@@ -319,15 +322,14 @@
     \def\@sponsor{#1}%
 }
 
-\newcommand{\coordChain}{}
-
 \newcommand\staffCoord[1]{%
-    \g@addto@macro\coordChain{\hline\@gobble}%
+    \ifdefined\@coordChain\else\def\@coordChain{}\fi
+    \g@addto@macro\@coordChain{\hline\@gobble}%
   \@for\tmp:=#1\do{%
- \expandafter\g@addto@macro\expandafter\coordChain
+ \expandafter\g@addto@macro\expandafter\@coordChain
                    \expandafter{\expandafter&\tmp}%
 }%
-    \g@addto@macro\coordChain{\\}%
+    \g@addto@macro\@coordChain{\\}%
 }
 
 \newcommand{\tableofcoordination}{%
@@ -335,7 +337,7 @@
     \begin{tabularx}{\textwidth}{|l|l|X|r|}
         \hline
         OFFICE &  ACTION &  OUTCOME &  DATE \\ \hline
-        \coordChain \hline
+        \@coordChain \hline
     \end{tabularx}
     \end{center}
 }
@@ -362,7 +364,7 @@
     \fi\fi\fi\fi\fi\fi\fi\fi
 }
 
-\newcommand{\theOperationsPlan}{%
+\newcommand{\theOperationPlan}{%
     \ifdefined\@BPLAN
         BASE PLAN%
     \else\ifdefined\@CAMPLAN
@@ -385,7 +387,11 @@
 }
 
 \newcommand{\theplan}{%
-    \theOperationsPlan~\@oplan%
+    \ifdefined\@oplan
+        \theOperationPlan~\@oplan
+    \else
+        \theOperationPlan
+    \fi
 }
 
 \newcommand{\@FragOrdTitle}{%
@@ -503,16 +509,20 @@
             \titlecap{\@incidentType}~\titlecap{\@commanderType}: & \@commander        \\
                                                                   & \@commanderContact \\
                                                                   &                    \\
+        \ifdefined\@sponsor
             Lead Organization and Unit:                           & \@sponsor          \\
+        \fi
         \end{tabular}
     \end{center}   
 
     \cleardoublepage   
     
-    \chapter*{Coordination and Approval}
-    \tableofcoordination
+    \ifdefined\@coordChain
+        \chapter*{Coordination and Approval}
+        \tableofcoordination
     
-    \cleardoublepage
+        \cleardoublepage
+    \fi
 
     \ifdefined\vhistory
         \chapter*{Revision History}
