@@ -217,43 +217,35 @@
 \renewcommand{\thechapter}{\arabic{chapter}}
 
 \renewcommand{\chapter}[1]{%
-    \if@openright\cleardoublepage\else\clearpage\fi
-    \if@mainmatter
-        \if@appendix
-            \thispagestyle{plain}%
-        \else
-            \ifnum\c@chapter=0
-                \thispagestyle{letterhead}
-                
-                \vspace*{5ex}
-                
-                \theplan
+    \ifnum\c@chapter=0
+        \cleardoublepage
+        \if@mainmatter
+            \thispagestyle{letterhead}
+            
+            \vspace*{5ex}
+            
+            \theplan
 
-                \ifdefined\@DRAFT
-                    EFFECTIVE:~DRAFT
-                \else
-                    EFFECTIVE:~\@effective
-                \fi
-                
-                \ifdefined\@incidentNumber
-                    \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
-                \else
-                    \MakeUppercase{\@incidentType}:~\@incidentName
-                \fi
-
-                \vspace*{2ex}
-
-                \ifdefined\@references
-                    \printbibliography[title={References}]
-                \fi
-                
-                \vspace*{2ex}
+            \ifdefined\@DRAFT
+                EFFECTIVE:~DRAFT
             \else
-                \thispagestyle{plain}%
+                EFFECTIVE:~\@effective
             \fi
+            
+            \ifdefined\@incidentNumber
+                \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
+            \else
+                \MakeUppercase{\@incidentType}:~\@incidentName
+            \fi
+
+            \vspace*{2ex}
+
+            \ifdefined\@references
+                \printbibliography[title={References}]
+            \fi
+            
+            \vspace*{2ex}
         \fi
-    \else
-        \thispagestyle{plain}%
     \fi
 
     \stepcounter{chapter}%
