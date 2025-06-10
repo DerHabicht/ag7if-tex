@@ -6,28 +6,39 @@
 % % NOTE: declaring <tlp> without <infosec> has no effect
 % \documentclass[<DRAFT>,<cap>,<vhistory>,<plan_type>,<infosec>,<tlp>]{oplan}
 %
-% \oplan{<OPLAN_NUMBER>}
-% \incidentNumber{<INCIDENT_NUMBER>}
+% \oplan{<OPLAN_NUMBER>} % Optional
+% \incidentNumber{<INCIDENT_NUMBER>} % Optional
 % \incident[<INCIDENT_TYPE>]{<INCIDENT_NAME>}
 % \coverSeal%
 %   {<COVER_SEAL1_PATH>}%
 %   {<COVER_SEAL2_PATH>}%
 %   {<COVER_SEAL3_PATH>}%
-%   {<COVER_SEAL4_PATH>}
+%   {<COVER_SEAL4_PATH>} % Not used by SPLANs or FRAGORDs
 % \effective{<PLAN_EFFECTIVE_DATE>}
-% \location{<INCIDENT_LOCATION>}
+% \location{<INCIDENT_LOCATION>} % Not used by STRATPLAN, CAMPLAN, QPLAN, or SPLAN
 % \incidentDate[<END_DATE>]{<START_DATE>}
-% \commander[<TITLE>]{<NAME>}{<CONTACT>}
-% \sponsor{<SPONSORING_ORG_AND_UNIT>}
+% \commander[<TITLE>]{<NAME>}{<CONTACT>} % Not used by SPLAN or FRAGORD
+% \sponsor{<SPONSORING_ORG_AND_UNIT>} % Optional
 %
 % \seal{<SEAL_PATH>} % Optional if using the <cap> document option
-% \unitPatch{<UNIT_PATCH_PATH>}
+% \unitPatch{<UNIT_PATCH_PATH>} % Optional
 % \unit{<UNIT>}
 % \address{<UNIT ADDRESS> \\ <CITY>, <STATE> <ZIP>}
 %
+% \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>} % Optional
 % \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
 % \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
-% \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>}
+%
+% If vhistory option is selected, define the \vhistory command as follows
+% (recommend putting this in a separate file and \input'ing it in the preamble):
+%
+% \newcommand{\<AUTHOR_INITIALS>}{<AUTHOR_NAME>}
+% 
+% \renewcommand{\vhistory}{%
+% \begin{versionhistory}
+%     \vhEntry{<VERSION>}{<DATE>}{<AUTHOR_INITIALS>}{Initial draft}
+% \end{versionhistory}
+% }
 %
 % \begin{document}
 % \maketitle
@@ -224,11 +235,11 @@
                     EFFECTIVE:~\@effective
                 \fi
                 
-                \ifdefined\@SPLAN\else\ifdefined\@incidentNumber
+                \ifdefined\@incidentNumber
                     \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
                 \else
                     \MakeUppercase{\@incidentType}:~\@incidentName
-                \fi\fi
+                \fi
 
                 \vspace*{2ex}
 
@@ -400,24 +411,6 @@
     \fi
 
     \setcounter{page}{1}
-
-    \thispagestyle{letterhead}
-    
-    \vspace*{5ex}
-    
-    \theplan
-
-    \ifdefined\@DRAFT
-        EFFECTIVE:~DRAFT
-    \else
-        EFFECTIVE:~\@effective
-    \fi
-    
-    \ifdefined\@incidentNumber
-        \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
-    \else
-        \MakeUppercase{\@incidentType}:~\@incidentName
-    \fi
 }
 
 \newcommand{\coverSeal}[4]{%
@@ -496,7 +489,7 @@
         \begin{tabular}{ll}
             \theOplan~Effective:                                  & \ifdefined\@DRAFT DRAFT\else\@effective\fi \\
                                                                   &                    \\
-            \ifdefined\@CAMPLAN\else\ifdefined\@SPLAN\else\ifdefined\@STRATPLAN\else\ifdefined\@QPLAN\else
+            \ifdefined\@STRATPLAN\else\ifdefined\@CAMPLAN\else\ifdefined\@QPLAN\else\ifdefined\@SPLAN\else
                 \titlecap{\@incidentType}~Location:               & \@location         \\
             \fi\fi\fi\fi
         \ifdefined\@startDate                                 
@@ -542,9 +535,11 @@
 
 \renewcommand{\maketitle}{%
 
-    \ifdefined\@FRAGO
+    \ifdefined\@FRAGO 
+        \@FragOrdTitle%
+    \else\ifdefined\@SPLAN
         \@FragOrdTitle%
     \else
         \@FullTitle%
-    \fi
+    \fi\fi
 }
