@@ -204,6 +204,7 @@
 \fi
 
 \pagestyle{usaf}
+\raggedbottom
 
 % Table of Contents Formatting
 \setcounter{tocdepth}{2}
@@ -398,10 +399,6 @@
 }
 
 \newcommand{\@FragOrdTitle}{%
-    \ifdefined\@OplanInfosecLvlSet
-        \InfosecCover
-    \fi
-
     \setcounter{page}{1}
 }
 
