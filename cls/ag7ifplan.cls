@@ -1,16 +1,25 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{oplan}
-
-\ClassWarningNoLine{oplan}{Class oplan is deprecated. Use ag7ifplan instead.}
+\ProvidesClass{ag7ifplan}
 
 % Document setup:
 %
 % % NOTE: declaring <tlp> without <infosec> has no effect
-% \documentclass[<DRAFT>,<cap>,<vhistory>,<plan_type>,<infosec>,<tlp>]{oplan}
+% % Plan Types:
+% % - stratplan
+% % - camplan
+% % - qplan
+% % - bplan
+% % - oplan
+% % - opord
+% % - fragord
+% % - splan
+% % - iap
+% \documentclass[<draft>,<cap>,<vhistory>,<plan_type>,<infosec>,<tlp>]{ag7ifplan}
 %
-% \oplan{<OPLAN_NUMBER>} % Optional
+% \planNumber{<PLAN_NUMBER>}
+% \supplement{<SUPPLEMENT_ID>} % Optional
 % \incidentNumber{<INCIDENT_NUMBER>} % Optional
-% \incident[<INCIDENT_TYPE>]{<INCIDENT_NAME>}
+% \incident[<INCIDENT_TYPE>]{<INCIDENT_NAME>} % Ignored by QPLANs and SPLANs
 % \coverSeal%
 %   {<COVER_SEAL1_PATH>}%
 %   {<COVER_SEAL2_PATH>}%
@@ -66,34 +75,38 @@
 %
 % \end{document}
 
-\DeclareOption{DRAFT}{%
-    \newcommand{\@DRAFT}{}
+\DeclareOption{draft}{%
+    \newcommand{\@draft}{}
 }
-\DeclareOption{bplan}{%
-    \newcommand{\@BPLAN}{}
+\DeclareOption{stratplan}{%
+    \newcommand{\@STRATPLAN}{}
 }
 \DeclareOption{camplan}{%
     \newcommand{\@CAMPLAN}{}
-    \def\@incidentType{Campaign}
-}
-\DeclareOption{conplan}{%
-    \newcommand{\@CONPLAN}{}
-}
-\DeclareOption{opord}{%
-    \newcommand{\@OPORD}{}
-}
-\DeclareOption{frago}{%
-    \newcommand{\@FRAGO}{}
 }
 \DeclareOption{qplan}{%
     \newcommand{\@QPLAN}{}
 }
+\DeclareOption{bplan}{%
+    \newcommand{\@BPLAN}{}
+}
+\DeclareOption{conplan}{%
+    \newcommand{\@CONPLAN}{}
+}
+\DeclareOption{oplan}{%
+    \newcommand{\@OPLAN}{}
+}
+\DeclareOption{opord}{%
+    \newcommand{\@OPORD}{}
+}
+\DeclareOption{fragord}{%
+    \newcommand{\@FRAGO}{}
+}
 \DeclareOption{splan}{%
     \newcommand{\@SPLAN}{}
-    \def\@incidentType{Sprint}
 }
-\DeclareOption{stratplan}{%
-    \newcommand{\@STRATPLAN}{}
+\DeclareOption{iap}{%
+    \newcommand{\@IAP}{}
 }
 \DeclareOption{vhistory}{%
     \newcommand{\vhistory}{}
@@ -102,42 +115,49 @@
     \newcommand{\@references}{}
 }
 \DeclareOption{very-sensitive}{%
-    \newcommand{\@OplanInfosecLvlSet}{}
-    \newcommand{\@OplanLvlVerySensitive}{}
+    \newcommand{\@PlanInfosecLvlSet}{}
 }
 \DeclareOption{sensitive}{%
-    \newcommand{\@OplanInfosecLvlSet}{}
-    \newcommand{\@OplanLvlSensitive}{}
+    \newcommand{\@PlanInfosecLvlSet}{}
 }
 \DeclareOption{somewhat-sensitive}{%
-    \newcommand{\@OplanInfosecLvlSet}{}
-    \newcommand{\@OplanLvlSomewhatSensitive}{}
+    \newcommand{\@PlanInfosecLvlSet}{}
 }
 \DeclareOption{not-sensitive}{%
-    \newcommand{\@OplanInfosecLvlSet}{}
-    \newcommand{\@OplanLvlNotSensitive}{}
+    \newcommand{\@PlanInfosecLvlSet}{}
 }
 \DeclareOption{tlp-red}{%
-    \newcommand{\@OplanTlpLvlSet}{}
-    \newcommand{\@OplanTlpRed}{}
+    \newcommand{\@PlanTlpLvlSet}{}
 }
 \DeclareOption{tlp-amber-strict}{%
-    \newcommand{\@OplanTlpLvlSet}{}
-    \newcommand{\@OplanTlpAmberStrict}{}
+    \newcommand{\@PlanTlpLvlSet}{}
 }
 \DeclareOption{tlp-amber}{%
-    \newcommand{\@OplanTlpLvlSet}{}
-    \newcommand{\@OplanTlpAmber}{}
+    \newcommand{\@PlanTlpLvlSet}{}
 }
 \DeclareOption{tlp-green}{%
-    \newcommand{\@OplanTlpLvlSet}{}
-    \newcommand{\@OplanTlpGreen}{}
+    \newcommand{\@PlanTlpLvlSet}{}
 }
 \DeclareOption{tlp-clear}{%
-    \newcommand{\@OplanTlpLvlSet}{}
-    \newcommand{\@OplanTlpClear}{}
+    \newcommand{\@PlanTlpLvlSet}{}
 }
 \ProcessOptions\relax
+
+\ifdefined\@STRATPLAN
+\else\ifdefined\@CAMPLAN
+\else\ifdefined\@QPLAN
+\else\ifdefined\@BPLAN
+\else\ifdefined\@CONPLAN
+\else\ifdefined\@OPLAN
+\else\ifdefined\@OPORD
+\else\ifdefined\@FRAGORD
+\else\ifdefined\@SPLAN
+\else\ifdefined\@IAP
+\else
+    \ClassError{ag7ifplan}{no plan type defined}{Load the class with stratplan, camplan, qplan, bplan, conplan, oplan, oporf, fragord, splan, or iap option}
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+
+% TODO: Warn/error on multiple plan types
 
 \LoadClass[12pt]{book}
 
@@ -158,34 +178,18 @@
 \RequirePackage{tocloft}
 \RequirePackage[dvipsnames,table]{xcolor}
 
-\ifdefined\@OplanInfosecLvlSet
+\ifdefined\@PlanInfosecLvlSet
     \def\@securityMark{PLACEHOLDER}
-    \ifdefined\@OplanTlpLvlSet
+    \ifdefined\@PlanTlpLvlSet
         \def\@tlpMark{PLACEHOLDER}
     \fi
+
     \RequirePackage{usafpub}
-    \ifdefined\@OplanLvlVerySensitive
-        \RequirePackage[very-sensitive]{infosec}
-    \else\ifdefined\@OplanLvlSensitive
-        \RequirePackage[sensitive]{infosec}
-    \else\ifdefined\@OplanLvlSomewhatSensitive
-        \RequirePackage[somewhat-sensitive]{infosec}
-    \else\ifdefined\@OplanLvlNotSensitive
-        \RequirePackage[not-sensitive]{infosec}
-    \fi\fi\fi\fi
-    \ifdefined\@OplanTlpRed
-        \RequirePackage[red]{tlp}
-    \else\ifdefined\@OplanTlpAmberStrict
-        \RequirePackage[amber-strict]{tlp}
-    \else\ifdefined\@OplanTlpAmber
-        \RequirePackage[amber]{tlp}
-    \else\ifdefined\@OplanTlpGreen
-        \RequirePackage[green]{tlp}
-    \else\ifdefined\@OplanTlpClear
-        \RequirePackage[clear]{tlp}
-    \fi\fi\fi\fi\fi
+    \RequirePackage{infosec}
+
     \def\@securityMark{\InfosecLevel}
-    \ifdefined\@OplanTlpLvlSet
+    \ifdefined\@PlanTlpLvlSet
+        \RequirePackage{tlp}
         \def\@tlpMark{\TLPLevel}
     \fi
 \else
@@ -201,7 +205,7 @@
     \addbibresource{references.bib}
 \fi
 
-\ifdefined\@DRAFT
+\ifdefined\@draft
     \RequirePackage{draftwatermark}
 \fi
 
@@ -229,7 +233,7 @@
             
             \theplan
 
-            \ifdefined\@DRAFT
+            \ifdefined\@draft
                 EFFECTIVE:~DRAFT
             \else
                 EFFECTIVE:~\@effective
@@ -287,8 +291,19 @@
 
 
 % Titlepage/Header
-\newcommand{\oplan}[1]{%
-    \def\@oplan{#1}
+\newcommand{\planNumber}[1]{%
+    \ifdefined\@QPLAN
+        \def\@incidentType{Quarter}
+        \def\@incidentName{#1}
+    \else\ifdefined\@SPLAN
+        \def\@incidentType{Sprint}
+        \def\@incidentName{#1}
+    \fi\fi
+    \def\@planNumber{#1}
+}
+
+\newcommand{\supplement}[1]{%
+    \def\@supplement{#1}
 }
 
 \newcommand{\incidentNumber}[1]{%
@@ -296,10 +311,16 @@
 }
 
 \newcommand{\incident}[2][incident]{%
-    \ifdefined\@incidentType\else
-        \def\@incidentType{#1}
-    \fi
-    \def\@incidentName{#2}%
+    \ifdefined\@QPLAN
+        \ClassWarning{ag7ifplan}{incident name is ignored for QPLANs}
+    \else\ifdefined\@SPLAN
+        \ClassWarning{ag7ifplan}{incident name is ignored for SPLANs}
+    \else
+        \ifdefined\@incidentType\else
+            \def\@incidentType{#1}
+        \fi
+        \def\@incidentName{#2}%
+    \fi\fi
 }
 
 \newcommand{\effective}[1]{%
@@ -348,55 +369,59 @@
     \end{center}
 }
 
-\newcommand{\theOplan}{%
-    \ifdefined\@BPLAN
-        BPLAN%
+\newcommand{\planTypeShort}{%
+    \ifdefined\@STRATPLAN
+        STRATPLAN
     \else\ifdefined\@CAMPLAN
-        CAMPLAN%
-    \else\ifdefined\@CONPLAN
-        CONPLAN%
-    \else\ifdefined\@OPORD
-        OPORD%
-    \else\ifdefined\@FRAGO
-        FRAGO%
+        CAMPLAN
     \else\ifdefined\@QPLAN
-        QPLAN%
+        QPLAN
+    \else\ifdefined\@BPLAN
+        BPLAN
+    \else\ifdefined\@CONPLAN
+        CONPLAN
+    \else\ifdefined\@OPLAN
+        OPLAN
+    \else\ifdefined\@OPORD
+        OPORD
+    \else\ifdefined\@FRAGORD
+        FRAGORD
     \else\ifdefined\@SPLAN
-        SPLAN%
-    \else\ifdefined\@STRATPLAN
-        STRATPLAN%
-    \else
-        OPLAN%
-    \fi\fi\fi\fi\fi\fi\fi\fi
+        SPLAN
+    \else\ifdefined\@IAP
+        IAP
+    \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
 }
 
-\newcommand{\theOperationPlan}{%
-    \ifdefined\@BPLAN
-        BASE PLAN%
+\newcommand{\planTypeFull}{%1
+    \ifdefined\@STRATPLAN
+        STRATEGIC PLAN
     \else\ifdefined\@CAMPLAN
-        CAMPAIGN PLAN%
-    \else\ifdefined\@CONPLAN
-        CONCEPT PLAN%
-    \else\ifdefined\@OPORD
-        OPERATION ORDER%
-    \else\ifdefined\@FRAGO
-        FRAGMENTARY OPERATION ORDER%
-    \else\ifdefined\@SPLAN
-        SPRINT PLAN%
-    \else\ifdefined\@STRATPLAN
-        STRATEGIC PLAN%
+        CAMPAIGN PLAN
     \else\ifdefined\@QPLAN
-        QUARTERLY PLAN%
-    \else
-        OPERATION PLAN%
-    \fi\fi\fi\fi\fi\fi\fi\fi
+        QUARTERLY PLAN
+    \else\ifdefined\@BPLAN
+        BASE PLAN
+    \else\ifdefined\@CONPLAN
+        CONCEPT PLAN
+    \else\ifdefined\@OPLAN
+        OPERATION PLAN
+    \else\ifdefined\@OPORD
+        OPERATION ORDER
+    \else\ifdefined\@FRAGORD
+        FRAGMENTARY OPERATION ORDER
+    \else\ifdefined\@SPLAN
+        SPRINT PLAN
+    \else\ifdefined\@IAP
+        INCIDENT ACTION PLAN
+    \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
 }
 
 \newcommand{\theplan}{%
-    \ifdefined\@oplan
-        \theOperationPlan~\@oplan
+    \ifdefined\@supplement
+        \@supplement~SUPPLEMENT~TO~\planTypeFull~\@planNumber
     \else
-        \theOperationPlan
+        \planTypeFull~\@planNumber
     \fi
 }
 
@@ -429,7 +454,7 @@
 \newcommand{\@FullTitle}{%
     \frontmatter
 
-    \ifdefined\@OplanInfosecLvlSet
+    \ifdefined\@PlanInfosecLvlSet
         \InfosecCover
         \cleardoublepage
     \fi
@@ -478,11 +503,11 @@
 
         \normalsize
         \begin{tabular}{ll}
-            \theOplan~Effective:                                  & \ifdefined\@DRAFT DRAFT\else\@effective\fi \\
+            \planTypeShort~Effective:                             & \ifdefined\@draft DRAFT\else\@effective\fi \\
                                                                   &                    \\
-            \ifdefined\@STRATPLAN\else\ifdefined\@CAMPLAN\else\ifdefined\@QPLAN\else\ifdefined\@SPLAN\else
-                \titlecap{\@incidentType}~Location:               & \@location         \\
-            \fi\fi\fi\fi
+        \ifdefined\@location
+            \titlecap{\@incidentType}~Location:                   & \@location         \\
+        \fi
         \ifdefined\@startDate                                 
             \titlecap{\@incidentType}~Start:                      & \@startDate        \\
         \fi
@@ -490,7 +515,9 @@
             \titlecap{\@incidentType}~End:                        & \@endDate          \\
         \fi
                                                                   &                    \\ 
+        \ifdefined\@commander
             \titlecap{\@incidentType}~\titlecap{\@commanderType}: & \@commander        \\
+        \fi
                                                                   & \@commanderContact \\
                                                                   &                    \\
         \ifdefined\@sponsor
