@@ -33,7 +33,7 @@
 %
 % \seal{<SEAL_PATH>} % Optional if using the <cap> document option
 % \unitPatch{<UNIT_PATCH_PATH>} % Optional
-% \unit{<UNIT>}
+% \unitName{<UNIT>}
 % \address{<UNIT ADDRESS> \\ <CITY>, <STATE> <ZIP>}
 %
 % \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>} % Optional
@@ -517,9 +517,9 @@
                                                                   &                    \\ 
         \ifdefined\@commander
             \titlecap{\@incidentType}~\titlecap{\@commanderType}: & \@commander        \\
-        \fi
                                                                   & \@commanderContact \\
                                                                   &                    \\
+        \fi
         \ifdefined\@sponsor
             Lead Organization and Unit:                           & \@sponsor          \\
         \fi
