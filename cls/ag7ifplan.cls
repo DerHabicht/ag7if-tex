@@ -25,7 +25,7 @@
 %   {<COVER_SEAL2_PATH>}%
 %   {<COVER_SEAL3_PATH>}%
 %   {<COVER_SEAL4_PATH>} % Not used by SPLANs or FRAGORDs
-% \effective{<PLAN_EFFECTIVE_DATE>}
+% \effective{<PLAN_EFFECTIVE_DATE>} % Ignored if vhistory option is set
 % \location{<INCIDENT_LOCATION>} % Not used by STRATPLAN, CAMPLAN, QPLAN, or SPLAN
 % \incidentDate[<END_DATE>]{<START_DATE>}
 % \commander[<TITLE>]{<NAME>}{<CONTACT>} % Not used by SPLAN or FRAGORD
@@ -33,7 +33,7 @@
 %
 % \seal{<SEAL_PATH>} % Optional if using the <cap> document option
 % \unitPatch{<UNIT_PATCH_PATH>} % Optional
-% \unit{<UNIT>}
+% \unitName{<UNIT>}
 % \address{<UNIT ADDRESS> \\ <CITY>, <STATE> <ZIP>}
 %
 % \staffCoord{<TO>,<ACTION>,<OUTCOME>,<DATE>} % Optional
@@ -128,18 +128,23 @@
 }
 \DeclareOption{tlp-red}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLRED}{}
 }
 \DeclareOption{tlp-amber-strict}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLAMBERSTRICT}{}
 }
 \DeclareOption{tlp-amber}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLAMBER}{}
 }
 \DeclareOption{tlp-green}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLGREEN}{}
 }
 \DeclareOption{tlp-clear}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLCLEAR}{}
 }
 \ProcessOptions\relax
 
@@ -235,9 +240,11 @@
 
             \ifdefined\@draft
                 EFFECTIVE:~DRAFT
+            \else\ifdefined\vhistory
+                EFFECTIVE:~\vhCurrentDate
             \else
                 EFFECTIVE:~\@effective
-            \fi
+            \fi\fi
             
             \ifdefined\@incidentNumber
                 \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
