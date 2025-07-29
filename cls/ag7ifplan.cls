@@ -144,7 +144,6 @@
 }
 \DeclareOption{tlp-clear}{%
     \newcommand{\@PlanTlpLvlSet}{}
-    \newcommand{\@LVLCLEAR}{}
 }
 \ProcessOptions\relax
 
