@@ -25,7 +25,7 @@
 %   {<COVER_SEAL2_PATH>}%
 %   {<COVER_SEAL3_PATH>}%
 %   {<COVER_SEAL4_PATH>} % Not used by SPLANs or FRAGORDs
-% \effective{<PLAN_EFFECTIVE_DATE>}
+% \effective{<PLAN_EFFECTIVE_DATE>} % Ignored if vhistory option is set
 % \location{<INCIDENT_LOCATION>} % Not used by STRATPLAN, CAMPLAN, QPLAN, or SPLAN
 % \incidentDate[<END_DATE>]{<START_DATE>}
 % \commander[<TITLE>]{<NAME>}{<CONTACT>} % Not used by SPLAN or FRAGORD
@@ -128,15 +128,19 @@
 }
 \DeclareOption{tlp-red}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLRED}{}
 }
 \DeclareOption{tlp-amber-strict}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLAMBERSTRICT}{}
 }
 \DeclareOption{tlp-amber}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLAMBER}{}
 }
 \DeclareOption{tlp-green}{%
     \newcommand{\@PlanTlpLvlSet}{}
+    \newcommand{\@LVLGREEN}{}
 }
 \DeclareOption{tlp-clear}{%
     \newcommand{\@PlanTlpLvlSet}{}
@@ -154,7 +158,7 @@
 \else\ifdefined\@SPLAN
 \else\ifdefined\@IAP
 \else
-    \ClassError{ag7ifplan}{no plan type defined}{Load the class with stratplan, camplan, qplan, bplan, conplan, oplan, oporf, fragord, splan, or iap option}
+    \ClassError{ag7ifplan}{no plan type defined}{Load the class with stratplan, camplan, qplan, bplan, conplan, oplan, opord, fragord, splan, or iap option}
 \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
 
 % TODO: Warn/error on multiple plan types
@@ -224,7 +228,7 @@
 \renewcommand{\thechapter}{\arabic{chapter}}
 
 \renewcommand{\chapter}[1]{%
-    \ifnum\c@chapter=0
+    \if@appendix\else\ifnum\c@chapter=0
         \cleardoublepage
         \if@mainmatter
             \thispagestyle{letterhead}
@@ -235,9 +239,11 @@
 
             \ifdefined\@draft
                 EFFECTIVE:~DRAFT
+            \else\ifdefined\vhistory
+                EFFECTIVE:~\vhCurrentDate
             \else
                 EFFECTIVE:~\@effective
-            \fi
+            \fi\fi
             
             \ifdefined\@incidentNumber
                 \MakeUppercase{\@incidentType}:~[\@incidentNumber]~\@incidentName
@@ -253,7 +259,7 @@
             
             \vspace*{2ex}
         \fi
-    \fi
+    \fi\fi
 
     \stepcounter{chapter}%
     {\normalfont\bfseries\Large\thechapter\quad#1}
@@ -271,6 +277,12 @@
     \setcounter{section}{0}%
     \gdef\@chapapp{\appendixname}%
     \gdef\thechapter{\@Alph\c@chapter}%
+    %\gdef\thesection{\@Alph\c@chapter.\@Arabic\c@section}%
+    %\gdef\thesubsection{\@Alph\c@chapter.\@Arabic\c@section.\@Arabic\c@subsection}%
+    %\gdef\thesubsubsection{\@Alph\c@chapter.\@Arabic\c@section.\@Arabic\c@subsection.\@Arabic\c@subsubsection}%
+    %\gdef\theparagraph{\@Alph\c@chapter.\@Arabic\c@section.\@Arabic\c@subsection.\@Arabic\c@subsubsection.\@Arabic\c@paragraph}%
+    %\gdef\thesubparagraph{\@Alph\c@chapter.\@Arabic\c@section.\@Arabic\c@subsection.\@Arabic\c@subsubsection.\@Arabic\c@paragraph.\@Arabic\c@subparagrah}%
+    \cleardoublepage
 }
 
 

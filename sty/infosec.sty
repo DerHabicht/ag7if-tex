@@ -2,6 +2,7 @@
 \ProvidesPackage{infosec}
 
 \RequirePackage{xcolor}
+\RequirePackage{censor}
 \RequirePackage{soul}
 \RequirePackage{tikz}
 \RequirePackage{geometry}
@@ -144,17 +145,17 @@
 }
 
 \newcommand{\InfosecStatement}{%
-    \ifdefined\LvlVerySensitive
-        \VerySensitiveStatement
+    \ifdefined\LvlVerySensitive%
+        \VerySensitiveStatement%
     \fi
-    \ifdefined\LvlSensitive
-        \SensitiveStatement
+    \ifdefined\LvlSensitive%
+        \SensitiveStatement%
     \fi
-    \ifdefined\LvlSomewhatSensitive
-        \SomewhatSensitiveStatement
+    \ifdefined\LvlSomewhatSensitive%
+        \SomewhatSensitiveStatement%
     \fi
-    \ifdefined\LvlNotSensitive
-        \NotSensitiveStatement
+    \ifdefined\LvlNotSensitive%
+        \NotSensitiveStatement%
     \fi
 }
 
@@ -244,13 +245,6 @@
     \end{center}
 
     \newpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \Large{}
-        THIS PAGE INTENTIONALLY LEFT BLANK
-    \end{center}
-    \vspace*{\fill}
     \restoregeometry{}
 }
 
@@ -261,7 +255,7 @@
     \ifdefined\LvlVerySensitive
         #1
     \else
-        [REDACTED]
+        \xblackout{#1}
     \fi
 }
 
@@ -272,23 +266,7 @@
 }
 
 \DeclareRobustCommand{\VsPortion}[1]{%
-    \VsRedact{\textcolor{VSColor}{(VS)}~#1}
-}
-
-\newcommand{\EndVsPortion}{\textcolor{VSColor}{* * *}}
-
-\WithSuffix\DeclareRobustCommand\VsPortion*[1]{%
-    \VsRedact{%
-        \begin{center}
-            \emph{NOTE: The following is \VerySensitive.}
-        \end{center}
-        \vspace{2ex}
-        #1
-        \vspace{2ex}
-        \begin{center}
-            \EndVsPortion
-        \end{center}
-    }
+    \textcolor{VSColor}{(VS)}~\VsRedact{#1}
 }
 
 \newcommand{\VsParagraph}[2][]{%
@@ -300,7 +278,7 @@
 \DeclareRobustCommand{\SRedact}[1]{%
     \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
     {#1}
-    {[REDACTED]}
+    {\xblackout{#1}}
 }
 
 \WithSuffix\DeclareRobustCommand\SRedact*[1]{%
@@ -310,23 +288,7 @@
 }
 
 \DeclareRobustCommand{\SPortion}[1]{%
-    \SRedact{\textcolor{SColor}{(S)}~#1}
-}
-
-\newcommand{\EndSPortion}{\textcolor{SColor}{* * *}}
-
-\WithSuffix\DeclareRobustCommand\SPortion*[1]{%
-    \SRedact{%
-        \begin{center}
-            \emph{NOTE: The following is \Sensitive.}
-        \end{center}
-        \vspace{2ex}
-        #1
-        \vspace{2ex}
-        \begin{center}
-            \EndSPortion
-        \end{center}
-    }
+    \textcolor{SColor}{(S)}~\SRedact{#1}
 }
 
 \newcommand{\SParagraph}[2][]{%
@@ -338,7 +300,7 @@
 \DeclareRobustCommand{\SsRedact}[1]{%
     \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
     {#1}
-    {[REDACTED]}
+    {\xblackout{#1}}
 }
 
 \WithSuffix\DeclareRobustCommand\SsRedact*[1]{%
@@ -348,23 +310,7 @@
 }
 
 \DeclareRobustCommand{\SsPortion}[1]{%
-    \SsRedact{\textcolor{SSColor}{(SS)}~#1}
-}
-
-\newcommand{\EndSsPortion}{\textcolor{SSColor}{* * *}}
-
-\WithSuffix\DeclareRobustCommand\SsPortion*[1]{%
-    \SsRedact{%
-        \begin{center}
-            \emph{NOTE: The following is \SomewhatSensitive}
-        \end{center}
-        \vspace{2ex}
-        #1
-        \vspace{2ex}
-        \begin{center}
-            \EndSsPortion
-        \end{center}
-    }
+    \textcolor{SSColor}{(SS)}~\SsRedact{#1}
 }
 
 \newcommand{\SsParagraph}[2][]{%
@@ -375,21 +321,6 @@
 
 \DeclareRobustCommand{\NsPortion}[1]{%
     (NS)~#1
-}
-
-\newcommand{\EndNsPortion}{* * *}
-
-\WithSuffix\DeclareRobustCommand\NsPortion*[1]{%
-    \begin{center}
-        \emph{NOTE: The following is \NotSensitive}
-    \end{center}
-    \vspace{2ex}
-    #1
-    \vspace{2ex}
-    \noindent
-    \begin{center}
-        \EndNsPortion
-    \end{center}
 }
 
 \newcommand{\NsParagraph}[2][]{%
