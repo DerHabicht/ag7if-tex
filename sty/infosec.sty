@@ -269,8 +269,13 @@
     \textcolor{VSColor}{(VS)}~\VsRedact{#1}
 }
 
-\newcommand{\VsParagraph}[2][]{%
-    \paragraph{#1} \VsPortion{#2}
+\newcommand{\VsParagraph}[3][]{%
+    \def\temp{#1}
+    \ifx\temp\empty
+        \paragraph{#2} \VsPortion{#3}
+    \else
+        \paragraph{#2}\label{#1} \VsPortion{#3}
+    \fi
 }
 
 %% Sensitive %%
@@ -291,8 +296,13 @@
     \textcolor{SColor}{(S)}~\SRedact{#1}
 }
 
-\newcommand{\SParagraph}[2][]{%
-    \paragraph{#1} \SPortion{#2}
+\newcommand{\SParagraph}[3][]{%
+    \def\temp{#1}
+    \ifx\temp\empty
+        \paragraph{#2} \SPortion{#3}
+    \else
+        \paragraph{#2}\label{#1} \SPortion{#3}
+    \fi
 }
 
 %% Somewhat Sensitive %%
@@ -313,8 +323,13 @@
     \textcolor{SSColor}{(SS)}~\SsRedact{#1}
 }
 
-\newcommand{\SsParagraph}[2][]{%
-    \paragraph{#1} \SsPortion{#2}
+\newcommand{\SsParagraph}[3][]{%
+    \def\temp{#1}
+    \ifx\temp\empty
+        \paragraph{#2} \SsPortion{#3}
+    \else
+        \paragraph{#2}\label{#1} \SsPortion{#3}
+    \fi
 }
 
 %% Not Sensitive %%
@@ -323,8 +338,26 @@
     (NS)~#1
 }
 
-\newcommand{\NsParagraph}[2][]{%
-    \paragraph{#1} \NsPortion{#2}
+\WithSuffix\DeclareRobustCommand\NsPortion*[1]{%
+    \begin{center}
+        \emph{NOTE: The following is \NotSensitive}
+    \end{center}
+    \vspace{2ex}
+    #1
+    \vspace{2ex}
+    \noindent
+    \begin{center}
+        \EndNsPortion
+    \end{center}
+}
+
+\newcommand{\NsParagraph}[3][]{%
+    \def\temp{#1}
+    \ifx\temp\empty
+        \paragraph{#2} \NsPortion{#3}
+    \else
+        \paragraph{#2}\label{#1} \NsPortion{#3}
+    \fi
 }
 
 \endinput
