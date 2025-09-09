@@ -251,17 +251,19 @@
 % PORTION MARKINGS
 
 %% Very Sensitive %%
-\DeclareRobustCommand{\VsRedact}[1]{%
-    \ifdefined\LvlVerySensitive
-        #1
+\DeclareRobustCommand{\VsRef}[2]{%
+    \ifdefined\LvlVerySensitive%
+        #1{#2}
     \else
-        \xblackout{#1}
+        #1|{#2}|
     \fi
 }
 
-\WithSuffix\DeclareRobustCommand\VsRedact*[1]{%
-    \ifdefined\LvlVerySensitive
+\DeclareRobustCommand{\VsRedact}[1]{%
+    \ifdefined\LvlVerySensitive%
         #1
+    \else
+        \xblackout{#1}
     \fi
 }
 
@@ -279,17 +281,22 @@
 }
 
 %% Sensitive %%
-
-\DeclareRobustCommand{\SRedact}[1]{%
-    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
-    {#1}
-    {\xblackout{#1}}
+\DeclareRobustCommand{\SRef}[2]{%
+    \ifboolexpr{%
+        test {\ifdef{\LvlVerySensitive}} or 
+        test {\ifdef{\LvlSensitive}}
+    }
+    {#1{#2}}
+    {#1|{#2}|}
 }
 
-\WithSuffix\DeclareRobustCommand\SRedact*[1]{%
-    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}}}
+\DeclareRobustCommand{\SRedact}[1]{%
+    \ifboolexpr{%
+        test {\ifdef{\LvlVerySensitive}} or 
+        test {\ifdef{\LvlSensitive}}
+    }
     {#1}
-    {}
+    {\xblackout{#1}}
 }
 
 \DeclareRobustCommand{\SPortion}[1]{%
@@ -306,9 +313,21 @@
 }
 
 %% Somewhat Sensitive %%
-
+\DeclareRobustCommand{\SsRef}[2]{%
+    \ifboolexpr{%
+        test {\ifdef{\LvlVerySensitive}} or
+        test {\ifdef{\LvlSensitive}} or
+        test {\ifdef{\LvlSomewhatSensitive}}
+    }
+    {#1{#2}}
+    {#1|{#2}|}
+}
 \DeclareRobustCommand{\SsRedact}[1]{%
-    \ifboolexpr{test {\ifdef{\LvlVerySensitive}} or test {\ifdef{\LvlSensitive}} or test {\ifdef{\LvlSomewhatSensitive}}}
+    \ifboolexpr{%
+        test {\ifdef{\LvlVerySensitive}} or
+        test {\ifdef{\LvlSensitive}} or
+        test {\ifdef{\LvlSomewhatSensitive}}
+    }
     {#1}
     {\xblackout{#1}}
 }
@@ -325,7 +344,7 @@
 
 \newcommand{\SsParagraph}[3][]{%
     \def\temp{#1}
-    \ifx\temp\empty
+    \ifx\temp\empty%
         \paragraph{#2} \SsPortion{#3}
     \else
         \paragraph{#2}\label{#1} \SsPortion{#3}
@@ -335,20 +354,7 @@
 %% Not Sensitive %%
 
 \DeclareRobustCommand{\NsPortion}[1]{%
-    (NS)~#1
-}
-
-\WithSuffix\DeclareRobustCommand\NsPortion*[1]{%
-    \begin{center}
-        \emph{NOTE: The following is \NotSensitive}
-    \end{center}
-    \vspace{2ex}
-    #1
-    \vspace{2ex}
-    \noindent
-    \begin{center}
-        \EndNsPortion
-    \end{center}
+    \textcolor{NSColor}{(NS)}~#1
 }
 
 \newcommand{\NsParagraph}[3][]{%
