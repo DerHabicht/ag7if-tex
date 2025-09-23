@@ -43,6 +43,7 @@
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{booktabs}
 \RequirePackage{cleveref}
+\RequirePackage{graphicx}
 \RequirePackage{nth}
 \RequirePackage{tabularx}
 \RequirePackage{scrlayer-scrpage}
