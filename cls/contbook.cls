@@ -33,6 +33,7 @@
 \RequirePackage{booktabs}
 \RequirePackage{emptypage}
 \RequirePackage{fancyhdr}
+\RequirePackage[margin=1in]{geometry}
 \RequirePackage{graphicx}
 \RequirePackage{titlesec}
 
@@ -96,17 +97,21 @@
 
     \@bookType
 
+    \vspace{2em}
+
+    \hspace{0.5in}
     \ifdefined\@sealTopLeft
         \includegraphics[height=1.5in]{\@sealTopLeft}
     \fi
-    \hfill
     \ifdefined\@sealTopCenter
+        \hfill
         \includegraphics[height=1.5in]{\@sealTopCenter}
     \fi
     \hfill
     \ifdefined\@sealTopRight
         \includegraphics[height=1.5in]{\@sealTopRight}
     \fi
+    \hspace{0.5in}
     
     \vfill
 
@@ -117,12 +122,12 @@
     \ifdefined\@sealBottomLeft
         \includegraphics[height=1.5in]{\@sealBottomLeft}
     \fi
-    \hfill
     \ifdefined\@sealBottomCenter
+        \hfill
         \includegraphics[height=1.5in]{\@sealBottomCenter}
     \fi
-    \hfill
     \ifdefined\@sealBottomRight
+        \hfill
         \includegraphics[height=1.5in]{\@sealBottomRight}
     \fi
     

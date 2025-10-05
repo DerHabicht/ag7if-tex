@@ -9,6 +9,7 @@
 
 \LoadClass[12pt]{article}
 
+\RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
 \RequirePackage[margin=1in]{geometry}
 \RequirePackage{titlesec}
@@ -84,3 +85,6 @@
 \counterwithout{paragraph}{subsection}
 \counterwithout{paragraph}{subsubsection}
 \titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{Section~\theparagraph.}{1em}{}
+
+% Enumerate setup
+\setlist[enumerate]{label*=(\alph*)}

@@ -23,6 +23,14 @@
     \newcommand{\COMPLIANCE}{}
 }
 
+\DeclareOption{lof}{%
+    \newcommand{\@LOF}{}
+}
+
+\DeclareOption{lot}{%
+    \newcommand{\@LOT}{}
+}
+
 \DeclareOption{letter}{%
     \newcommand{\LetterPageSize}{}
 }
@@ -98,7 +106,7 @@
 \RequirePackage[tablegrid]{vhistory}
 \usepackage{longtable}
 \ifdefined\DRAFT
-    \RequirePackage[scale=8]{draftwatermark}
+    \RequirePackage{draftwatermark}
     \renewcommand{\therevision}{Revision~\vhCurrentVersion{}~(DRAFT)}
     \renewcommand{\@date}{\vhCurrentDate}
 \else
@@ -152,8 +160,12 @@
     \fi
     \tableofcontents
     \ifdefined\MANUSCRIPT\else
-        \listoffigures
-        \listoftables
+        \ifdefined\@LOF
+            \listoffigures
+        \fi
+        \ifdefined\@LOT
+            \listoftables
+        \fi
     \fi
 }
 
@@ -251,6 +263,11 @@
 }{
     \noindent
     \ignorespacesafterend
+}
+
+% Titles in enumerated lists
+\newcommand{\titem}[1]{%
+    \item \textbf{#1}
 }
 
 %% Bullets
