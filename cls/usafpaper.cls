@@ -89,7 +89,7 @@
 
 \pagestyle{fancy}
 
-\renewcommand{\maketitle}{%
+\newcommand{\PaperTitle}{%
     \thispagestyle{firstpage}
     \begin{center}
         \ifdefined\OUTLINE
@@ -108,3 +108,6 @@
     \end{center}
 }
 
+\renewcommand{\maketitle}{%
+    \PaperTitle%
+}
