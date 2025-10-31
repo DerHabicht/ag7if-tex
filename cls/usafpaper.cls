@@ -75,6 +75,12 @@
 \titleformat{\section}{\normalfont\MakeUppercase}{\thesection}{0pt}{}
 \titlespacing{\section}{0pt}{0pt}{0pt}
 
+\titleformat{\subsection}{\normalfont}{\thesubsection}{0pt}{\underline}
+\titlespacing{\subsection}{0pt}{0pt}{0pt}
+
+\titleformat{\subsubsection}{\normalfont}{\thesubsubsection}{0pt}{\textit}
+\titlespacing{\subsubsection}{0pt}{0pt}{0pt}
+
 \fancypagestyle{firstpage}{%
     \fancyhf{}
     \fancyfoot[L]{\IdentLine}

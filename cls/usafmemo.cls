@@ -199,7 +199,6 @@ MEMORANDUM FOR \MakeUppercase{#4}
     \else
         \vspace*{0.25in}
     \fi
-
     \ifdefined\@controlNumber
         \hfill\@controlNumber
     \fi
