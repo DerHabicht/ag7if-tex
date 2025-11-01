@@ -562,8 +562,10 @@
 
         \@ao
      
-        \section*{Summary}
-        \@staffSummary
+        \ifdefined\@staffSummary
+            \section*{Summary}
+            \@staffSummary
+        \fi
     
         \cleardoublepage
     \fi
