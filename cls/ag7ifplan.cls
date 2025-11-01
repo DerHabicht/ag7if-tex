@@ -353,6 +353,10 @@
     \def\@sponsor{#1}%
 }
 
+\newcommand{\draftDate}[1]{%
+    \def\@draftDate{#1}
+}
+
 \newcommand\staffCoord[1]{%
     \ifdefined\@coordChain\else\def\@coordChain{}\fi
     \g@addto@macro\@coordChain{\hline\@gobble}%
@@ -378,10 +382,10 @@
 }
 
 \newcommand{\@ao}{%
-    \begin{tabularx}{\textwidth}{|X|l|l|r|}
+    \begin{tabularx}{\textwidth}{|X|l|l|r|r|}
     \hline
-        \textbf{Action Officer} & \textbf{Office} & \textbf{Contact} & \textbf{Suspense} \\
-        \@aoName & \@aoOffice & \@aoContact & \@suspense \\
+        \textbf{Action Officer} & \textbf{Office} & \textbf{Contact} & \textbf{Draft Date} & \textbf{Suspense} \\
+        \@aoName & \@aoOffice & \@aoContact & \@draftDate & \@suspense \\
     \hline
     \end{tabularx}
 }
